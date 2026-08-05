@@ -1,0 +1,73 @@
+{
+  "manifest_version": "1.0",
+  "skill": "dcf-model-builder",
+  "artifact_mode": "html_report_with_formula_workbook",
+  "output_dir": "nvidia",
+  "model_status": "screen-grade",
+  "first_read": {
+    "path": "nvidia/report.html",
+    "role": "primary human deliverable",
+    "why": "Open the standalone HTML report first for the conclusion, operating deep dive, valuation, and sources."
+  },
+  "primary_human_deliverable": "nvidia/report.html",
+  "human_deliverables": [
+    {
+      "path": "nvidia/report.html",
+      "role": "hero",
+      "artifact_type": "html",
+      "description": "Standalone Nvidia intrinsic value report",
+      "user_visible_default": true,
+      "contains_new_analysis": true
+    }
+  ],
+  "companion_deliverables": [
+    {
+      "path": "nvidia/banker_formula_workbook.xlsx",
+      "role": "companion_workbook",
+      "artifact_type": "xlsx",
+      "description": "Formula-driven FCFF DCF workbook with Dashboard, scenarios, reverse DCF, sensitivities, checks, and sources",
+      "user_visible_default": true,
+      "contains_new_analysis": true
+    }
+  ],
+  "support_artifacts": [
+    {
+      "path": "nvidia/plan.json",
+      "role": "support_artifact",
+      "artifact_type": "json",
+      "description": "Normalized DCF plan and assumptions",
+      "user_visible_default": false
+    },
+    {
+      "path": "nvidia/model_citations.json",
+      "role": "support_artifact",
+      "artifact_type": "json",
+      "description": "Workbook cell citation ledger",
+      "user_visible_default": false
+    },
+    {
+      "path": "nvidia/banker_formula_workbook_run_log.json",
+      "role": "support_artifact",
+      "artifact_type": "json",
+      "description": "Calculation, formula-error, and tie-out run log",
+      "user_visible_default": false
+    }
+  ],
+  "valuation_summary": {
+    "current_price": 211.94,
+    "downside": 72.5517097557284,
+    "base": 147.81902582757687,
+    "upside": 250.54524312781564,
+    "base_discount_to_market": -0.30254305073333554
+  },
+  "calculation_integrity": {
+    "status": "pass",
+    "formula_count": 1349,
+    "error_count": 0
+  },
+  "decision_readiness": {
+    "status": "screen-grade",
+    "reason": "Forecast, WACC, and terminal assumptions are independent analyst estimates rather than management or consensus forecasts."
+  },
+  "generated_at": "2026-08-04T21:45:48.577115+00:00"
+}

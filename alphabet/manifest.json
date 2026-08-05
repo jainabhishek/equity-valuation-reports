@@ -1,0 +1,73 @@
+{
+  "manifest_version": "1.0",
+  "skill": "dcf-model-builder",
+  "artifact_mode": "html_report_with_formula_workbook",
+  "output_dir": "alphabet",
+  "model_status": "screen-grade",
+  "first_read": {
+    "path": "alphabet/report.html",
+    "role": "primary human deliverable",
+    "why": "Open the standalone HTML report first for the conclusion, operating deep dive, valuation, and sources."
+  },
+  "primary_human_deliverable": "alphabet/report.html",
+  "human_deliverables": [
+    {
+      "path": "alphabet/report.html",
+      "role": "hero",
+      "artifact_type": "html",
+      "description": "Standalone Alphabet intrinsic value report",
+      "user_visible_default": true,
+      "contains_new_analysis": true
+    }
+  ],
+  "companion_deliverables": [
+    {
+      "path": "alphabet/banker_formula_workbook.xlsx",
+      "role": "companion_workbook",
+      "artifact_type": "xlsx",
+      "description": "Formula-driven FCFF DCF workbook with Dashboard, scenarios, reverse DCF, sensitivities, checks, and sources",
+      "user_visible_default": true,
+      "contains_new_analysis": true
+    }
+  ],
+  "support_artifacts": [
+    {
+      "path": "alphabet/plan.json",
+      "role": "support_artifact",
+      "artifact_type": "json",
+      "description": "Normalized DCF plan and assumptions",
+      "user_visible_default": false
+    },
+    {
+      "path": "alphabet/model_citations.json",
+      "role": "support_artifact",
+      "artifact_type": "json",
+      "description": "Workbook cell citation ledger",
+      "user_visible_default": false
+    },
+    {
+      "path": "alphabet/banker_formula_workbook_run_log.json",
+      "role": "support_artifact",
+      "artifact_type": "json",
+      "description": "Calculation, formula-error, and tie-out run log",
+      "user_visible_default": false
+    }
+  ],
+  "valuation_summary": {
+    "current_price": 377.65,
+    "downside": 97.72746971800093,
+    "base": 197.6759599914465,
+    "upside": 294.41725525816275,
+    "base_discount_to_market": -0.4765630610579995
+  },
+  "calculation_integrity": {
+    "status": "pass",
+    "formula_count": 1349,
+    "error_count": 0
+  },
+  "decision_readiness": {
+    "status": "screen-grade",
+    "reason": "Forecast, WACC, and terminal assumptions are independent analyst estimates rather than management or consensus forecasts."
+  },
+  "generated_at": "2026-08-04T21:45:48.483260+00:00"
+}

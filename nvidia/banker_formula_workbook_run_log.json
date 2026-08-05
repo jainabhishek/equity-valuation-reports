@@ -1,0 +1,90 @@
+{
+  "model_status": "screen-grade",
+  "workbook_mode": "banker_formula_workbook",
+  "artifact_level": "banker_formula_workbook_template_materializer",
+  "template_path": "<local investment-banking skill template>",
+  "output_paths": {
+    "banker_formula_workbook": "reports/intrinsic-value/2026-08-04/nvidia/banker_formula_workbook.xlsx",
+    "model_citations_json": "reports/intrinsic-value/2026-08-04/nvidia/model_citations.json",
+    "banker_formula_workbook_run_log": "reports/intrinsic-value/2026-08-04/nvidia/banker_formula_workbook_run_log.json",
+    "manifest": "reports/intrinsic-value/2026-08-04/nvidia/manifest.json"
+  },
+  "partial_context_warning": "Screen-grade only; placeholder assumptions used.",
+  "missing_inputs": [
+    "three_year_historical_financials",
+    "working_capital_component_split"
+  ],
+  "warnings": [
+    "Only latest historical year is available in the DCF plan schema; template historical columns B/C remain unchanged.",
+    "Total operating NWC % revenue was mapped to the AR bucket because no AR/inventory/AP/OCA/OCL split is present in plan.json."
+  ],
+  "hard_failures": [],
+  "workbook_inspection": {
+    "sheet_names": [
+      "Cover",
+      "Executive Summary",
+      "Control Panel",
+      "Historical Financials",
+      "Revenue Build",
+      "Margin Cost Build",
+      "Working Capital",
+      "Capex D&A",
+      "Tax Schedule",
+      "Unlevered FCF",
+      "WACC",
+      "Terminal Value",
+      "DCF Valuation",
+      "Sensitivities",
+      "Checks",
+      "Source Notes"
+    ],
+    "required_sheets_present": true,
+    "missing_required_sheets": [],
+    "formula_count": 873,
+    "formula_sheets": 15,
+    "has_styles": true,
+    "external_links": [],
+    "no_external_links": true
+  },
+  "formula_mode_limitations": [
+    "Preserves and populates the bundled DCF formula workbook template.",
+    "Does not synthesize new tabs, formulas, or workbook architecture beyond the shipped template.",
+    "The template has six forecast columns; plan vectors are extended or truncated for formula-mode compatibility.",
+    "Excel or compatible spreadsheet software should recalculate formulas after opening."
+  ],
+  "model_citations_path": "reports/intrinsic-value/2026-08-04/nvidia/model_citations.json",
+  "model_citation_count": 12,
+  "first_visible_sheet": "Dashboard",
+  "formula_error_scan": {
+    "formula_count": 1349,
+    "error_count": 0,
+    "errors": [],
+    "recalculation_engine": "LibreOffice 26.8"
+  },
+  "scenario_tie_out": {
+    "downside": {
+      "cell": "Dashboard!B13",
+      "workbook_value": 72.5517097557284,
+      "independent_value": 72.5517097557284,
+      "difference": 0.0
+    },
+    "base": {
+      "cell": "Dashboard!C13",
+      "workbook_value": 147.819025827577,
+      "independent_value": 147.81902582757687,
+      "difference": 1.4210854715202004e-13
+    },
+    "upside": {
+      "cell": "Dashboard!D13",
+      "workbook_value": 250.545243127816,
+      "independent_value": 250.54524312781564,
+      "difference": 3.694822225952521e-13
+    }
+  },
+  "reverse_dcf_tie_out": {
+    "cell": "Dashboard!C20",
+    "difference_to_current_price": 0.0
+  },
+  "html_report": "nvidia/report.html",
+  "generated_at": "2026-08-04T21:45:48.577115+00:00"
+}

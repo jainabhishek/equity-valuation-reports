@@ -1,0 +1,183 @@
+{
+  "meta": {
+    "company": "NVIDIA Corporation (NVDA)",
+    "industry": "accelerated computing and AI infrastructure",
+    "currency": "USD",
+    "units": "$mm except per-share data",
+    "valuation_date": "2026-08-04",
+    "as_of_date": "2026-08-04",
+    "accounting_basis": "US GAAP",
+    "valuation_purpose": "screen",
+    "model_type": "fcff"
+  },
+  "source_basis": [
+    {
+      "id": "h",
+      "topic": "historicals",
+      "label": "reported",
+      "source_name": "NVIDIA Q1 FY2027 Form 10-Q, FY2026 Form 10-K, and StockAnalysis TTM aggregation",
+      "source_type": "SEC filings and market-data aggregator",
+      "as_of_date": "2026-04-26",
+      "confidence": "high",
+      "notes": "TTM revenue, EBIT, D&A, capex, and cash flow. SEC 10-Q: https://www.sec.gov/Archives/edgar/data/1045810/000104581026000052/nvda-20260426.htm; SEC 10-K: https://www.sec.gov/Archives/edgar/data/1045810/000104581026000021/nvda-20260125.htm"
+    },
+    {
+      "id": "f",
+      "topic": "forecast",
+      "label": "analyst_estimate",
+      "source_name": "Codex operating case",
+      "source_type": "analyst estimate",
+      "as_of_date": "2026-08-04",
+      "confidence": "low",
+      "notes": "Six-year driver build informed by Q1 FY2027 results and Q2 guidance; not company long-range guidance or consensus."
+    },
+    {
+      "id": "w",
+      "topic": "wacc",
+      "label": "analyst_estimate",
+      "source_name": "U.S. Treasury and Codex bottom-up beta assumption",
+      "source_type": "market observation and analyst estimate",
+      "as_of_date": "2026-08-04",
+      "confidence": "medium",
+      "notes": "4.63% 10-year Treasury; 1.35 normalized beta assumption versus 2.21 observed beta; 4.5% ERP; 1% target debt. Treasury: https://home.treasury.gov/resource-center/data-chart-center/interest-rates/TextView?field_tdr_date_value=2026&type=daily_treasury_yield_curve"
+    },
+    {
+      "id": "t",
+      "topic": "terminal_value",
+      "label": "analyst_estimate",
+      "source_name": "Codex terminal value case",
+      "source_type": "analyst estimate",
+      "as_of_date": "2026-08-04",
+      "confidence": "low",
+      "notes": "Perpetual growth method; 3.0% base, 2.5% downside, 3.5% upside."
+    },
+    {
+      "id": "d",
+      "topic": "net_debt",
+      "label": "reported",
+      "source_name": "NVIDIA Q1 FY2027 Form 10-Q",
+      "source_type": "SEC filing",
+      "as_of_date": "2026-04-26",
+      "confidence": "high",
+      "notes": "$80.6bn cash, marketable debt and marketable equity securities; $8.5bn debt; $3.9bn leases."
+    },
+    {
+      "id": "s",
+      "topic": "share_count",
+      "label": "reported",
+      "source_name": "NVIDIA Q1 FY2027 Form 10-Q",
+      "source_type": "SEC filing",
+      "as_of_date": "2026-04-26",
+      "confidence": "high",
+      "notes": "24.391bn Q1 diluted weighted-average shares; 200mm unvested RSUs/PSUs outstanding at quarter end are captured by the treasury-stock method in diluted shares."
+    }
+  ],
+  "timeline": {
+    "start_year": 2026,
+    "horizon_years": 6,
+    "periodicity": "annual"
+  },
+  "historicals": {
+    "latest_year": 2026,
+    "revenue": 253491,
+    "gross_profit_margin": 0.7415,
+    "ebitda": 165514,
+    "ebit": 162285,
+    "cash_taxes": 26000,
+    "da": 3229,
+    "capex": 6572,
+    "change_nwc": -4346,
+    "net_working_capital": 27539,
+    "unlevered_fcf": 130905,
+    "source_id": "h"
+  },
+  "forecast": {
+    "cash_flow_basis": "fcff",
+    "mid_year_convention": true,
+    "source_id": "f"
+  },
+  "wacc": {
+    "risk_free_rate": 0.0463,
+    "beta": 1.35,
+    "equity_risk_premium": 0.045,
+    "size_premium": 0.0,
+    "company_specific_premium": 0.0,
+    "country_risk_premium": 0.0,
+    "pre_tax_cost_of_debt": 0.045,
+    "marginal_tax_rate": 0.17,
+    "target_debt_pct": 0.01,
+    "target_equity_pct": 0.99,
+    "preferred_pct": 0.0,
+    "pre_tax_cost_of_preferred": 0.0,
+    "source_id": "w"
+  },
+  "terminal_value": {
+    "method": "perpetual_growth",
+    "perpetual_growth_rate": 0.03,
+    "exit_ebitda_multiple": 25.0,
+    "source_id": "t"
+  },
+  "market": {
+    "current_share_price": 211.94,
+    "price_timestamp": "2026-08-04 16:00 EDT",
+    "source": "https://stockanalysis.com/stocks/nvda/"
+  },
+  "ev_to_equity_bridge": {
+    "cash": 80572,
+    "debt": 8470,
+    "leases": 3878,
+    "minorities": 0,
+    "associates": 0,
+    "pensions": 0,
+    "preferred_stock": 0,
+    "non_operating_assets": 0,
+    "options": 0,
+    "other_debt_like_items": 0,
+    "diluted_shares": 24391,
+    "current_share_price": 211.94,
+    "net_debt_source_id": "d",
+    "share_count_source_id": "s"
+  },
+  "scenarios": {
+    "downside": {
+      "description": "AI infrastructure spending decelerates, custom accelerators gain share, export controls constrain demand, and gross margin normalizes faster.",
+      "revenue_growth": [0.22, 0.16, 0.12, 0.10, 0.08, 0.06],
+      "ebit_margin": [0.57, 0.55, 0.53, 0.51, 0.49, 0.48],
+      "tax_rate": [0.18, 0.18, 0.18, 0.18, 0.18, 0.18],
+      "da_percent_revenue": [0.015, 0.017, 0.019, 0.021, 0.022, 0.022],
+      "capex_percent_revenue": [0.04, 0.04, 0.04, 0.04, 0.04, 0.04],
+      "nwc_percent_revenue": [0.13, 0.13, 0.125, 0.12, 0.115, 0.11],
+      "terminal_growth_rate": 0.025,
+      "wacc_adjustment": 0.015
+    },
+    "base": {
+      "description": "Blackwell and Rubin sustain accelerated-computing leadership; growth decelerates as the revenue base scales and margins normalize gradually.",
+      "revenue_growth": [0.36, 0.27, 0.21, 0.17, 0.13, 0.10],
+      "ebit_margin": [0.63, 0.62, 0.60, 0.58, 0.56, 0.54],
+      "tax_rate": [0.17, 0.17, 0.17, 0.17, 0.17, 0.17],
+      "da_percent_revenue": [0.015, 0.017, 0.019, 0.021, 0.022, 0.022],
+      "capex_percent_revenue": [0.03, 0.032, 0.034, 0.035, 0.035, 0.035],
+      "nwc_percent_revenue": [0.11, 0.105, 0.10, 0.095, 0.09, 0.09],
+      "terminal_growth_rate": 0.03,
+      "wacc_adjustment": 0.0
+    },
+    "upside": {
+      "description": "AI factory demand remains supply-constrained, networking and software attach deepen the moat, and margin resilience outlasts the current product cycle.",
+      "revenue_growth": [0.45, 0.36, 0.28, 0.22, 0.17, 0.13],
+      "ebit_margin": [0.66, 0.66, 0.64, 0.62, 0.60, 0.59],
+      "tax_rate": [0.16, 0.16, 0.16, 0.16, 0.16, 0.16],
+      "da_percent_revenue": [0.015, 0.017, 0.019, 0.021, 0.022, 0.022],
+      "capex_percent_revenue": [0.028, 0.03, 0.032, 0.033, 0.033, 0.033],
+      "nwc_percent_revenue": [0.10, 0.095, 0.09, 0.085, 0.08, 0.08],
+      "terminal_growth_rate": 0.035,
+      "wacc_adjustment": -0.0075
+    }
+  },
+  "sensitivities": {
+    "wacc_delta": [-0.01, -0.005, 0.0, 0.005, 0.01],
+    "terminal_growth_delta": [-0.01, -0.005, 0.0, 0.005, 0.01],
+    "exit_multiple_delta": [-5.0, -2.5, 0.0, 2.5, 5.0],
+    "revenue_growth_delta": [-0.04, -0.02, 0.0, 0.02, 0.04],
+    "ebit_margin_delta": [-0.04, -0.02, 0.0, 0.02, 0.04]
+  }
+}

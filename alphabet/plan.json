@@ -1,0 +1,183 @@
+{
+  "meta": {
+    "company": "Alphabet Inc. (GOOGL)",
+    "industry": "digital advertising and cloud infrastructure",
+    "currency": "USD",
+    "units": "$mm except per-share data",
+    "valuation_date": "2026-08-04",
+    "as_of_date": "2026-08-04",
+    "accounting_basis": "US GAAP",
+    "valuation_purpose": "screen",
+    "model_type": "fcff"
+  },
+  "source_basis": [
+    {
+      "id": "h",
+      "topic": "historicals",
+      "label": "reported",
+      "source_name": "Alphabet Q2 2026 Form 10-Q and StockAnalysis TTM aggregation",
+      "source_type": "SEC filing and market-data aggregator",
+      "as_of_date": "2026-06-30",
+      "confidence": "high",
+      "notes": "TTM revenue, EBIT, D&A, capex, and cash flow. SEC: https://www.sec.gov/Archives/edgar/data/1652044/000165204426000071/goog-20260630.htm; aggregation: https://stockanalysis.com/stocks/googl/financials/"
+    },
+    {
+      "id": "f",
+      "topic": "forecast",
+      "label": "analyst_estimate",
+      "source_name": "Codex operating case",
+      "source_type": "analyst estimate",
+      "as_of_date": "2026-08-04",
+      "confidence": "low",
+      "notes": "Six-year driver build informed by Q2 2026 segment growth and AI infrastructure intensity; not company guidance or consensus."
+    },
+    {
+      "id": "w",
+      "topic": "wacc",
+      "label": "analyst_estimate",
+      "source_name": "U.S. Treasury and Codex market assumptions",
+      "source_type": "market observation and analyst estimate",
+      "as_of_date": "2026-08-04",
+      "confidence": "medium",
+      "notes": "4.63% 10-year Treasury; 1.25 observed beta; 4.5% ERP assumption; 3% target debt. Treasury: https://home.treasury.gov/resource-center/data-chart-center/interest-rates/TextView?field_tdr_date_value=2026&type=daily_treasury_yield_curve"
+    },
+    {
+      "id": "t",
+      "topic": "terminal_value",
+      "label": "analyst_estimate",
+      "source_name": "Codex terminal value case",
+      "source_type": "analyst estimate",
+      "as_of_date": "2026-08-04",
+      "confidence": "low",
+      "notes": "Perpetual growth method; 3.0% base, 2.5% downside, 3.5% upside."
+    },
+    {
+      "id": "d",
+      "topic": "net_debt",
+      "label": "reported",
+      "source_name": "Alphabet Q2 2026 Form 10-Q",
+      "source_type": "SEC filing",
+      "as_of_date": "2026-06-30",
+      "confidence": "high",
+      "notes": "$242.5bn cash and marketable securities, $98.2bn long-term debt, $14.6bn leases, and $18.0bn mandatory convertible preferred stock."
+    },
+    {
+      "id": "s",
+      "topic": "share_count",
+      "label": "reported",
+      "source_name": "Alphabet Q2 2026 Form 10-Q",
+      "source_type": "SEC filing",
+      "as_of_date": "2026-06-30",
+      "confidence": "high",
+      "notes": "12.309bn Q2 diluted weighted-average shares, including 16mm preferred-stock conversion impact in the quarter."
+    }
+  ],
+  "timeline": {
+    "start_year": 2026,
+    "horizon_years": 6,
+    "periodicity": "annual"
+  },
+  "historicals": {
+    "latest_year": 2026,
+    "revenue": 445867,
+    "gross_profit_margin": 0.609,
+    "ebitda": 172865,
+    "ebit": 147628,
+    "cash_taxes": 28197,
+    "da": 25237,
+    "capex": 132402,
+    "change_nwc": 0,
+    "net_working_capital": 0,
+    "unlevered_fcf": 29791,
+    "source_id": "h"
+  },
+  "forecast": {
+    "cash_flow_basis": "fcff",
+    "mid_year_convention": true,
+    "source_id": "f"
+  },
+  "wacc": {
+    "risk_free_rate": 0.0463,
+    "beta": 1.25,
+    "equity_risk_premium": 0.045,
+    "size_premium": 0.0,
+    "company_specific_premium": 0.0,
+    "country_risk_premium": 0.0,
+    "pre_tax_cost_of_debt": 0.045,
+    "marginal_tax_rate": 0.19,
+    "target_debt_pct": 0.03,
+    "target_equity_pct": 0.97,
+    "preferred_pct": 0.0,
+    "pre_tax_cost_of_preferred": 0.0,
+    "source_id": "w"
+  },
+  "terminal_value": {
+    "method": "perpetual_growth",
+    "perpetual_growth_rate": 0.03,
+    "exit_ebitda_multiple": 18.0,
+    "source_id": "t"
+  },
+  "market": {
+    "current_share_price": 377.65,
+    "price_timestamp": "2026-08-04 16:00 EDT",
+    "source": "https://stockanalysis.com/stocks/googl/"
+  },
+  "ev_to_equity_bridge": {
+    "cash": 242474,
+    "debt": 98165,
+    "leases": 14591,
+    "minorities": 0,
+    "associates": 0,
+    "pensions": 0,
+    "preferred_stock": 18023,
+    "non_operating_assets": 0,
+    "options": 0,
+    "other_debt_like_items": 0,
+    "diluted_shares": 12309,
+    "current_share_price": 377.65,
+    "net_debt_source_id": "d",
+    "share_count_source_id": "s"
+  },
+  "scenarios": {
+    "downside": {
+      "description": "Search growth slows as AI answer formats pressure monetization; Cloud moderates; AI capex remains elevated and margins compress.",
+      "revenue_growth": [0.09, 0.08, 0.08, 0.07, 0.06, 0.05],
+      "ebit_margin": [0.30, 0.295, 0.295, 0.30, 0.305, 0.31],
+      "tax_rate": [0.20, 0.20, 0.20, 0.20, 0.20, 0.20],
+      "da_percent_revenue": [0.065, 0.075, 0.085, 0.09, 0.09, 0.09],
+      "capex_percent_revenue": [0.32, 0.28, 0.24, 0.20, 0.17, 0.14],
+      "nwc_percent_revenue": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+      "terminal_growth_rate": 0.025,
+      "wacc_adjustment": 0.01
+    },
+    "base": {
+      "description": "Search remains resilient, Cloud outgrows the group, and capex normalizes after a multi-year AI capacity build.",
+      "revenue_growth": [0.14, 0.13, 0.12, 0.11, 0.09, 0.07],
+      "ebit_margin": [0.33, 0.335, 0.34, 0.345, 0.35, 0.35],
+      "tax_rate": [0.19, 0.19, 0.19, 0.19, 0.19, 0.19],
+      "da_percent_revenue": [0.065, 0.075, 0.085, 0.09, 0.09, 0.09],
+      "capex_percent_revenue": [0.28, 0.24, 0.20, 0.16, 0.13, 0.11],
+      "nwc_percent_revenue": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+      "terminal_growth_rate": 0.03,
+      "wacc_adjustment": 0.0
+    },
+    "upside": {
+      "description": "AI expands Search monetization, Cloud sustains strong growth, and infrastructure utilization produces operating leverage.",
+      "revenue_growth": [0.18, 0.17, 0.15, 0.13, 0.11, 0.09],
+      "ebit_margin": [0.34, 0.35, 0.36, 0.365, 0.37, 0.37],
+      "tax_rate": [0.18, 0.18, 0.18, 0.18, 0.18, 0.18],
+      "da_percent_revenue": [0.065, 0.075, 0.085, 0.09, 0.09, 0.09],
+      "capex_percent_revenue": [0.26, 0.22, 0.18, 0.145, 0.12, 0.10],
+      "nwc_percent_revenue": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+      "terminal_growth_rate": 0.035,
+      "wacc_adjustment": -0.005
+    }
+  },
+  "sensitivities": {
+    "wacc_delta": [-0.01, -0.005, 0.0, 0.005, 0.01],
+    "terminal_growth_delta": [-0.01, -0.005, 0.0, 0.005, 0.01],
+    "exit_multiple_delta": [-4.0, -2.0, 0.0, 2.0, 4.0],
+    "revenue_growth_delta": [-0.02, -0.01, 0.0, 0.01, 0.02],
+    "ebit_margin_delta": [-0.02, -0.01, 0.0, 0.01, 0.02]
+  }
+}
