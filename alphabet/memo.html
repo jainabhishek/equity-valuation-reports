@@ -1,0 +1,219 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Alphabet Inc. (GOOGL) — investment memo</title><style>
+:root{--bg:#fbfaf8;--fg:#16181d;--muted:#5f6672;--line:#e2ded7;--card:#fff;
+--pos:#0f7a52;--neg:#b3261e;--warn:#8a6100;--accent:#1a4fa0;--mono:ui-monospace,SFMono-Regular,Menlo,monospace}
+@media(prefers-color-scheme:dark){:root{--bg:#12141a;--fg:#e9e6e1;--muted:#9aa3b0;--line:#282d38;
+--card:#191c24;--pos:#4ec99a;--neg:#f2857c;--warn:#e0b062;--accent:#7aa7f0}}
+:root[data-theme=dark]{--bg:#12141a;--fg:#e9e6e1;--muted:#9aa3b0;--line:#282d38;--card:#191c24;
+--pos:#4ec99a;--neg:#f2857c;--warn:#e0b062;--accent:#7aa7f0}
+:root[data-theme=light]{--bg:#fbfaf8;--fg:#16181d;--muted:#5f6672;--line:#e2ded7;--card:#fff;
+--pos:#0f7a52;--neg:#b3261e;--warn:#8a6100;--accent:#1a4fa0}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+font:16px/1.55 ui-serif,Georgia,'Times New Roman',serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1120px;margin:0 auto;padding:40px 28px 90px}
+h1{font-size:31px;margin:.1em 0 .05em;letter-spacing:-.015em}
+h2{font-size:13px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);
+margin:38px 0 12px;font-family:system-ui,sans-serif;font-weight:600}
+h3{font-size:16px;margin:20px 0 6px}
+p{margin:.55em 0}
+.sub{color:var(--muted);font-size:14px}
+.eyebrow{font-family:system-ui,sans-serif;font-size:11px;letter-spacing:.16em;
+text-transform:uppercase;color:var(--muted)}
+.rule{height:1px;background:var(--line);margin:26px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:9px;padding:18px 20px}
+.grid{display:grid;gap:14px}
+.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+.kpi{font-family:system-ui,sans-serif}
+.kpi .lab{font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted)}
+.kpi .val{font-size:25px;font-weight:600;letter-spacing:-.02em;margin-top:3px}
+.kpi .note{font-size:12px;color:var(--muted);margin-top:2px}
+.pos{color:var(--pos)}.neg{color:var(--neg)}.warn{color:var(--warn)}
+.tag{display:inline-block;font-family:system-ui,sans-serif;font-size:11px;font-weight:600;
+letter-spacing:.06em;padding:3px 9px;border-radius:999px;border:1px solid var(--line);
+color:var(--muted);margin-right:6px}
+.tag.big{font-size:13px;padding:5px 14px;color:var(--fg)}
+table{border-collapse:collapse;width:100%;font-family:system-ui,sans-serif;font-size:13px;margin:8px 0}
+th,td{padding:7px 9px;border-bottom:1px solid var(--line);text-align:right}
+th:first-child,td:first-child{text-align:left}
+th{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:600}
+tbody tr:hover{background:color-mix(in srgb,var(--accent) 6%,transparent)}
+.scroll{overflow-x:auto;max-width:100%}
+.num{font-variant-numeric:tabular-nums;font-family:var(--mono);font-size:12.5px}
+ol,ul{padding-left:20px;margin:.5em 0}li{margin:.35em 0}
+.thesis{counter-reset:t}
+.thesis li{list-style:none;position:relative;padding-left:34px;margin:14px 0}
+.thesis li:before{counter-increment:t;content:counter(t);position:absolute;left:0;top:1px;
+width:22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;
+font:600 12px/22px system-ui,sans-serif;text-align:center}
+.thesis .k{font-family:system-ui,sans-serif;font-size:11px;text-transform:uppercase;
+letter-spacing:.08em;color:var(--muted);display:block}
+.bar{height:26px;position:relative;background:color-mix(in srgb,var(--muted) 12%,transparent);
+border-radius:3px;margin:3px 0}
+.bar span{position:absolute;top:0;bottom:0;border-radius:3px}
+.bridge td.b{padding:0;width:52%}
+.callout{border-left:3px solid var(--accent);padding:10px 0 10px 16px;margin:16px 0}
+.warnbox{border-left:3px solid var(--warn);padding:10px 0 10px 16px;margin:16px 0}
+footer{margin-top:50px;padding-top:18px;border-top:1px solid var(--line);
+color:var(--muted);font-size:12px;font-family:system-ui,sans-serif}
+code{font-family:var(--mono);font-size:12px;background:color-mix(in srgb,var(--muted) 12%,transparent);
+padding:1px 5px;border-radius:3px}
+@media(max-width:800px){.g2,.g3,.g4{grid-template-columns:1fr}.wrap{padding:24px 16px 60px}h1{font-size:25px}}
+@media print{body{background:#fff}.wrap{max-width:none}}
+</style></head><body><div class="wrap"><div class="eyebrow">Equity research &middot; internal memorandum &middot; 2026-08-05</div>
+<h1>Alphabet Inc. <span class="sub">(GOOGL)</span></h1>
+<p class="sub">Six-year segment-driver model with a vintage depreciation schedule. Base year TTM to 2026-06-30, all statement inputs from SEC XBRL.</p>
+<p style="margin-top:14px"><span class="tag big neg"><b>SHORT</b></span><span class="tag">Conviction 2/3</span><span class="tag">18-month horizon</span><span class="tag">Edge: analytical</span></p>
+<div class="grid g4" style="margin-top:20px">
+<div class="card kpi"><div class="lab">Spot</div><div class="val">$377.65</div><div class="note">as of 2026-08-05</div></div>
+<div class="card kpi"><div class="lab">Expected value</div><div class="val">$248.52</div><div class="note"><span class="neg">-34.2%</span> vs spot</div></div>
+<div class="card kpi"><div class="lab">Risk / reward</div><div class="val">2.09 : 1</div><div class="note">short framing</div></div>
+<div class="card kpi"><div class="lab">Breakeven p(bull)</div><div class="val">77%</div><div class="note">vs 30% assumed</div></div>
+</div>
+<h2>Thesis</h2><ol class="thesis">
+<li><span class="k">What we think</span>The operating business is compounding above 20%. The reported earnings it produces are not the earnings the capex programme will leave behind.</li>
+<li><span class="k">Why it is not priced</span>Consensus holds D&amp;A at 4.6% of revenue through 2030 while capex runs at 29.7%. Our vintage schedule reaches 13.2%.</li>
+<li><span class="k">What makes it work</span>D&amp;A is disclosed quarterly. Every print showing it climb toward capex closes the gap. Next print 28 October 2026.</li>
+</ol>
+<div class="callout"><b>Edge type: analytical.</b> No proprietary information. The edge is that a depreciation schedule built from disclosed capex vintages contradicts the EBIT margin the consensus feed carries, and that contradiction is checkable from public filings every ninety days.</div>
+<h2>The variant &mdash; where we differ from consensus</h2>
+<div class="scroll"><table><thead><tr><th>Fiscal year</th><th>Our revenue</th><th>Street avg</th><th>Street low&ndash;high</th><th>&Delta;</th><th>Percentile</th><th>Analysts</th><th>Our EBIT mgn</th><th>Street EBIT mgn</th></tr></thead><tbody>
+<tr><td>2026</td><td class="num">$492bn</td><td class="num">$495bn</td><td class="num">489&ndash;501</td><td class="num neg">-0.7%</td><td class="num">27th</td><td class="num">35</td><td class="num">30.4%</td><td class="num">32.5%</td></tr>
+<tr><td>2027</td><td class="num">$569bn</td><td class="num">$606bn</td><td class="num">574&ndash;654</td><td class="num neg">-6.1% <span class="warn">outside</span></td><td class="num"><span class="warn">below low</span></td><td class="num">39</td><td class="num">29.2%</td><td class="num">32.5%</td></tr>
+<tr><td>2028</td><td class="num">$645bn</td><td class="num">$722bn</td><td class="num">540&ndash;799</td><td class="num neg">-10.7%</td><td class="num">40th</td><td class="num">38</td><td class="num">28.5%</td><td class="num">32.5%</td></tr>
+<tr><td>2029</td><td class="num">$721bn</td><td class="num">$816bn</td><td class="num">715&ndash;880</td><td class="num neg">-11.6%</td><td class="num">4th</td><td class="num">29</td><td class="num">27.8%</td><td class="num">32.5%</td></tr>
+<tr><td>2030</td><td class="num">$798bn</td><td class="num">$936bn</td><td class="num">821&ndash;1,010</td><td class="num neg">-14.8% <span class="warn">outside</span></td><td class="num"><span class="warn">below low</span></td><td class="num">35</td><td class="num">27.6%</td><td class="num">32.5%</td></tr>
+</tbody></table></div>
+<h2>Why the margins differ: the depreciation schedule</h2>
+<p>We forecast EBITDA margin &mdash; a cash margin driven by mix, pricing and opex &mdash; and <em>derive</em> EBIT by subtracting depreciation built from the capex programme, vintage by vintage. Forecasting EBIT margin directly, which both the published consensus feed and most sell-side models do, hides the depreciation assumption inside a single number.</p>
+<div class="warnbox">The consensus feed carries D&amp;A at a flat <b>4.6% of revenue in every year</b> and EBIT margin flat to one decimal place. Alphabet Inc. spent <b>29.7% of revenue</b> on capex in the last twelve months and depreciated <b>5.7%</b> &mdash; a ratio of <b>5.2&times;</b>. Those cannot both persist.</div>
+<div class="scroll"><table><thead><tr><th>Year</th><th>Revenue</th><th>Growth</th><th>EBITDA mgn</th><th>Capex</th><th>Capex %rev</th><th>D&amp;A</th><th>D&amp;A %rev</th><th>EBIT mgn</th><th>FCFF</th></tr></thead><tbody>
+<tr><td>2026E</td><td class="num">$492bn</td><td class="num">22.1%</td><td class="num">38.5%</td><td class="num">$145bn</td><td class="num">29.5%</td><td class="num">$40bn</td><td class="num">8.1%</td><td class="num">30.4%</td><td class="num">$15bn</td></tr>
+<tr><td>2027E</td><td class="num">$569bn</td><td class="num">15.6%</td><td class="num">39.2%</td><td class="num">$154bn</td><td class="num">27.0%</td><td class="num">$57bn</td><td class="num">10.0%</td><td class="num">29.2%</td><td class="num">$36bn</td></tr>
+<tr><td>2028E</td><td class="num">$645bn</td><td class="num">13.4%</td><td class="num">39.8%</td><td class="num">$155bn</td><td class="num">24.0%</td><td class="num">$73bn</td><td class="num">11.3%</td><td class="num">28.5%</td><td class="num">$65bn</td></tr>
+<tr><td>2029E</td><td class="num">$721bn</td><td class="num">11.9%</td><td class="num">40.2%</td><td class="num">$151bn</td><td class="num">21.0%</td><td class="num">$89bn</td><td class="num">12.4%</td><td class="num">27.8%</td><td class="num">$99bn</td></tr>
+<tr><td>2030E</td><td class="num">$798bn</td><td class="num">10.7%</td><td class="num">40.5%</td><td class="num">$148bn</td><td class="num">18.5%</td><td class="num">$103bn</td><td class="num">12.9%</td><td class="num">27.6%</td><td class="num">$132bn</td></tr>
+<tr><td>2031E</td><td class="num">$873bn</td><td class="num">9.4%</td><td class="num">40.7%</td><td class="num">$148bn</td><td class="num">17.0%</td><td class="num">$111bn</td><td class="num">12.7%</td><td class="num">28.0%</td><td class="num">$159bn</td></tr>
+</tbody></table></div>
+<h2>Price-to-value bridge</h2>
+<p>Contributions are exact Shapley values over all 2<sup>6</sup> = 64 driver coalitions, so they sum to the total without residual (residual $+0.0000). One-at-a-time sensitivity would not, because DCF driver interactions are large.</p>
+<div class="scroll"><table class="bridge"><thead><tr><th>Step</th><th>$/share</th><th class="b"></th></tr></thead><tbody>
+<tr><td><b>Street-calibrated value</b></td><td class="num">$271.39</td><td class="b"></td></tr>
+<tr><td>ebit margin</td><td class="num neg">-40.65</td><td class="b"><div class="bar"><span style="left:0.0%;width:50.0%;background:var(--neg)"></span></div></td></tr>
+<tr><td>revenue</td><td class="num neg">-35.09</td><td class="b"><div class="bar"><span style="left:6.8448887254782775%;width:43.15511127452172%;background:var(--neg)"></span></div></td></tr>
+<tr><td><b>Our base case</b></td><td class="num"><b>$195.65</b></td><td class="b"></td></tr>
+<tr><td>Market price</td><td class="num">$377.65</td><td class="b"></td></tr>
+</tbody></table></div>
+<p class="sub">The gap from our base case to the market price is not decomposed into drivers, because it is not a forecast disagreement &mdash; it is the discount rate and terminal assumptions the market is applying. That is stated below rather than disguised as precision.</p>
+<h2>What the market is paying for</h2>
+<p>At <b>$377.65</b>, holding everything else at our base case, the market is paying for <em>either</em>&hellip;</p>
+<div class="grid g3">
+<div class="card kpi"><div class="lab">Revenue CAGR</div><div class="val">29.0%</div><div class="note">vs our 13.8% base</div></div>
+<div class="card kpi"><div class="lab">Terminal EBIT margin</div><div class="val">51.9%</div><div class="note">vs our 28.0% terminal</div></div>
+<div class="card kpi"><div class="lab">Discount rate (WACC)</div><div class="val">5.98%</div><div class="note">vs our 8.75% build</div></div>
+</div>
+<h2>Scenarios and expected value</h2>
+<div class="scroll"><table><thead><tr><th>Case</th><th>Value/share</th><th>vs spot</th><th>Probability</th><th>WACC</th><th>Terminal g</th><th>TV % of EV</th><th>Anchor</th></tr></thead><tbody>
+<tr><td><b>Bear</b></td><td class="num">$114.73</td><td class="num neg">-69.6%</td><td class="num">25%</td><td class="num">9.50%</td><td class="num">2.5%</td><td class="num">82%</td><td>consensus dispersion</td></tr>
+<tr><td><b>Base</b></td><td class="num">$195.65</td><td class="num neg">-48.2%</td><td class="num">45%</td><td class="num">8.75%</td><td class="num">3.0%</td><td class="num">83%</td><td>judgment</td></tr>
+<tr><td><b>Bull</b></td><td class="num">$439.31</td><td class="num pos">+16.3%</td><td class="num">30%</td><td class="num">7.25%</td><td class="num">3.8%</td><td class="num">89%</td><td>consensus dispersion</td></tr>
+<tr><td><b>Expected value</b></td><td class="num"><b>$248.52</b></td><td class="num neg"><b>-34.2%</b></td><td class="num">100%</td><td colspan="4"></td></tr>
+<tr><td>Street-calibrated (their revenue &amp; margin, our engine)</td><td class="num">$271.39</td><td class="num neg">-28.1%</td><td colspan="5"></td></tr>
+<tr><td>Street published price target (median 425, range 350&ndash;475)</td><td class="num">$427.55</td><td class="num pos">+13.2%</td><td colspan="5"></td></tr>
+</tbody></table></div>
+<div class="grid g3" style="margin-top:6px">
+<div class="card"><b>Bear &middot; 25%</b><p class="sub" style="margin-top:6px">The depreciation catch-up arrives with no offsetting EBITDA margin expansion and Search ad coverage erodes faster than modelled. Held below the base case because Alphabet has beaten EPS in all eight reported quarters and Cloud is currently supply-constrained rather than demand-constrained.</p></div>
+<div class="card"><b>Base &middot; 45%</b><p class="sub" style="margin-top:6px">Modal because the arithmetic is close to mechanical: $844bn of cumulative capex over six years cannot be carried at 4.6% of revenue in D&amp;A under any useful life Alphabet currently discloses. The uncertainty is timing and offsetting margin, not direction.</p></div>
+<div class="card"><b>Bull &middot; 30%</b><p class="sub" style="margin-top:6px">Carries real weight because it embeds the market&#x27;s own implied ~6.0% discount rate and the possibility that AI capex proves front-loaded rather than permanent. Thirty-nine analysts and a $427 median target sit closer to this case than to ours.</p></div>
+</div>
+<h2>Position sizing</h2>
+<p>Computed through a constraint cascade, not chosen. Basis: illustrative $1bn book.</p>
+<div class="scroll"><table><thead><tr><th>Term</th><th>Value</th><th>Note</th></tr></thead><tbody>
+<tr><td>Payoff ratio b</td><td class="num">2.09</td><td class="sub">reward &divide; risk</td></tr>
+<tr><td>p(win)</td><td class="num">70%</td><td class="sub">probability mass favouring the position</td></tr>
+<tr><td>Kelly f</td><td class="num">55.7%</td><td class="sub">full Kelly fraction</td></tr>
+<tr><td>Quarter-Kelly</td><td class="num">13.92%</td><td class="sub">0.25 &times; Kelly</td></tr>
+<tr><td>Liquidity cap</td><td class="num">2240.00%</td><td class="sub">20% of ADV over 5 days</td></tr>
+<tr><td>Risk-budget cap</td><td class="num">9.19%</td><td class="sub">1.5% of NAV at risk to the adverse case</td></tr>
+<tr><td>Concentration cap</td><td class="num">5.00%</td><td class="sub">single-name hard limit</td></tr>
+<tr><td><b>Position size</b></td><td class="num"><b>5.00% of NAV</b></td><td class="sub">binding constraint: <b>concentration cap</b></td></tr>
+</tbody></table></div>
+<h2>Kill criteria</h2>
+<div class="scroll"><table><thead><tr><th>#</th><th>If this happens</th><th>Observable</th><th>Threshold</th><th>By</th><th>Action</th></tr></thead><tbody>
+<tr><td>k1</td><td><b>Alphabet extends disclosed server useful life beyond six years</b><br><span class="sub">Extending life defers the entire catch-up and breaks the thesis outright.</span></td><td class="sub">Property &amp; equipment useful-life disclosure, FY2026 Form 10-K</td><td class="num">&gt; 6 years</td><td class="num">2027-02-28</td><td><b>exit full</b></td></tr>
+<tr><td>k2</td><td><b>FY2027 capex guidance below $110bn</b><br><span class="sub">A sharp step down means the build-out was front-loaded and FCF inflects early.</span></td><td class="sub">Capex guidance, Q4 FY2026 earnings call</td><td class="num">&lt; $110bn</td><td class="num">2027-02-05</td><td><b>cut half</b></td></tr>
+<tr><td>k3</td><td><b>D&amp;A passes 9% of revenue while EBIT margin holds above 30%</b><br><span class="sub">Would mean EBITDA margin is expanding fast enough to absorb the charge.</span></td><td class="sub">Depreciation / revenue and operating margin, quarterly</td><td class="num">both true in one quarter</td><td class="num">2027-07-31</td><td><b>cut half</b></td></tr>
+<tr><td>k4</td><td><b>Cloud revenue growth below 25% for two consecutive quarters</b><br><span class="sub">Our supply-constrained framing would be wrong: demand, not capacity, binds.</span></td><td class="sub">Google Cloud segment revenue growth, 10-Q</td><td class="num">&lt; 25% YoY x2</td><td class="num">2027-04-30</td><td><b>review</b></td></tr>
+</tbody></table></div>
+<h2>Catalyst path</h2>
+<div class="scroll"><table><thead><tr><th>Date</th><th>Event</th><th>What we learn</th><th>Tests</th></tr></thead><tbody>
+<tr><td class="num">2026-10-28</td><td><b>Q3 FY2026 results</b></td><td class="sub">D&amp;A/revenue trajectory, capex guide, Cloud growth and backlog</td><td class="num">k3, k4</td></tr>
+<tr><td class="num">2027-02-05 <span class="sub">(tentative)</span></td><td><b>Q4 FY2026 results and Form 10-K</b></td><td class="sub">FY2027 capex guidance and the useful-life disclosure</td><td class="num">k1, k2</td></tr>
+<tr><td class="num">2027-04-30 <span class="sub">(tentative)</span></td><td><b>Q1 FY2027 results</b></td><td class="sub">First clean read on whether the depreciation step-up is arriving</td><td class="num">k3</td></tr>
+</tbody></table></div>
+<h2>What would make us wrong</h2>
+<p>The strongest case against our own short: Alphabet has beaten EPS in eight consecutive quarters, Cloud is accelerating rather than decelerating, and the AI capex may be buying an option on a materially larger business rather than a commodity compute fleet. Our answer is that none of that is inconsistent with the depreciation arithmetic -- it changes the numerator, not the charge.</p>
+<p>Our valuation sits 54% below the Street&#x27;s median target and below the lowest of 39 published targets. Either we are missing something 39 analysts can see, or the consensus feed carries a margin assumption nobody has re-derived. We think the latter, but the base rate on that judgement is not favourable and the position is sized accordingly.</p>
+<h3>Pre-mortem</h3><p>Eighteen months out the position is down 30%. What happened: Alphabet extended server useful lives to eight years in the FY2026 10-K, cutting the annual depreciation charge by roughly a third at a stroke and pushing the catch-up beyond our horizon. At the same time Gemini monetisation lifted Search ad coverage instead of compressing it, and the complex re-rated on a lower discount rate as rates fell. We were right about the arithmetic and wrong about the accounting policy -- the one input management controls directly.</p>
+<div class="rule"></div><h2>Appendix A &mdash; quality of earnings</h2>
+<div class="scroll"><table><thead><tr><th>TTM to 2026-06-30</th><th>$bn</th><th>Comment</th></tr></thead><tbody>
+<tr><td>Revenue</td><td class="num">445.9</td><td class="sub"></td></tr>
+<tr><td>Operating income (EBIT)</td><td class="num">147.6</td><td class="sub">33.1% margin</td></tr>
+<tr><td>Non-operating income</td><td class="num">151.6</td><td class="sub">50.7% of pretax income</td></tr>
+<tr><td>&nbsp;&nbsp;of which equity-securities gains</td><td class="num">149.0</td><td class="sub">non-cash marks on investment stakes</td></tr>
+<tr><td>Reported net income</td><td class="num">244.2</td><td class="sub">includes the marks above</td></tr>
+<tr><td>NOPAT (EBIT after tax)</td><td class="num">120.5</td><td class="sub">at 18.4% effective rate</td></tr>
+</tbody></table></div>
+<div class="grid g4" style="margin-top:10px">
+<div class="card kpi"><div class="lab">Reported diluted EPS</div><div class="val">$19.84</div><div class="note">as filed</div></div>
+<div class="card kpi"><div class="lab">Economic EPS</div><div class="val">$9.79</div><div class="note">NOPAT basis</div></div>
+<div class="card kpi"><div class="lab">Reported P/E</div><div class="val">19.0x</div><div class="note">what screens show</div></div>
+<div class="card kpi"><div class="lab">Economic P/E</div><div class="val">38.6x</div><div class="note">what you actually pay</div></div>
+</div>
+<h2>Appendix B &mdash; segment build</h2>
+<p>Every revenue line is the product of named quantities, not a growth rate. Each driver can be disagreed with individually and checked against disclosure.</p>
+<div class="scroll"><table><thead><tr><th>Segment / driver</th><th>2026E</th><th>2027E</th><th>2028E</th><th>2029E</th><th>2030E</th><th>2031E</th></tr></thead><tbody>
+<tr><td><b>Google Search &amp; other</b> ($bn)</td><td class="num"><b>268</b></td><td class="num"><b>300</b></td><td class="num"><b>330</b></td><td class="num"><b>358</b></td><td class="num"><b>387</b></td><td class="num"><b>417</b></td></tr>
+<tr><td class="sub">&nbsp;&nbsp;queries</td><td class="num sub">+6.5%</td><td class="num sub">+5.5%</td><td class="num sub">+5.0%</td><td class="num sub">+4.5%</td><td class="num sub">+4.0%</td><td class="num sub">+3.5%</td></tr>
+<tr><td class="sub">&nbsp;&nbsp;ad coverage</td><td class="num sub">-1.0%</td><td class="num sub">-1.5%</td><td class="num sub">-1.5%</td><td class="num sub">-1.0%</td><td class="num sub">-0.5%</td><td class="num sub">+0.0%</td></tr>
+<tr><td class="sub">&nbsp;&nbsp;price per click</td><td class="num sub">+13.0%</td><td class="num sub">+8.0%</td><td class="num sub">+6.2%</td><td class="num sub">+5.0%</td><td class="num sub">+4.5%</td><td class="num sub">+4.0%</td></tr>
+<tr><td><b>YouTube ads</b> ($bn)</td><td class="num"><b>46</b></td><td class="num"><b>52</b></td><td class="num"><b>57</b></td><td class="num"><b>61</b></td><td class="num"><b>65</b></td><td class="num"><b>68</b></td></tr>
+<tr><td class="sub">&nbsp;&nbsp;watch hours</td><td class="num sub">+5.0%</td><td class="num sub">+4.5%</td><td class="num sub">+4.0%</td><td class="num sub">+3.5%</td><td class="num sub">+3.0%</td><td class="num sub">+3.0%</td></tr>
+<tr><td class="sub">&nbsp;&nbsp;ad load</td><td class="num sub">+2.0%</td><td class="num sub">+1.5%</td><td class="num sub">+1.0%</td><td class="num sub">+0.5%</td><td class="num sub">+0.0%</td><td class="num sub">+0.0%</td></tr>
+<tr><td class="sub">&nbsp;&nbsp;cpm</td><td class="num sub">+7.5%</td><td class="num sub">+5.0%</td><td class="num sub">+4.0%</td><td class="num sub">+3.5%</td><td class="num sub">+3.0%</td><td class="num sub">+2.5%</td></tr>
+<tr><td><b>Google Network</b> ($bn)</td><td class="num"><b>29</b></td><td class="num"><b>28</b></td><td class="num"><b>27</b></td><td class="num"><b>25</b></td><td class="num"><b>24</b></td><td class="num"><b>23</b></td></tr>
+<tr><td class="sub">&nbsp;&nbsp;runoff</td><td class="num sub">-3.0%</td><td class="num sub">-4.0%</td><td class="num sub">-4.0%</td><td class="num sub">-5.0%</td><td class="num sub">-5.0%</td><td class="num sub">-5.0%</td></tr>
+<tr><td><b>Subscriptions, platforms &amp; devices</b> ($bn)</td><td class="num"><b>56</b></td><td class="num"><b>65</b></td><td class="num"><b>73</b></td><td class="num"><b>82</b></td><td class="num"><b>90</b></td><td class="num"><b>99</b></td></tr>
+<tr><td class="sub">&nbsp;&nbsp;subscribers</td><td class="num sub">+14.0%</td><td class="num sub">+12.0%</td><td class="num sub">+10.0%</td><td class="num sub">+9.0%</td><td class="num sub">+8.0%</td><td class="num sub">+7.0%</td></tr>
+<tr><td class="sub">&nbsp;&nbsp;arpu</td><td class="num sub">+3.0%</td><td class="num sub">+3.0%</td><td class="num sub">+2.5%</td><td class="num sub">+2.5%</td><td class="num sub">+2.0%</td><td class="num sub">+2.0%</td></tr>
+<tr><td><b>Google Cloud</b> ($bn)</td><td class="num"><b>91</b></td><td class="num"><b>122</b></td><td class="num"><b>156</b></td><td class="num"><b>192</b></td><td class="num"><b>228</b></td><td class="num"><b>263</b></td></tr>
+<tr><td class="sub">&nbsp;&nbsp;capacity</td><td class="num sub">+55.0%</td><td class="num sub">+34.0%</td><td class="num sub">+28.0%</td><td class="num sub">+23.0%</td><td class="num sub">+19.0%</td><td class="num sub">+15.0%</td></tr>
+<tr><td><b>Other Bets</b> ($bn)</td><td class="num"><b>2</b></td><td class="num"><b>2</b></td><td class="num"><b>2</b></td><td class="num"><b>3</b></td><td class="num"><b>3</b></td><td class="num"><b>4</b></td></tr>
+<tr><td class="sub">&nbsp;&nbsp;growth</td><td class="num sub">+10.0%</td><td class="num sub">+15.0%</td><td class="num sub">+20.0%</td><td class="num sub">+20.0%</td><td class="num sub">+20.0%</td><td class="num sub">+20.0%</td></tr>
+<tr><td><b>Total revenue</b> ($bn)</td><td class="num"><b>492</b></td><td class="num"><b>569</b></td><td class="num"><b>645</b></td><td class="num"><b>721</b></td><td class="num"><b>798</b></td><td class="num"><b>873</b></td></tr>
+</tbody></table></div>
+<h2>Appendix C &mdash; equity bridge and balance sheet</h2>
+<div class="scroll"><table><thead><tr><th>Item</th><th>$bn</th><th>Note</th></tr></thead><tbody>
+<tr><td>Enterprise value (base case)</td><td class="num">2,160</td><td class="sub"></td></tr>
+<tr><td>+ Cash &amp; marketable securities</td><td class="num">242.5</td><td class="sub"></td></tr>
+<tr><td>+ Equity investments (stakes)</td><td class="num">124.3</td><td class="sub">27.9% of revenue &mdash; $10.09/share. Omitted from the published report's bridge.</td></tr>
+<tr><td>&minus; Debt</td><td class="num">100.2</td><td class="sub"></td></tr>
+<tr><td>&minus; Operating leases</td><td class="num">18.0</td><td class="sub"></td></tr>
+<tr><td><b>Equity value</b></td><td class="num"><b>2,408</b></td><td class="sub">&divide; 12,309m diluted shares</td></tr>
+<tr><td><b>Value per share</b></td><td class="num"><b>$195.65</b></td><td class="sub"></td></tr>
+</tbody></table></div>
+<h2>Appendix D &mdash; sources and method</h2>
+<ul>
+<li><b>Financial statements:</b> SEC XBRL <code>companyconcept</code> API, CIK 0001652044. Quarterly series are reconstructed from filed facts, with Q4 derived as fiscal year minus the nine-month cumulative and cash-flow items unwound from year-to-date cumulatives.</li>
+<li><b>Consensus estimates and price targets:</b> FMP <code>analyst/financial-estimates</code> and <code>analyst/price-target-consensus</code>.</li>
+<li><b>Segment revenue:</b> FMP <code>statements/revenue-product-segmentation</code>. No SEC fallback exists &mdash; <code>companyfacts</code> flattens dimensioned facts &mdash; so the only control is reconciling the segment sum to consolidated revenue.</li>
+<li><b>Earnings dates and surprise history:</b> Robinhood <code>get_earnings_results</code>.</li>
+<li><b>Not used:</b> third-party model outputs (vendor DCFs, quantitative scores, aggregated ratings). They are other people's conclusions, not evidence.</li>
+</ul>
+<h3>Known limitations</h3><ul>
+<li>We have no channel checks, expert calls, or alternative data. The edge claimed here is analytical, derived entirely from public filings.</li>
+<li>The asset-life split driving the depreciation schedule (short-lived equipment versus long-lived shells) is a stated assumption calibrated to reported D&amp;A, not a disclosed figure. It is the single most load-bearing assumption in the model and kill criterion k1 exists to monitor it.</li>
+<li>The consensus feed holds D&amp;A at a constant share of revenue in every year, which may be an artefact of the aggregator rather than what individual analysts model. The comparison is to the feed we can observe, and is labelled as such.</li>
+<li>Segment sum reconciles to consolidated revenue within 0.2%.</li>
+</ul>
+<footer>Prepared 2026-08-05. Base year TTM to 2026-06-30; market data as of the 2026-08-04 close. Analytical research on public information; not investment advice, not a recommendation to any person, and not a solicitation. Position sizing is illustrative against a notional $1bn book. The author may hold positions in the securities discussed.</footer></div></body></html>

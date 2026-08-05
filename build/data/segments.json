@@ -1,0 +1,33 @@
+{
+  "_provenance": {
+    "source": "FMP statements/revenue-product-segmentation (annual)",
+    "retrieved": "2026-08-05",
+    "note": "No SEC fallback exists: companyfacts flattens dimensioned facts, so segment revenue is not retrievable from XBRL. The only quality control is reconciling the segment sum to consolidated revenue.",
+    "googl_label_drift": "FY2025 reports 'Google Inc.' where FY2022-24 report 'Google Subscriptions, Platforms, And Devices'. Treated as the same line. FY2025 also carries 'Other Segments' of -127m (hedging/eliminations)."
+  },
+  "GOOGL": {
+    "fiscal_years": [2022, 2023, 2024, 2025],
+    "segments": {
+      "search":        {"label": "Google Search & other",              "values": [162450, 175033, 198084, 224532]},
+      "youtube_ads":   {"label": "YouTube ads",                        "values": [29243, 31510, 36147, 40367]},
+      "network":       {"label": "Google Network",                     "values": [32780, 31312, 30359, 29792]},
+      "subs_devices":  {"label": "Subscriptions, platforms & devices",  "values": [29055, 34688, 40340, 48030]},
+      "cloud":         {"label": "Google Cloud",                       "values": [26280, 33088, 43229, 58705]},
+      "other_bets":    {"label": "Other Bets",                         "values": [1068, 1527, 1648, 1537]},
+      "hedging":       {"label": "Hedging / other",                    "values": [0, 0, 0, -127]}
+    },
+    "unit": "USD millions"
+  },
+  "NVDA": {
+    "fiscal_years": [2023, 2024, 2025, 2026],
+    "segments": {
+      "data_center":   {"label": "Data Center",                "values": [15005, 47525, 115186, 193737]},
+      "gaming":        {"label": "Gaming",                     "values": [9067, 10447, 11350, 16042]},
+      "proviz":        {"label": "Professional Visualization", "values": [1544, 1553, 1878, 3191]},
+      "automotive":    {"label": "Automotive",                 "values": [903, 1091, 1694, 2349]},
+      "oem_other":     {"label": "OEM & other",                "values": [455, 306, 389, 619]}
+    },
+    "unit": "USD millions",
+    "note": "NVDA discloses Data Center compute vs networking only in commentary, not in the segmentation feed. The compute/networking split in the model is a stated driver assumption, not a retrieved fact."
+  }
+}
