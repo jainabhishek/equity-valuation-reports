@@ -11,7 +11,7 @@ import decision
 
 DATA = Path(__file__).parent / "data"
 OUT = Path(__file__).parent.parent
-AS_OF = "2026-08-05"
+AS_OF = "2026-08-06"
 
 CSS = """
 :root{--bg:#fbfaf8;--fg:#16181d;--muted:#5f6672;--line:#e2ded7;--card:#fff;
@@ -374,6 +374,12 @@ def render(ticker, res, base_year):
       f'${d["equity_investments_per_share"]:,.2f}/share. Omitted from the published report\'s bridge.</td></tr>')
     A(f'<tr><td>&minus; Debt</td><td class="num">{bn(bi["debt"], 1)}</td><td class="sub"></td></tr>')
     A(f'<tr><td>&minus; Operating leases</td><td class="num">{bn(bi["leases"], 1)}</td><td class="sub"></td></tr>')
+    if bi.get("preferred"):
+        A(f'<tr><td>&minus; Preferred stock</td><td class="num">{bn(bi["preferred"], 1)}</td>'
+          f'<td class="sub">6.25% mandatory convertible issued June 2026, carrying value. '
+          f'Liquidation preference is $19.0bn. Deducted here rather than converted into the share '
+          f'count; the diluted count already carries ~8m if-converted shares, so the two overlap '
+          f'by well under 0.1%.</td></tr>')
     A(f'<tr><td><b>Equity value</b></td><td class="num"><b>{bn(base["equity_value"], 0)}</b></td>'
       f'<td class="sub">&divide; {r["diluted_shares"] / 1e6:,.0f}m diluted shares</td></tr>')
     A(f'<tr><td><b>Value per share</b></td><td class="num"><b>${scen["base"]:,.2f}</b></td><td class="sub"></td></tr>')
@@ -419,7 +425,7 @@ def render(ticker, res, base_year):
     A('</ul>')
 
     A(f'<footer>Prepared {AS_OF}. Base year TTM to {by["as_of"]}; market data as of the '
-      f'2026-08-04 close. Analytical research on public information; not investment advice, '
+      f'2026-08-06 close. Analytical research on public information; not investment advice, '
       f'not a recommendation to any person, and not a solicitation. Position sizing is illustrative '
       f'against a notional $1bn book. The author may hold positions in the securities discussed.'
       f'</footer></div>')

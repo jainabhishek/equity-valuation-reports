@@ -146,7 +146,8 @@ def build(ticker, slug):
     bridge_cells = {}
     for k, label in [("cash_and_marketable", "Cash & marketable securities"),
                      ("equity_investments", "Equity investments (stakes)"),
-                     ("debt", "Debt"), ("leases", "Operating leases")]:
+                     ("debt", "Debt"), ("leases", "Operating leases"),
+                     ("preferred", "Preferred stock")]:
         ws.cell(r, 1, label).font = LBL_FONT
         c = ws.cell(r, 2, res["bridge_inputs"][k])
         c.fill, c.number_format = INPUT_FILL, BN
@@ -312,6 +313,7 @@ def build(ticker, slug):
         ("+ Equity investments", f"=Drivers!{bridge_cells['equity_investments']}", BN),
         ("- Debt", f"=-Drivers!{bridge_cells['debt']}", BN),
         ("- Operating leases", f"=-Drivers!{bridge_cells['leases']}", BN),
+        ("- Preferred stock", f"=-Drivers!{bridge_cells['preferred']}", BN),
         ("Equity value", None, BN),
         ("Value per share", None, USD),
         ("Spot price", f"=Drivers!{spot_cell}", USD),
@@ -337,9 +339,10 @@ def build(ticker, slug):
     vl.cell(out["+ Equity investments"], 2, f"=Drivers!{bridge_cells['equity_investments']}").number_format = BN
     vl.cell(out["- Debt"], 2, f"=-Drivers!{bridge_cells['debt']}").number_format = BN
     vl.cell(out["- Operating leases"], 2, f"=-Drivers!{bridge_cells['leases']}").number_format = BN
+    vl.cell(out["- Preferred stock"], 2, f"=-Drivers!{bridge_cells['preferred']}").number_format = BN
     vl.cell(out["Equity value"], 2,
             f"={o('Enterprise value')}+{o('+ Cash & marketable securities')}+{o('+ Equity investments')}"
-            f"+{o('- Debt')}+{o('- Operating leases')}").number_format = BN
+            f"+{o('- Debt')}+{o('- Operating leases')}+{o('- Preferred stock')}").number_format = BN
     c = vl.cell(out["Value per share"], 2, f"={o('Equity value')}/Drivers!{sh_cell}")
     c.number_format, c.font, c.fill = USD, Font(bold=True, size=12), CALC_FILL
     vl.cell(out["Spot price"], 2, f"=Drivers!{spot_cell}").number_format = USD

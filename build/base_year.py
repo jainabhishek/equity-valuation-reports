@@ -16,6 +16,20 @@ import series
 # same economic item under different tags and at different levels of
 # aggregation; a single tag per role silently returns zero (NVDA reports no
 # CashCashEquivalentsAndShortTermInvestments at all).
+
+# Preferred is the role most exposed to the silent-zero failure: most filers
+# most of the time genuinely have none, so a zero reads as correct. These tags
+# are ALTERNATIVE presentations of the same line, not components to add up --
+# `build` refuses to proceed if more than one matches. Alphabet's 6.25%
+# mandatory convertible, issued June 2026, is tagged with APIC folded in and
+# does not report PreferredStockValue at all; carrying a single tag here put
+# $18.0bn through the bridge as zero.
+PREFERRED_TAGS = [
+    "PreferredStockValue",
+    "ConvertiblePreferredStockNonredeemableOrRedeemableIssuerOptionValue",
+    "PreferredStockIncludingAdditionalPaidInCapitalValue",
+]
+
 SPEC = {
     "GOOGL": {
         "cik": "0001652044",
@@ -28,7 +42,7 @@ SPEC = {
             "equity_investments": ["EquitySecuritiesWithoutReadilyDeterminableFairValueAmount"],
             "debt": ["LongTermDebtNoncurrent", "LongTermDebtCurrent"],
             "leases": ["OperatingLeaseLiabilityNoncurrent", "OperatingLeaseLiabilityCurrent"],
-            "preferred": ["PreferredStockValue"],
+            "preferred": PREFERRED_TAGS,
         },
     },
     "NVDA": {
@@ -47,13 +61,47 @@ SPEC = {
             ],
             "debt": ["LongTermDebtNoncurrent", "LongTermDebtCurrent"],
             "leases": ["OperatingLeaseLiabilityNoncurrent", "OperatingLeaseLiabilityCurrent"],
-            "preferred": ["PreferredStockValue"],
+            "preferred": PREFERRED_TAGS,
         },
     },
 }
 
-# Spot prices, close of 2026-08-04 (the published reports' valuation date).
-SPOT = {"GOOGL": 377.65, "NVDA": 211.94}
+# Spot prices, regular-session close of 2026-08-06 (the memos' valuation date).
+SPOT = {"GOOGL": 357.94, "NVDA": 218.99}
+
+
+def check_preferred(ticker, as_of, bs, prov, spec):
+    """Corroborate the preferred deduction against the share count.
+
+    A bridge role that resolves to zero because no tag matched is
+    indistinguishable, downstream, from one that is genuinely zero. Preferred
+    shares outstanding is an independent fact in the same filing, so it can
+    settle which case we are in. This is the check that would have caught
+    Alphabet's mandatory convertible instead of shipping it as a zero.
+    """
+    parts = prov["bs.preferred"]
+    matched = [p for p in parts if "val" in p]
+    if len(matched) > 1:
+        raise RuntimeError(
+            f"{ticker}: {len(matched)} preferred tags matched ({[p['tag'] for p in matched]}). "
+            "These are alternative presentations of one line, so summing double-counts. "
+            "Narrow PREFERRED_TAGS for this filer."
+        )
+
+    shares = sec.instant(ticker, "PreferredStockSharesOutstanding", unit="shares")
+    dates = [x for x in shares if str(x) <= as_of]
+    outstanding = shares[max(dates)]["val"] if dates else 0.0
+    if outstanding > 0 and bs.get("preferred", 0.0) == 0.0:
+        raise RuntimeError(
+            f"{ticker}: {outstanding:,.0f} preferred shares outstanding at {max(dates)}, but the "
+            f"bridge resolved preferred to 0 -- none of {spec['bridge']['preferred']} matched. "
+            "Find the tag this filer uses and add it to PREFERRED_TAGS."
+        )
+    if outstanding == 0 and bs.get("preferred", 0.0) != 0.0:
+        raise RuntimeError(
+            f"{ticker}: preferred carrying value {bs['preferred']:,.0f} with no preferred shares "
+            f"outstanding at {as_of}. The matched tag is probably not what it appears to be."
+        )
 
 
 def build(ticker):
@@ -110,6 +158,8 @@ def build(ticker):
             parts.append({"tag": tag, "val": inst[e]["val"], "date": str(e), "accn": inst[e]["accn"]})
         bs[role] = total
         prov[f"bs.{role}"] = parts
+
+    check_preferred(ticker, as_of, bs, prov, spec)
 
     sh = sec.quarterly(ticker, spec["shares_tag"], unit="shares")
     e = max(x for x in sh if str(x) <= as_of)
@@ -200,6 +250,7 @@ if __name__ == "__main__":
         print(fmt_row("  as % of revenue", d["equity_investments_pct_revenue"], "%"))
         print(fmt_row("Debt", b["balance_sheet"]["debt"]))
         print(fmt_row("Leases", b["balance_sheet"]["leases"]))
+        print(fmt_row("Preferred", b["balance_sheet"]["preferred"]))
         print(fmt_row("Net debt (incl. leases)", d["net_debt"]))
         print(fmt_row("Diluted shares (m)", b["diluted_shares_m"], "x", 0))
 

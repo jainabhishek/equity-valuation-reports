@@ -30,7 +30,7 @@ PROBS = {
             "Alphabet currently discloses. The uncertainty is timing and offsetting margin, "
             "not direction.")},
         "bull": {"bp": 3000, "anchor": "consensus_dispersion", "justification": (
-            "Carries real weight because it embeds the market's own implied ~6.0% discount rate "
+            "Carries real weight because it embeds the market's own implied ~6.1% discount rate "
             "and the possibility that AI capex proves front-loaded rather than permanent. "
             "Thirty-nine analysts and a $427 median target sit closer to this case than to ours.")},
     },
@@ -123,7 +123,7 @@ RATING = {
         "edge_type": "none",
         "edge_statement": (
             "We have no edge here and the honest output is no position. Our revenue path sits inside "
-            "the analyst range in every covered year, expected value is 6% above spot -- inside the "
+            "the analyst range in every covered year, expected value is 3% above spot -- inside the "
             "noise -- and the scenario range spans $67 to $437. No defensible position size survives "
             "that spread."),
         "thesis": [
@@ -131,7 +131,7 @@ RATING = {
              "Extraordinary economics: 64% EBIT margin, 2.6% capex intensity, $119bn of free cash "
              "flow. The business is not the question."},
             {"kind": "Why it is not priced", "text":
-             "It is priced. Our base case is 7% below spot, our revenue path is inside the analyst "
+             "It is priced. Our base case is 10% below spot, our revenue path is inside the analyst "
              "range every year, and we hold no variant view."},
             {"kind": "What makes it work", "text":
              "Nothing currently observable resolves the terminal-margin question, which is where the "
