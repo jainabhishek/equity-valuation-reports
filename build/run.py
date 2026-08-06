@@ -13,7 +13,71 @@ DATA = Path(__file__).parent / "data"
 YEARS = model.YEARS
 
 
-def make_drivers(ticker, scenario, base_revenue):
+def anchored_capex(declared, delta, revenue, ytd):
+    """Capex intensity path anchored on reported spend, not on a trailing ratio.
+
+    Forecast year 1 is part history. At 2026-06-30, calendar 2026 is half
+    reported: $80.6bn of Alphabet capex is a filed fact, not a forecast. So
+    year 1 is built as
+
+        reported fiscal-YTD  +  remaining quarters at the last observed rate
+
+    and only the stub is a forecast. Holding the exit quarter flat is
+    deliberately conservative: Alphabet's quarterly capex has risen for seven
+    consecutive quarters, so freezing it assumes the ramp stops today. The
+    trailing-twelve-month ratio this replaces put full-year 2026 capex below
+    six months of actual spend.
+
+    Later years fade to the declared terminal intensity, preserving the shape
+    of the declared path. Terminal intensity stays a stated judgment about
+    steady-state reinvestment; it is not rescaled by a year-1 revision.
+
+    Scenario deltas move the forecast stub and the fade, never the reported
+    portion -- bear and bull disagree about the future, not about what happened.
+    """
+    ytd_capex = ytd["capex"]["val"]
+    ytd_revenue = ytd["revenue"]["val"]
+    stub_revenue = max(revenue[0] - ytd_revenue, 0.0)
+    y1_capex = (ytd_capex
+                + ytd["quarters_remaining"] * ytd["exit_quarter_capex"]["val"]
+                + delta * stub_revenue)
+    y1 = y1_capex / revenue[0]
+
+    terminal = declared[-1] + delta
+    steps = [declared[i] - declared[i + 1] for i in range(len(declared) - 1)]
+    total = sum(steps)
+    weights = ([s / total for s in steps] if total
+               else [1.0 / len(steps)] * len(steps))
+    span = y1 - terminal
+    path = [y1]
+    for w in weights:
+        path.append(path[-1] - span * w)
+    return path
+
+
+def check_year_one_capex(ticker, rows, ytd):
+    """Year 1 cannot forecast less capex than the company has already spent.
+
+    This is the check the trailing-ratio anchor needed and did not have: a
+    full-year 2026 figure of $145.1bn against $80.6bn of reported first-half
+    spend implied a second half below the first quarter, which nothing had
+    guided to and no reviewer had queried.
+    """
+    y1, actual = rows[0]["capex"], ytd["capex"]["val"]
+    if y1 < actual:
+        raise RuntimeError(
+            f"{ticker}: forecast year-1 capex {y1/1e9:,.1f}bn is below reported fiscal-YTD "
+            f"capex of {actual/1e9:,.1f}bn at {ytd['capex']['start']}..(Q{ytd['quarters_elapsed']}). "
+            "The year-1 anchor is wrong."
+        )
+    implied_stub = (y1 - actual) / max(ytd["quarters_remaining"], 1)
+    exit_q = ytd["exit_quarter_capex"]["val"]
+    return {"year_one_capex": y1, "ytd_actual": actual,
+            "implied_remaining_quarterly": implied_stub,
+            "exit_quarter": exit_q, "vs_exit_quarter": implied_stub / exit_q - 1}
+
+
+def make_drivers(ticker, scenario, base_revenue, ytd):
     """Build a Drivers object, deriving EBIT margin from the depreciation schedule."""
     spec = cases.SPEC[ticker]
     d = copy.deepcopy(spec["drivers"]["base"])
@@ -28,16 +92,18 @@ def make_drivers(ticker, scenario, base_revenue):
                 segs[seg][driver] = [v + adj[key] for v in segs[seg][driver]]
 
     ebitda_margin = [m + adj.get("ebitda_margin_delta", 0.0) for m in d["ebitda_margin"]]
-    capex_pct = [c + adj.get("capex_delta", 0.0) for c in d["capex_pct_revenue"]]
     tg = adj.get("terminal_growth", d["terminal_growth"])
     wacc = adj.get("wacc", d["wacc"])
 
+    # Revenue first: it is segment-driven and does not depend on capex, so the
+    # capex path can then be anchored against the year-1 revenue it implies.
     probe = Drivers(
         segments=segs, ebit_margin=[0.0] * YEARS, tax_rate=d["tax_rate"],
-        da_pct_revenue=[0.0] * YEARS, capex_pct_revenue=capex_pct,
+        da_pct_revenue=[0.0] * YEARS, capex_pct_revenue=[0.0] * YEARS,
         nwc_pct_revenue=d["nwc_pct_revenue"], terminal_growth=tg, wacc=wacc, label=scenario,
     )
     rev = model.build_revenue(cases.SPEC[ticker]["base_segments"], probe)["total"]
+    capex_pct = anchored_capex(d["capex_pct_revenue"], adj.get("capex_delta", 0.0), rev, ytd)
 
     capex_abs = [rev[i] * capex_pct[i] / 1e9 for i in range(YEARS)]
     da_abs = cases.depreciation_path(ticker, capex_abs, cases.FIRST_YEAR[ticker], YEARS)
@@ -79,11 +145,14 @@ def main():
         bp = base_point(ticker, by)
         fy0 = cases.FIRST_YEAR[ticker]
         est = cons[ticker]["estimates"]
+        ytd = by[ticker]["ytd"]
 
         scen = {}
         for s in ("bear", "base", "bull"):
-            dv = make_drivers(ticker, s, bp["revenue"])
+            dv = make_drivers(ticker, s, bp["revenue"], ytd)
             scen[s] = {"drivers": dv, "result": model.dcf(bp, dv)}
+        capex_anchor = {s: check_year_one_capex(ticker, v["result"]["rows"], ytd)
+                        for s, v in scen.items()}
 
         base_dv = scen["base"]["drivers"]
         base_res = scen["base"]["result"]
@@ -95,13 +164,17 @@ def main():
         street_margin = street["ebit_margin_path"]
         street_dv = Drivers(
             segments=base_dv.segments, ebit_margin=street_margin, tax_rate=base_dv.tax_rate,
-            da_pct_revenue=base_dv.da_pct_revenue, capex_pct_revenue=base_dv.capex_pct_revenue,
+            da_pct_revenue=street["da_pct_revenue_path"], capex_pct_revenue=base_dv.capex_pct_revenue,
             nwc_pct_revenue=base_dv.nwc_pct_revenue, terminal_growth=base_dv.terminal_growth,
             wacc=base_dv.wacc, label="street",
         )
+        # da_pct_revenue is an attributable driver, not a carried field: the
+        # gap between the Street's flat depreciation and our vintage schedule
+        # is the thesis, so the bridge has to price it separately from margin.
         bridge = model.shapley_bridge(
             bp, street_dv, base_dv, street["revenue_path"], base_res["revenue_path"],
-            keys=["revenue", "ebit_margin", "capex_pct_revenue", "nwc_pct_revenue", "wacc", "terminal_growth"],
+            keys=["revenue", "ebitda_margin", "da_pct_revenue", "capex_pct_revenue",
+                  "nwc_pct_revenue", "wacc", "terminal_growth"],
         )
 
         rev_triple = model.reverse_triple(bp, base_dv)
@@ -132,6 +205,7 @@ def main():
                 "value_per_share": street["value_per_share"],
                 "revenue_path": street["revenue_path"],
                 "ebit_margin_path": street["ebit_margin_path"],
+                "da_pct_revenue_path": street["da_pct_revenue_path"],
                 "carried_fields": street["carried_fields"],
                 "extrapolated_years": street["extrapolated_years"],
                 "tv_pct_ev": street["tv_pct_ev"],
@@ -139,6 +213,8 @@ def main():
             "variant": variant,
             "bridge": bridge,
             "reverse": rev_triple,
+            "capex_anchor": capex_anchor,
+            "ytd": ytd,
             "consensus_price_target": cons[ticker]["price_target"],
         }
 

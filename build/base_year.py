@@ -104,10 +104,45 @@ def check_preferred(ticker, as_of, bs, prov, spec):
         )
 
 
+def build_ytd(ticker, as_of, loaded):
+    """Fiscal-year-to-date actuals, plus the last observed quarter as an exit rate.
+
+    Forecast year 1 is part history: at 2026-06-30 Alphabet's calendar 2026 is
+    half reported. Modelling the whole year from a trailing-twelve-month ratio
+    throws that half away, and is how a full-year capex forecast ended up below
+    six months of actual spend. The forecast anchors on these figures instead.
+    """
+    out = {}
+    for k in ("capex", "revenue", "cfo"):
+        y = series.fiscal_ytd(ticker, series.CHAINS[k], as_of)
+        if y is None:
+            raise RuntimeError(f"{ticker}: no fiscal-YTD {k} fact ending {as_of}")
+        # Cross-check the filed cumulative against our own unwound quarters. A
+        # mismatch means the quarter derivation is wrong, which would otherwise
+        # corrupt the TTM base year silently.
+        q = loaded[k][1]
+        elapsed = sorted(e for e in q if str(e) <= as_of)[-y["quarters_elapsed"]:]
+        derived = sum(q[e]["val"] for e in elapsed)
+        if y["val"] and abs(derived - y["val"]) / abs(y["val"]) > 0.005:
+            raise RuntimeError(
+                f"{ticker}: filed YTD {k} {y['val']:,.0f} disagrees with the sum of our "
+                f"{len(elapsed)} unwound quarters {derived:,.0f}. The quarter derivation is wrong."
+            )
+        out[k] = y
+
+    q = loaded["capex"][1]
+    exit_end = max(e for e in q if str(e) <= as_of)
+    out["exit_quarter_capex"] = {"val": q[exit_end]["val"], "period_end": str(exit_end),
+                                 "basis": q[exit_end]["basis"]}
+    out["quarters_elapsed"] = out["capex"]["quarters_elapsed"]
+    out["quarters_remaining"] = 4 - out["quarters_elapsed"]
+    return out
+
+
 def build(ticker):
     spec = SPEC[ticker]
     as_of = spec["as_of"]
-    d = series.load(ticker)
+    d = series.load(ticker, as_of=as_of)
 
     ttm = {}
     prov = {}
@@ -128,14 +163,13 @@ def build(ticker):
             "accns": sorted({s[e]["accn"] for e in w}),
         }
 
-    # NVDA reports capex under PaymentsToAcquireProductiveAssets
-    if ttm.get("capex") is None:
-        tag, s = series.first_tag(ticker, ["PaymentsToAcquireProductiveAssets"])
-        if s:
-            v, w, ok = series.ttm(s, as_of=as_of)
-            if ok:
-                ttm["capex"] = v
-                prov["capex"] = {"tag": tag, "window": [str(w[0]), str(w[-1])], "bases": ["ytd_diff"]}
+    # Every TTM line is load-bearing; none may silently resolve to nothing.
+    for k in ("revenue", "operating_income", "capex", "da", "cfo", "net_income"):
+        if ttm.get(k) is None:
+            raise RuntimeError(
+                f"{ticker}: no usable TTM {k} at {as_of} from {series.CHAINS[k]}. "
+                f"Provenance: {prov.get(k)}"
+            )
 
     bs = {}
     for role, tags in spec["bridge"].items():
@@ -160,6 +194,7 @@ def build(ticker):
         prov[f"bs.{role}"] = parts
 
     check_preferred(ticker, as_of, bs, prov, spec)
+    ytd = build_ytd(ticker, as_of, d)
 
     sh = sec.quarterly(ticker, spec["shares_tag"], unit="shares")
     e = max(x for x in sh if str(x) <= as_of)
@@ -177,6 +212,7 @@ def build(ticker):
         "spot": SPOT[ticker],
         "diluted_shares_m": diluted / 1e6,
         "ttm": {k: (None if v is None else v) for k, v in ttm.items()},
+        "ytd": ytd,
         "balance_sheet": bs,
         "derived": {
             "effective_tax_rate": tax_rate,

@@ -163,13 +163,21 @@ def dcf(base: dict, drivers: Drivers, revenue_override: list[float] | None = Non
 def street_case(base: dict, drivers: Drivers, consensus: list[dict], first_year: int) -> dict:
     """Run the Street's revenue and EBIT margin through the identical engine.
 
-    Consensus supplies revenue/EBIT but not capex, D&A or NWC, so those are
-    carried from our case and disclosed. Beyond consensus coverage the Street
-    path is faded using our own terminal glidepath, anchored to the last
-    covered year -- also disclosed.
+    Consensus supplies revenue, EBIT and EBITDA. D&A is therefore the Street's
+    own (EBITDA less EBIT), not ours -- see below. Capex and NWC are not
+    supplied, so those are carried from our case and disclosed. Beyond
+    consensus coverage the Street path is faded using our own terminal
+    glidepath, anchored to the last covered year -- also disclosed.
     """
     by_fy = {e["fy"]: e for e in consensus}
     rev, margin, carried_years = [], [], []
+    # The Street's EBIT margin already embeds the Street's own depreciation.
+    # Adding back OUR D&A would hand the Street a cash add-back its own EBIT
+    # never charged -- and the higher our capex path goes, the more it would
+    # flatter the Street. EBITDA less EBIT is the Street's implied D&A, which is
+    # the only internally consistent figure to add back, and the difference
+    # between it and ours IS the thesis.
+    street_da = []
 
     last_rev = None
     for i in range(YEARS):
@@ -178,6 +186,15 @@ def street_case(base: dict, drivers: Drivers, consensus: list[dict], first_year:
             e = by_fy[fy]
             rev.append(e["revenue_avg"])
             margin.append(e["ebit_avg"] / e["revenue_avg"])
+            if e.get("ebitda_avg"):
+                street_da.append((e["ebitda_avg"] - e["ebit_avg"]) / e["revenue_avg"])
+            elif street_da:
+                street_da.append(street_da[-1])
+            else:
+                raise RuntimeError(
+                    f"consensus FY{fy} has no ebitda_avg, so the Street's implied D&A cannot be "
+                    "derived and the street case would silently borrow ours."
+                )
             last_rev = e["revenue_avg"]
         else:
             # fade beyond coverage using our own growth shape
@@ -186,13 +203,14 @@ def street_case(base: dict, drivers: Drivers, consensus: list[dict], first_year:
             fade = max(prior_growth * 0.75, drivers.terminal_growth)
             rev.append(rev[-1] * (1 + fade))
             margin.append(margin[-1])
+            street_da.append(street_da[-1])
             carried_years.append(fy)
 
     sd = Drivers(
         segments=drivers.segments,
         ebit_margin=margin,
         tax_rate=drivers.tax_rate,
-        da_pct_revenue=drivers.da_pct_revenue,
+        da_pct_revenue=street_da,
         capex_pct_revenue=drivers.capex_pct_revenue,
         nwc_pct_revenue=drivers.nwc_pct_revenue,
         terminal_growth=drivers.terminal_growth,
@@ -200,9 +218,10 @@ def street_case(base: dict, drivers: Drivers, consensus: list[dict], first_year:
         label="street",
     )
     res = dcf(base, sd, revenue_override=rev)
-    res["carried_fields"] = ["tax_rate", "da_pct_revenue", "capex_pct_revenue", "nwc_pct_revenue", "terminal_growth", "wacc"]
+    res["carried_fields"] = ["tax_rate", "capex_pct_revenue", "nwc_pct_revenue", "terminal_growth", "wacc"]
     res["extrapolated_years"] = carried_years
     res["ebit_margin_path"] = margin
+    res["da_pct_revenue_path"] = street_da
     return res
 
 
@@ -246,14 +265,35 @@ def variant_table(ours: dict, drivers: Drivers, consensus: list[dict], first_yea
 DRIVER_KEYS = ["revenue", "ebit_margin", "tax_rate", "da_pct_revenue", "capex_pct_revenue", "nwc_pct_revenue", "wacc", "terminal_growth"]
 
 
-def _blend(base_d: Drivers, alt_d: Drivers, subset: frozenset, base_rev, alt_rev):
+def _ebitda_margin(d: Drivers) -> list[float]:
+    """EBITDA margin implied by a Drivers: EBIT margin plus depreciation.
+
+    Holds by identity for both our case (which derives EBIT as EBITDA less a
+    vintage schedule) and the Street's (which supplies EBIT and EBITDA).
+    """
+    return [d.ebit_margin[i] + d.da_pct_revenue[i] for i in range(YEARS)]
+
+
+def _blend(base_d: Drivers, alt_d: Drivers, subset: frozenset, base_rev, alt_rev, keys=None):
     """Drivers with `subset` taken from alt, remainder from base."""
+    keys = keys or DRIVER_KEYS
     pick = lambda k, b, a: a if k in subset else b
+    da = pick("da_pct_revenue", base_d.da_pct_revenue, alt_d.da_pct_revenue)
+    if "ebitda_margin" in keys:
+        # EBIT is not independent of depreciation -- our case derives it as
+        # EBITDA less D&A. Perturbing the two separately lets a coalition add
+        # back depreciation that its own EBIT never charged, a double-count
+        # worth over $100/share here. Blend the cash margin and the schedule,
+        # then re-derive EBIT so the identity holds in every coalition.
+        em = pick("ebitda_margin", _ebitda_margin(base_d), _ebitda_margin(alt_d))
+        ebit = [em[i] - da[i] for i in range(YEARS)]
+    else:
+        ebit = pick("ebit_margin", base_d.ebit_margin, alt_d.ebit_margin)
     d = Drivers(
         segments=base_d.segments,
-        ebit_margin=pick("ebit_margin", base_d.ebit_margin, alt_d.ebit_margin),
+        ebit_margin=ebit,
         tax_rate=pick("tax_rate", base_d.tax_rate, alt_d.tax_rate),
-        da_pct_revenue=pick("da_pct_revenue", base_d.da_pct_revenue, alt_d.da_pct_revenue),
+        da_pct_revenue=da,
         capex_pct_revenue=pick("capex_pct_revenue", base_d.capex_pct_revenue, alt_d.capex_pct_revenue),
         nwc_pct_revenue=pick("nwc_pct_revenue", base_d.nwc_pct_revenue, alt_d.nwc_pct_revenue),
         terminal_growth=pick("terminal_growth", base_d.terminal_growth, alt_d.terminal_growth),
@@ -276,7 +316,7 @@ def shapley_bridge(base_pt: dict, from_d: Drivers, to_d: Drivers, from_rev, to_r
 
     def value(subset: frozenset) -> float:
         if subset not in cache:
-            d, rev = _blend(from_d, to_d, subset, from_rev, to_rev)
+            d, rev = _blend(from_d, to_d, subset, from_rev, to_rev, keys)
             try:
                 cache[subset] = dcf(base_pt, d, revenue_override=rev)["value_per_share"]
             except ValueError:

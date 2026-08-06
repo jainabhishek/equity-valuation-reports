@@ -20,7 +20,40 @@
       "da": 25237000000,
       "sbc": 28147000000,
       "buybacks": 17403000000,
-      "interest_expense": 322000000
+      "interest_expense": 2252000000
+    },
+    "ytd": {
+      "capex": {
+        "val": 80598000000,
+        "days": 180,
+        "quarters_elapsed": 2,
+        "start": "2026-01-01",
+        "accn": "0001652044-26-000071",
+        "tag": "PaymentsToAcquirePropertyPlantAndEquipment"
+      },
+      "revenue": {
+        "val": 229692000000,
+        "days": 180,
+        "quarters_elapsed": 2,
+        "start": "2026-01-01",
+        "accn": "0001652044-26-000071",
+        "tag": "Revenues"
+      },
+      "cfo": {
+        "val": 84859000000,
+        "days": 180,
+        "quarters_elapsed": 2,
+        "start": "2026-01-01",
+        "accn": "0001652044-26-000071",
+        "tag": "NetCashProvidedByUsedInOperatingActivities"
+      },
+      "exit_quarter_capex": {
+        "val": 44924000000,
+        "period_end": "2026-06-30",
+        "basis": "ytd_diff"
+      },
+      "quarters_elapsed": 2,
+      "quarters_remaining": 2
     },
     "balance_sheet": {
       "cash_and_marketable": 242474000000.0,
@@ -289,20 +322,20 @@
         ]
       },
       "interest_expense": {
-        "tag": "InterestExpense",
+        "tag": "InterestExpenseNonoperating",
         "window": [
-          "2023-06-30",
-          "2024-03-31"
+          "2025-09-30",
+          "2026-06-30"
         ],
         "bases": [
           "filed",
           "ytd_diff"
         ],
         "accns": [
-          "0001652044-23-000070",
-          "0001652044-23-000094",
-          "0001652044-24-000022",
-          "0001652044-24-000053"
+          "0001652044-25-000091",
+          "0001652044-26-000018",
+          "0001652044-26-000048",
+          "0001652044-26-000071"
         ]
       },
       "bs.cash_and_marketable": [
@@ -380,7 +413,40 @@
       "da": 3229000000,
       "sbc": 6840000000,
       "buybacks": 45303000000,
-      "interest_expense": 255000000
+      "interest_expense": 298000000
+    },
+    "ytd": {
+      "capex": {
+        "val": 1757000000,
+        "days": 90,
+        "quarters_elapsed": 1,
+        "start": "2026-01-26",
+        "accn": "0001045810-26-000052",
+        "tag": "PaymentsToAcquireProductiveAssets"
+      },
+      "revenue": {
+        "val": 81615000000,
+        "days": 90,
+        "quarters_elapsed": 1,
+        "start": "2026-01-26",
+        "accn": "0001045810-26-000052",
+        "tag": "Revenues"
+      },
+      "cfo": {
+        "val": 50344000000,
+        "days": 90,
+        "quarters_elapsed": 1,
+        "start": "2026-01-26",
+        "accn": "0001045810-26-000052",
+        "tag": "NetCashProvidedByUsedInOperatingActivities"
+      },
+      "exit_quarter_capex": {
+        "val": 1757000000,
+        "period_end": "2026-04-26",
+        "basis": "filed"
+      },
+      "quarters_elapsed": 1,
+      "quarters_remaining": 3
     },
     "balance_sheet": {
       "cash_and_marketable": 52470000000.0,
@@ -591,7 +657,14 @@
           "2026-04-26"
         ],
         "bases": [
+          "filed",
           "ytd_diff"
+        ],
+        "accns": [
+          "0001045810-25-000209",
+          "0001045810-25-000230",
+          "0001045810-26-000021",
+          "0001045810-26-000052"
         ]
       },
       "da": {
@@ -646,20 +719,20 @@
         ]
       },
       "interest_expense": {
-        "tag": "InterestExpense",
+        "tag": "InterestExpenseNonoperating",
         "window": [
-          "2023-07-30",
-          "2024-04-28"
+          "2025-07-27",
+          "2026-04-26"
         ],
         "bases": [
           "filed",
           "ytd_diff"
         ],
         "accns": [
-          "0001045810-23-000175",
-          "0001045810-23-000227",
-          "0001045810-24-000029",
-          "0001045810-24-000124"
+          "0001045810-25-000209",
+          "0001045810-25-000230",
+          "0001045810-26-000021",
+          "0001045810-26-000052"
         ]
       },
       "bs.cash_and_marketable": [
