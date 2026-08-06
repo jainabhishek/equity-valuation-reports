@@ -2,7 +2,7 @@
   "GOOGL": {
     "ticker": "GOOGL",
     "as_of": "2026-06-30",
-    "spot": 377.65,
+    "spot": 357.94,
     "diluted_shares_m": 12309.0,
     "ttm": {
       "revenue": 445867000000,
@@ -27,7 +27,7 @@
       "equity_investments": 124259000000.0,
       "debt": 100164000000.0,
       "leases": 18037000000.0,
-      "preferred": 0.0
+      "preferred": 18023000000.0
     },
     "derived": {
       "effective_tax_rate": 0.183995001152809,
@@ -38,8 +38,8 @@
       "equity_sec_gains": 148982000000,
       "reported_eps": 19.83954829799334,
       "economic_eps": 9.786756517167365,
-      "reported_pe": 19.03521160500399,
-      "economic_pe": 38.587860987197146,
+      "reported_pe": 18.041741405786123,
+      "economic_pe": 36.57391489939718,
       "fcf_cfo_less_capex": 53273000000,
       "fcff": 13300185969.81311,
       "capex_pct_revenue": 0.2969540244063813,
@@ -349,13 +349,20 @@
           "accn": "0001652044-26-000071"
         }
       ],
-      "bs.preferred": []
+      "bs.preferred": [
+        {
+          "tag": "ConvertiblePreferredStockNonredeemableOrRedeemableIssuerOptionValue",
+          "val": 18023000000,
+          "date": "2026-06-30",
+          "accn": "0001652044-26-000071"
+        }
+      ]
     }
   },
   "NVDA": {
     "ticker": "NVDA",
     "as_of": "2026-04-26",
-    "spot": 211.94,
+    "spot": 218.99,
     "diluted_shares_m": 24391.0,
     "ttm": {
       "revenue": 253491000000,
@@ -391,8 +398,8 @@
       "equity_sec_gains": 0.0,
       "reported_eps": 6.543930138165717,
       "economic_eps": 5.605811259704626,
-      "reported_pe": 32.38726507239385,
-      "economic_pe": 37.80719510188562,
+      "reported_pe": 33.46459931208611,
+      "economic_pe": 39.06481860602969,
       "fcf_cfo_less_capex": 119076000000,
       "fcff": 133388342435.4555,
       "capex_pct_revenue": 0.025925969758295166,

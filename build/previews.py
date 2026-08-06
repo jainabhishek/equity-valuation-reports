@@ -127,7 +127,7 @@ def main():
                 "Equity Valuation Reports",
                 ["Segment-driver models with a vintage depreciation schedule.",
                  "Variant vs consensus, expected value, sizing, kill criteria."],
-                ["Alphabet and Nvidia", "As of Aug 5, 2026", "Live Excel model"])
+                ["Alphabet and Nvidia", "As of Aug 6, 2026", "Live Excel model"])
     cairosvg.svg2png(bytestring=svg.encode(), write_to=str(ASSETS / "social-preview.png"),
                      output_width=1200, output_height=630)
 

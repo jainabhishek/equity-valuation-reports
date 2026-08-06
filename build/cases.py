@@ -123,7 +123,7 @@ GOOGL_DRIVERS = {
         "ebitda_margin_delta": 0.020,
         "capex_delta": -0.025,             # AI capex proves front-loaded, not permanent
         "terminal_growth": 0.038,
-        # The reverse DCF says the market is discounting Alphabet at ~6.0%. That
+        # The reverse DCF says the market is discounting Alphabet at ~6.1%. That
         # is below any CAPM build we would defend, but the equity risk premium
         # is not observable and mega-cap terminal-value duration is genuinely
         # long. A bull case that cannot reach the market price is not a bull

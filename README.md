@@ -22,19 +22,19 @@ individually, and checkable against the next filing.
 | | Alphabet (GOOGL) | Nvidia (NVDA) |
 | --- | --- | --- |
 | **Rating** | **SHORT** · conviction 2/3 · 18-month horizon | **NO POSITION** · conviction 1/3 |
-| Spot | $377.65 | $211.94 |
-| Bear / base / bull | $114.73 / $195.65 / $439.31 | $67.19 / $197.12 / $437.14 |
-| Expected value | **$248.52 (−34.2%)** | **$224.64 (+6.0%)** |
-| Risk / reward | 2.09 : 1 | 0.09 : 1 |
-| Breakeven p(bull) | 77% | 21% |
+| Spot | $357.94 | $218.99 |
+| Bear / base / bull | $113.26 / $194.19 / $437.84 | $67.19 / $197.12 / $437.14 |
+| Expected value | **$247.05 (−31.0%)** | **$224.64 (+2.6%)** |
+| Risk / reward | 1.39 : 1 | 0.04 : 1 |
+| Breakeven p(bull) | 71% | 23% |
 | Position size | 5.00% of NAV *(concentration cap binding)* | 0.00% |
-| Street-calibrated value | $271.39 | $223.58 |
+| Street-calibrated value | $269.93 | $223.58 |
 | Street price target | $427.55 | $319.48 |
 | Memo | [Open →](https://jainabhishek.github.io/equity-valuation-reports/alphabet/memo.html) | [Open →](https://jainabhishek.github.io/equity-valuation-reports/nvidia/memo.html) |
 | Model | [Download](alphabet/model.xlsx) | [Download](nvidia/model.xlsx) |
 
 Base year: trailing twelve months to 2026-06-30 (GOOGL) and 2026-04-26 (NVDA).
-Market data as of the 2026-08-04 close.
+Market data as of the 2026-08-06 close.
 
 ### Alphabet — the variant is depreciation
 
@@ -84,8 +84,10 @@ depreciation assumption inside a single number.
 
 **Valuation.** Six-year unlevered FCFF DCF, mid-year convention, Gordon-growth
 terminal value. Enterprise value bridges to equity using cash and marketable
-securities, **the non-operating equity investment portfolio**, debt, leases and
-diluted shares. A terminal steady-state check compares the reinvestment rate to
+securities, **the non-operating equity investment portfolio**, debt, leases,
+preferred stock and diluted shares. Preferred is corroborated against preferred
+shares outstanding, so a tag the extractor does not carry fails the build instead
+of passing through as zero. A terminal steady-state check compares the reinvestment rate to
 the rate implied by g ÷ ROIC, so the model cannot capitalise a terminal cash flow
 computed at peak underinvestment.
 
@@ -98,8 +100,8 @@ residual; one-at-a-time sensitivity does not, because DCF driver interactions ar
 large.
 
 **Reverse DCF** is three independent solves — revenue CAGR, terminal EBIT margin,
-discount rate — reported as one sentence each. At $377.65 the market is paying for
-*either* a 29.0% revenue CAGR, *or* a 51.9% terminal EBIT margin, *or* a 5.98%
+discount rate — reported as one sentence each. At $357.94 the market is paying for
+*either* a 27.8% revenue CAGR, *or* a 49.5% terminal EBIT margin, *or* a 6.13%
 discount rate.
 
 **Decision layer.** Probabilities are integers in basis points summing to 10000,

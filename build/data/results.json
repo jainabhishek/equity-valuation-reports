@@ -1,6 +1,6 @@
 {
   "GOOGL": {
-    "spot": 377.65,
+    "spot": 357.94,
     "first_year": 2026,
     "diluted_shares": 12309000000.0,
     "bridge_inputs": {
@@ -8,14 +8,14 @@
       "equity_investments": 124259000000.0,
       "debt": 100164000000.0,
       "leases": 18037000000.0,
-      "preferred": 0.0
+      "preferred": 18023000000.0
     },
     "base_revenue": 402963000000.0,
     "scenarios": {
       "bear": {
-        "value_per_share": 114.72668429975151,
+        "value_per_share": 113.2624711224016,
         "enterprise_value": 1163638757045.6414,
-        "equity_value": 1412170757045.6414,
+        "equity_value": 1394147757045.6414,
         "tv_pct_ev": 0.8198057977843762,
         "wacc": 0.095,
         "terminal_growth": 0.025,
@@ -181,9 +181,9 @@
         }
       },
       "base": {
-        "value_per_share": 195.6503291117316,
+        "value_per_share": 194.1861159343817,
         "enterprise_value": 2159727901036.3042,
-        "equity_value": 2408259901036.304,
+        "equity_value": 2390236901036.304,
         "tv_pct_ev": 0.8315480968191556,
         "wacc": 0.0875,
         "terminal_growth": 0.03,
@@ -349,9 +349,9 @@
         }
       },
       "bull": {
-        "value_per_share": 439.30874513906076,
+        "value_per_share": 437.84453196171086,
         "enterprise_value": 5158919343916.699,
-        "equity_value": 5407451343916.699,
+        "equity_value": 5389428343916.699,
         "tv_pct_ev": 0.8901220909148,
         "wacc": 0.0725,
         "terminal_growth": 0.038,
@@ -518,7 +518,7 @@
       }
     },
     "street_case": {
-      "value_per_share": 271.39335009048614,
+      "value_per_share": 269.92913691313623,
       "revenue_path": [
         495194912007,
         605866802904,
@@ -641,12 +641,12 @@
       }
     ],
     "bridge": {
-      "start_value": 271.39335009048614,
-      "end_value": 195.6503291117316,
+      "start_value": 269.92913691313623,
+      "end_value": 194.1861159343817,
       "total_gap": -75.74302097875454,
       "contributions": {
         "revenue": -35.08877241286263,
-        "ebit_margin": -40.65424856589193,
+        "ebit_margin": -40.65424856589195,
         "capex_pct_revenue": 0.0,
         "nwc_pct_revenue": 0.0,
         "wacc": 0.0,
@@ -657,11 +657,11 @@
       "coalitions_evaluated": 64
     },
     "reverse": {
-      "implied_revenue_cagr": 0.29009245856933674,
-      "implied_terminal_year_revenue": 1857762491493.9143,
-      "implied_terminal_ebit_margin": 0.5190634250640869,
-      "implied_wacc": 0.05977351808547973,
-      "spot": 377.65
+      "implied_revenue_cagr": 0.27828635640084887,
+      "implied_terminal_year_revenue": 1758061618027.243,
+      "implied_terminal_ebit_margin": 0.49491496086120607,
+      "implied_wacc": 0.061281474947929376,
+      "spot": 357.94
     },
     "consensus_price_target": {
       "high": 475,
@@ -671,7 +671,7 @@
     }
   },
   "NVDA": {
-    "spot": 211.94,
+    "spot": 218.99,
     "first_year": 2027,
     "diluted_shares": 24391000000.0,
     "bridge_inputs": {
@@ -1304,11 +1304,11 @@
       "coalitions_evaluated": 64
     },
     "reverse": {
-      "implied_revenue_cagr": 0.2850206362150365,
-      "implied_terminal_year_revenue": 972276272091.4904,
-      "implied_terminal_ebit_margin": 0.5606857299804687,
-      "implied_wacc": 0.0927177767753601,
-      "spot": 211.94
+      "implied_revenue_cagr": 0.29359730645434956,
+      "implied_terminal_year_revenue": 1011867600619.6365,
+      "implied_terminal_ebit_margin": 0.5819717407226563,
+      "implied_wacc": 0.09067385768890379,
+      "spot": 218.99
     },
     "consensus_price_target": {
       "high": 500,
