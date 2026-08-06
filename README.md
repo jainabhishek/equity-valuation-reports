@@ -2,7 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Live site](https://img.shields.io/badge/live%20site-github.io-0a8f86)](https://jainabhishek.github.io/equity-valuation-reports/)
-[![As of](https://img.shields.io/badge/as%20of-Aug%205%2C%202026-172033)](#)
+[![As of](https://img.shields.io/badge/as%20of-Aug%206%2C%202026-172033)](#)
 [![Model](https://img.shields.io/badge/model-segment%20driver%20%2B%20FCFF%20DCF-2864dc)](#)
 
 Buy-side investment memos on individual companies. Each is a self-contained HTML
