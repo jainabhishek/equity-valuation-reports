@@ -68,10 +68,14 @@ def build(ticker, slug):
     res = json.loads((DATA / "results.json").read_text())[ticker]
     by = json.loads((DATA / "base_year.json").read_text())[ticker]
     spec = cases.SPEC[ticker]
-    dv = spec["drivers"]["base"]
+    dv = dict(spec["drivers"]["base"])
     fy0 = res["first_year"]
     base = res["scenarios"]["base"]
     yrs = [fy0 + i for i in range(YEARS)]
+    # Capex is no longer a declared constant: year 1 is anchored on reported
+    # fiscal-YTD spend and the rest fades from there, so the workbook has to
+    # publish the path the model actually ran, not the pre-anchor declaration.
+    dv["capex_pct_revenue"] = [q["capex"] / q["revenue"] for q in base["rows"]]
 
     wb = Workbook()
     wb.remove(wb.active)

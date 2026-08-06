@@ -200,6 +200,42 @@ def render(ticker, res, base_year):
           f'<td class="num">${bn(row["fcff"])}bn</td></tr>')
     A('</tbody></table></div>')
 
+    # ---- how year-1 capex is anchored, and the arithmetic the thesis rests on
+    ytd, anch = r["ytd"], r["capex_anchor"]["base"]
+    cum_capex = sum(q["capex"] for q in base["rows"])
+    cum_da = sum(q["da"] for q in base["rows"])
+    cum_street_da = sum(v * q["revenue"] for v, q in
+                        zip(r["street_case"]["da_pct_revenue_path"], base["rows"]))
+    last = base["rows"][-1]
+    street_last = r["street_case"]["da_pct_revenue_path"][-1]
+    A(f'<h3>How year 1 is anchored</h3>')
+    A(f'<p>Forecast year {fy0} is part history. <b>${bn(ytd["capex"]["val"], 1)}bn</b> of capex through '
+      f'Q{ytd["quarters_elapsed"]} is a filed fact, not an estimate. The remaining '
+      f'{ytd["quarters_remaining"]} quarter{"s" if ytd["quarters_remaining"] != 1 else ""} are held at '
+      f'the last observed quarterly rate of <b>${bn(ytd["exit_quarter_capex"]["val"], 1)}bn</b> '
+      f'({ytd["exit_quarter_capex"]["period_end"]}), giving <b>${bn(anch["year_one_capex"], 1)}bn</b> '
+      f'for the full year. Freezing the exit rate is deliberately conservative: quarterly capex has '
+      f'risen in each of the last seven quarters, so this assumes the ramp stops today. Anchoring on '
+      f'a trailing-twelve-month ratio instead &mdash; the conventional choice &mdash; would put the '
+      f'full year below the half-year already reported.</p>')
+    if ticker == "GOOGL":
+        A(f'<div class="warnbox"><b>The arithmetic the thesis rests on.</b> Over {fy0}&ndash;'
+          f'{fy0 + 5} this capex path spends <b>${bn(cum_capex, 0)}bn</b>. Our vintage schedule '
+          f'depreciates <b>${bn(cum_da, 0)}bn</b> of it. The consensus feed, held at '
+          f'{pct(street_last)} of revenue, depreciates <b>${bn(cum_street_da, 0)}bn</b> &mdash; a '
+          f'<b>${bn(cum_da - cum_street_da, 0)}bn</b> gap. By {fy0 + 5} that is '
+          f'<b>${bn(last["da"] - street_last * last["revenue"], 0)}bn</b> a year of depreciation the '
+          f'consensus EBIT margin never charges, roughly '
+          f'<b>${(last["da"] - street_last * last["revenue"]) * (1 - 0.185) / r["diluted_shares"]:,.2f}'
+          f'</b> per share of annual earnings. An asset base that produces the consensus D&amp;A '
+          f'figure cannot also absorb the capex the cash flow statement reports.</div>')
+        A(f'<p class="sub">Note this is a claim about reported earnings, not primarily about '
+          f'discounted value: in an FCFF model depreciation is added back, so a higher charge is '
+          f'close to value-neutral and shows up in the bridge below as a small tax effect. The cash '
+          f'that leaves is capex, and that is anchored on filings above. The depreciation gap matters '
+          f'because it is what the multiple is applied to, and because it is observable every ninety '
+          f'days.</p>')
+
     # ---- value bridge
     A('<h2>Price-to-value bridge</h2>')
     A(f'<p>Contributions are exact Shapley values over all '
@@ -260,7 +296,7 @@ def render(ticker, res, base_year):
     A(f'<tr><td><b>Expected value</b></td><td class="num"><b>${ev:,.2f}</b></td>'
       f'<td class="num {cls(ev / spot - 1)}"><b>{pct(ev / spot - 1, 1, True)}</b></td>'
       f'<td class="num">100%</td><td colspan="4"></td></tr>')
-    A(f'<tr><td>Street-calibrated (their revenue &amp; margin, our engine)</td>'
+    A(f'<tr><td>Street-calibrated (their revenue, EBIT and D&amp;A; our capex, our engine)</td>'
       f'<td class="num">${r["street_case"]["value_per_share"]:,.2f}</td>'
       f'<td class="num {cls(r["street_case"]["value_per_share"] / spot - 1)}">'
       f'{pct(r["street_case"]["value_per_share"] / spot - 1, 1, True)}</td><td colspan="5"></td></tr>')

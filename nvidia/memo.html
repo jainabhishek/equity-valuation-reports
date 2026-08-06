@@ -66,7 +66,7 @@ padding:1px 5px;border-radius:3px}
 <p style="margin-top:14px"><span class="tag big warn"><b>NO POSITION</b></span><span class="tag">Conviction 1/3</span><span class="tag">12-month horizon</span><span class="tag">Edge: none</span></p>
 <div class="grid g4" style="margin-top:20px">
 <div class="card kpi"><div class="lab">Spot</div><div class="val">$218.99</div><div class="note">as of 2026-08-06</div></div>
-<div class="card kpi"><div class="lab">Expected value</div><div class="val">$224.64</div><div class="note"><span class="pos">+2.6%</span> vs spot</div></div>
+<div class="card kpi"><div class="lab">Expected value</div><div class="val">$224.91</div><div class="note"><span class="pos">+2.7%</span> vs spot</div></div>
 <div class="card kpi"><div class="lab">Risk / reward</div><div class="val">0.04 : 1</div><div class="note">long framing</div></div>
 <div class="card kpi"><div class="lab">Breakeven p(bull)</div><div class="val">23%</div><div class="note">vs 25% assumed</div></div>
 </div>
@@ -78,47 +78,50 @@ padding:1px 5px;border-radius:3px}
 <div class="callout"><b>Edge type: none.</b> We have no edge here and the honest output is no position. Our revenue path sits inside the analyst range in every covered year, expected value is 3% above spot -- inside the noise -- and the scenario range spans $67 to $437. No defensible position size survives that spread.</div>
 <h2>The variant &mdash; where we differ from consensus</h2>
 <div class="scroll"><table><thead><tr><th>Fiscal year</th><th>Our revenue</th><th>Street avg</th><th>Street low&ndash;high</th><th>&Delta;</th><th>Percentile</th><th>Analysts</th><th>Our EBIT mgn</th><th>Street EBIT mgn</th></tr></thead><tbody>
-<tr><td>2027</td><td class="num">$381bn</td><td class="num">$393bn</td><td class="num">364&ndash;403</td><td class="num neg">-3.2%</td><td class="num">44th</td><td class="num">40</td><td class="num">63.9%</td><td class="num">48.1%</td></tr>
-<tr><td>2028</td><td class="num">$552bn</td><td class="num">$563bn</td><td class="num">454&ndash;622</td><td class="num neg">-2.0%</td><td class="num">58th</td><td class="num">40</td><td class="num">61.7%</td><td class="num">48.1%</td></tr>
-<tr><td>2029</td><td class="num">$699bn</td><td class="num">$685bn</td><td class="num">597&ndash;786</td><td class="num pos">+2.1%</td><td class="num">54th</td><td class="num">27</td><td class="num">59.0%</td><td class="num">48.1%</td></tr>
-<tr><td>2030</td><td class="num">$805bn</td><td class="num">$774bn</td><td class="num">647&ndash;886</td><td class="num pos">+4.0%</td><td class="num">66th</td><td class="num">13</td><td class="num">56.2%</td><td class="num">48.1%</td></tr>
-<tr><td>2031</td><td class="num">$863bn</td><td class="num">$1,005bn</td><td class="num">839&ndash;1,150</td><td class="num neg">-14.2%</td><td class="num">7th</td><td class="num">22</td><td class="num">53.4%</td><td class="num">48.1%</td></tr>
+<tr><td>2027</td><td class="num">$381bn</td><td class="num">$393bn</td><td class="num">364&ndash;403</td><td class="num neg">-3.2%</td><td class="num">44th</td><td class="num">40</td><td class="num">64.0%</td><td class="num">48.1%</td></tr>
+<tr><td>2028</td><td class="num">$552bn</td><td class="num">$563bn</td><td class="num">454&ndash;622</td><td class="num neg">-2.0%</td><td class="num">58th</td><td class="num">40</td><td class="num">61.9%</td><td class="num">48.1%</td></tr>
+<tr><td>2029</td><td class="num">$699bn</td><td class="num">$685bn</td><td class="num">597&ndash;786</td><td class="num pos">+2.1%</td><td class="num">54th</td><td class="num">27</td><td class="num">59.2%</td><td class="num">48.1%</td></tr>
+<tr><td>2030</td><td class="num">$805bn</td><td class="num">$774bn</td><td class="num">647&ndash;886</td><td class="num pos">+4.0%</td><td class="num">66th</td><td class="num">13</td><td class="num">56.4%</td><td class="num">48.1%</td></tr>
+<tr><td>2031</td><td class="num">$863bn</td><td class="num">$1,005bn</td><td class="num">839&ndash;1,150</td><td class="num neg">-14.2%</td><td class="num">7th</td><td class="num">22</td><td class="num">53.6%</td><td class="num">48.1%</td></tr>
 </tbody></table></div>
 <h2>Why the margins differ: the depreciation schedule</h2>
 <p>We forecast EBITDA margin &mdash; a cash margin driven by mix, pricing and opex &mdash; and <em>derive</em> EBIT by subtracting depreciation built from the capex programme, vintage by vintage. Forecasting EBIT margin directly, which both the published consensus feed and most sell-side models do, hides the depreciation assumption inside a single number.</p>
 <div class="warnbox">The consensus feed carries D&amp;A at a flat <b>3.1% of revenue in every year</b> and EBIT margin flat to one decimal place. NVIDIA Corporation spent <b>2.6% of revenue</b> on capex in the last twelve months and depreciated <b>1.3%</b> &mdash; a ratio of <b>2.0&times;</b>. Those cannot both persist.</div>
 <div class="scroll"><table><thead><tr><th>Year</th><th>Revenue</th><th>Growth</th><th>EBITDA mgn</th><th>Capex</th><th>Capex %rev</th><th>D&amp;A</th><th>D&amp;A %rev</th><th>EBIT mgn</th><th>FCFF</th></tr></thead><tbody>
-<tr><td>2027E</td><td class="num">$381bn</td><td class="num">76.4%</td><td class="num">64.5%</td><td class="num">$11bn</td><td class="num">3.0%</td><td class="num">$2bn</td><td class="num">0.6%</td><td class="num">63.9%</td><td class="num">$176bn</td></tr>
-<tr><td>2028E</td><td class="num">$552bn</td><td class="num">44.9%</td><td class="num">62.5%</td><td class="num">$18bn</td><td class="num">3.2%</td><td class="num">$4bn</td><td class="num">0.8%</td><td class="num">61.7%</td><td class="num">$252bn</td></tr>
-<tr><td>2029E</td><td class="num">$699bn</td><td class="num">26.7%</td><td class="num">60.0%</td><td class="num">$24bn</td><td class="num">3.4%</td><td class="num">$7bn</td><td class="num">1.0%</td><td class="num">59.0%</td><td class="num">$313bn</td></tr>
-<tr><td>2030E</td><td class="num">$805bn</td><td class="num">15.2%</td><td class="num">57.5%</td><td class="num">$28bn</td><td class="num">3.5%</td><td class="num">$10bn</td><td class="num">1.3%</td><td class="num">56.2%</td><td class="num">$349bn</td></tr>
-<tr><td>2031E</td><td class="num">$863bn</td><td class="num">7.1%</td><td class="num">55.0%</td><td class="num">$30bn</td><td class="num">3.5%</td><td class="num">$14bn</td><td class="num">1.6%</td><td class="num">53.4%</td><td class="num">$362bn</td></tr>
-<tr><td>2032E</td><td class="num">$889bn</td><td class="num">3.1%</td><td class="num">53.5%</td><td class="num">$31bn</td><td class="num">3.5%</td><td class="num">$17bn</td><td class="num">1.9%</td><td class="num">51.6%</td><td class="num">$366bn</td></tr>
+<tr><td>2027E</td><td class="num">$381bn</td><td class="num">76.4%</td><td class="num">64.5%</td><td class="num">$7bn</td><td class="num">1.8%</td><td class="num">$2bn</td><td class="num">0.5%</td><td class="num">64.0%</td><td class="num">$181bn</td></tr>
+<tr><td>2028E</td><td class="num">$552bn</td><td class="num">44.9%</td><td class="num">62.5%</td><td class="num">$14bn</td><td class="num">2.5%</td><td class="num">$3bn</td><td class="num">0.6%</td><td class="num">61.9%</td><td class="num">$256bn</td></tr>
+<tr><td>2029E</td><td class="num">$699bn</td><td class="num">26.7%</td><td class="num">60.0%</td><td class="num">$22bn</td><td class="num">3.2%</td><td class="num">$6bn</td><td class="num">0.8%</td><td class="num">59.2%</td><td class="num">$314bn</td></tr>
+<tr><td>2030E</td><td class="num">$805bn</td><td class="num">15.2%</td><td class="num">57.5%</td><td class="num">$28bn</td><td class="num">3.5%</td><td class="num">$9bn</td><td class="num">1.1%</td><td class="num">56.4%</td><td class="num">$348bn</td></tr>
+<tr><td>2031E</td><td class="num">$863bn</td><td class="num">7.1%</td><td class="num">55.0%</td><td class="num">$30bn</td><td class="num">3.5%</td><td class="num">$12bn</td><td class="num">1.4%</td><td class="num">53.6%</td><td class="num">$362bn</td></tr>
+<tr><td>2032E</td><td class="num">$889bn</td><td class="num">3.1%</td><td class="num">53.5%</td><td class="num">$31bn</td><td class="num">3.5%</td><td class="num">$16bn</td><td class="num">1.8%</td><td class="num">51.7%</td><td class="num">$366bn</td></tr>
 </tbody></table></div>
+<h3>How year 1 is anchored</h3>
+<p>Forecast year 2027 is part history. <b>$1.8bn</b> of capex through Q1 is a filed fact, not an estimate. The remaining 3 quarters are held at the last observed quarterly rate of <b>$1.8bn</b> (2026-04-26), giving <b>$7.0bn</b> for the full year. Freezing the exit rate is deliberately conservative: quarterly capex has risen in each of the last seven quarters, so this assumes the ramp stops today. Anchoring on a trailing-twelve-month ratio instead &mdash; the conventional choice &mdash; would put the full year below the half-year already reported.</p>
 <h2>Price-to-value bridge</h2>
-<p>Contributions are exact Shapley values over all 2<sup>6</sup> = 64 driver coalitions, so they sum to the total without residual (residual $-0.0000). One-at-a-time sensitivity would not, because DCF driver interactions are large.</p>
+<p>Contributions are exact Shapley values over all 2<sup>7</sup> = 128 driver coalitions, so they sum to the total without residual (residual $-0.0000). One-at-a-time sensitivity would not, because DCF driver interactions are large.</p>
 <div class="scroll"><table class="bridge"><thead><tr><th>Step</th><th>$/share</th><th class="b"></th></tr></thead><tbody>
-<tr><td><b>Street-calibrated value</b></td><td class="num">$223.58</td><td class="b"></td></tr>
-<tr><td>revenue</td><td class="num neg">-47.86</td><td class="b"><div class="bar"><span style="left:0.0%;width:50.0%;background:var(--neg)"></span></div></td></tr>
-<tr><td>ebit margin</td><td class="num pos">+21.39</td><td class="b"><div class="bar"><span style="left:50%;width:22.347390974141543%;background:var(--pos)"></span></div></td></tr>
-<tr><td><b>Our base case</b></td><td class="num"><b>$197.12</b></td><td class="b"></td></tr>
+<tr><td><b>Street-calibrated value</b></td><td class="num">$231.94</td><td class="b"></td></tr>
+<tr><td>revenue</td><td class="num neg">-48.69</td><td class="b"><div class="bar"><span style="left:0.0%;width:50.0%;background:var(--neg)"></span></div></td></tr>
+<tr><td>ebitda margin</td><td class="num pos">+15.48</td><td class="b"><div class="bar"><span style="left:50%;width:15.895839610526757%;background:var(--pos)"></span></div></td></tr>
+<tr><td>da pct revenue</td><td class="num neg">-1.34</td><td class="b"><div class="bar"><span style="left:48.62368453972104%;width:1.3763154602789605%;background:var(--neg)"></span></div></td></tr>
+<tr><td><b>Our base case</b></td><td class="num"><b>$197.39</b></td><td class="b"></td></tr>
 <tr><td>Market price</td><td class="num">$218.99</td><td class="b"></td></tr>
 </tbody></table></div>
 <p class="sub">The gap from our base case to the market price is not decomposed into drivers, because it is not a forecast disagreement &mdash; it is the discount rate and terminal assumptions the market is applying. That is stated below rather than disguised as precision.</p>
 <h2>What the market is paying for</h2>
 <p>At <b>$218.99</b>, holding everything else at our base case, the market is paying for <em>either</em>&hellip;</p>
 <div class="grid g3">
-<div class="card kpi"><div class="lab">Revenue CAGR</div><div class="val">29.4%</div><div class="note">vs our 26.6% base</div></div>
-<div class="card kpi"><div class="lab">Terminal EBIT margin</div><div class="val">58.2%</div><div class="note">vs our 51.6% terminal</div></div>
+<div class="card kpi"><div class="lab">Revenue CAGR</div><div class="val">29.3%</div><div class="note">vs our 26.6% base</div></div>
+<div class="card kpi"><div class="lab">Terminal EBIT margin</div><div class="val">58.2%</div><div class="note">vs our 51.7% terminal</div></div>
 <div class="card kpi"><div class="lab">Discount rate (WACC)</div><div class="val">9.07%</div><div class="note">vs our 9.75% build</div></div>
 </div>
 <h2>Scenarios and expected value</h2>
 <div class="scroll"><table><thead><tr><th>Case</th><th>Value/share</th><th>vs spot</th><th>Probability</th><th>WACC</th><th>Terminal g</th><th>TV % of EV</th><th>Anchor</th></tr></thead><tbody>
-<tr><td><b>Bear</b></td><td class="num">$67.19</td><td class="num neg">-69.3%</td><td class="num">25%</td><td class="num">11.00%</td><td class="num">2.0%</td><td class="num">53%</td><td>historical base rate</td></tr>
-<tr><td><b>Base</b></td><td class="num">$197.12</td><td class="num neg">-10.0%</td><td class="num">50%</td><td class="num">9.75%</td><td class="num">3.0%</td><td class="num">71%</td><td>consensus dispersion</td></tr>
-<tr><td><b>Bull</b></td><td class="num">$437.14</td><td class="num pos">+99.6%</td><td class="num">25%</td><td class="num">9.25%</td><td class="num">3.5%</td><td class="num">80%</td><td>judgment</td></tr>
-<tr><td><b>Expected value</b></td><td class="num"><b>$224.64</b></td><td class="num pos"><b>+2.6%</b></td><td class="num">100%</td><td colspan="4"></td></tr>
-<tr><td>Street-calibrated (their revenue &amp; margin, our engine)</td><td class="num">$223.58</td><td class="num pos">+2.1%</td><td colspan="5"></td></tr>
+<tr><td><b>Bear</b></td><td class="num">$67.39</td><td class="num neg">-69.2%</td><td class="num">25%</td><td class="num">11.00%</td><td class="num">2.0%</td><td class="num">53%</td><td>historical base rate</td></tr>
+<tr><td><b>Base</b></td><td class="num">$197.39</td><td class="num neg">-9.9%</td><td class="num">50%</td><td class="num">9.75%</td><td class="num">3.0%</td><td class="num">71%</td><td>consensus dispersion</td></tr>
+<tr><td><b>Bull</b></td><td class="num">$437.47</td><td class="num pos">+99.8%</td><td class="num">25%</td><td class="num">9.25%</td><td class="num">3.5%</td><td class="num">80%</td><td>judgment</td></tr>
+<tr><td><b>Expected value</b></td><td class="num"><b>$224.91</b></td><td class="num pos"><b>+2.7%</b></td><td class="num">100%</td><td colspan="4"></td></tr>
+<tr><td>Street-calibrated (their revenue, EBIT and D&amp;A; our capex, our engine)</td><td class="num">$231.94</td><td class="num pos">+5.9%</td><td colspan="5"></td></tr>
 <tr><td>Street published price target (median 300, range 218&ndash;500)</td><td class="num">$319.48</td><td class="num pos">+45.9%</td><td colspan="5"></td></tr>
 </tbody></table></div>
 <div class="grid g3" style="margin-top:6px">
@@ -131,10 +134,10 @@ padding:1px 5px;border-radius:3px}
 <div class="scroll"><table><thead><tr><th>Term</th><th>Value</th><th>Note</th></tr></thead><tbody>
 <tr><td>Payoff ratio b</td><td class="num">0.04</td><td class="sub">reward &divide; risk</td></tr>
 <tr><td>p(win)</td><td class="num">75%</td><td class="sub">probability mass favouring the position</td></tr>
-<tr><td>Kelly f</td><td class="num">-596.8%</td><td class="sub">full Kelly fraction</td></tr>
+<tr><td>Kelly f</td><td class="num">-565.1%</td><td class="sub">full Kelly fraction</td></tr>
 <tr><td>Quarter-Kelly</td><td class="num">0.00%</td><td class="sub">0.25 &times; Kelly</td></tr>
 <tr><td>Liquidity cap</td><td class="num">4180.00%</td><td class="sub">20% of ADV over 5 days</td></tr>
-<tr><td>Risk-budget cap</td><td class="num">2.16%</td><td class="sub">1.5% of NAV at risk to the adverse case</td></tr>
+<tr><td>Risk-budget cap</td><td class="num">2.17%</td><td class="sub">1.5% of NAV at risk to the adverse case</td></tr>
 <tr><td>Concentration cap</td><td class="num">5.00%</td><td class="sub">single-name hard limit</td></tr>
 <tr><td><b>Position size</b></td><td class="num"><b>0.00% of NAV</b></td><td class="sub">binding constraint: <b>quarter-Kelly</b></td></tr>
 </tbody></table></div>
@@ -188,13 +191,13 @@ padding:1px 5px;border-radius:3px}
 </tbody></table></div>
 <h2>Appendix C &mdash; equity bridge and balance sheet</h2>
 <div class="scroll"><table><thead><tr><th>Item</th><th>$bn</th><th>Note</th></tr></thead><tbody>
-<tr><td>Enterprise value (base case)</td><td class="num">4,696</td><td class="sub"></td></tr>
+<tr><td>Enterprise value (base case)</td><td class="num">4,702</td><td class="sub"></td></tr>
 <tr><td>+ Cash &amp; marketable securities</td><td class="num">52.5</td><td class="sub"></td></tr>
 <tr><td>+ Equity investments (stakes)</td><td class="num">72.6</td><td class="sub">28.6% of revenue &mdash; $2.98/share. Omitted from the published report's bridge.</td></tr>
 <tr><td>&minus; Debt</td><td class="num">8.5</td><td class="sub"></td></tr>
 <tr><td>&minus; Operating leases</td><td class="num">4.3</td><td class="sub"></td></tr>
-<tr><td><b>Equity value</b></td><td class="num"><b>4,808</b></td><td class="sub">&divide; 24,391m diluted shares</td></tr>
-<tr><td><b>Value per share</b></td><td class="num"><b>$197.12</b></td><td class="sub"></td></tr>
+<tr><td><b>Equity value</b></td><td class="num"><b>4,815</b></td><td class="sub">&divide; 24,391m diluted shares</td></tr>
+<tr><td><b>Value per share</b></td><td class="num"><b>$197.39</b></td><td class="sub"></td></tr>
 </tbody></table></div>
 <h2>Appendix D &mdash; sources and method</h2>
 <ul>

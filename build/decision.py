@@ -25,7 +25,7 @@ PROBS = {
             "Alphabet has beaten EPS in all eight reported quarters and Cloud is currently "
             "supply-constrained rather than demand-constrained.")},
         "base": {"bp": 4500, "anchor": "judgment", "justification": (
-            "Modal because the arithmetic is close to mechanical: $844bn of cumulative capex "
+            "Modal because the arithmetic is close to mechanical: $985bn of cumulative capex "
             "over six years cannot be carried at 4.6% of revenue in D&A under any useful life "
             "Alphabet currently discloses. The uncertainty is timing and offsetting margin, "
             "not direction.")},
@@ -65,8 +65,8 @@ RATING = {
              "The operating business is compounding above 20%. The reported earnings it produces "
              "are not the earnings the capex programme will leave behind."},
             {"kind": "Why it is not priced", "text":
-             "Consensus holds D&A at 4.6% of revenue through 2030 while capex runs at 29.7%. "
-             "Our vintage schedule reaches 13.2%."},
+             "Consensus holds D&A at 4.6% of revenue through 2030 while capex runs at 34.6% of "
+             "revenue this year. Our vintage schedule reaches 14.0%."},
             {"kind": "What makes it work", "text":
              "D&A is disclosed quarterly. Every print showing it climb toward capex closes the "
              "gap. Next print 28 October 2026."},
@@ -103,7 +103,7 @@ RATING = {
             "an option on a materially larger business rather than a commodity compute fleet. Our "
             "answer is that none of that is inconsistent with the depreciation arithmetic -- it "
             "changes the numerator, not the charge.",
-            "Our valuation sits 54% below the Street's median target and below the lowest of 39 "
+            "Our valuation sits 55% below the Street's median target and below the lowest of 39 "
             "published targets. Either we are missing something 39 analysts can see, or the consensus "
             "feed carries a margin assumption nobody has re-derived. We think the latter, but the base "
             "rate on that judgement is not favourable and the position is sized accordingly.",

@@ -2,7 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Live site](https://img.shields.io/badge/live%20site-github.io-0a8f86)](https://jainabhishek.github.io/equity-valuation-reports/)
-[![As of](https://img.shields.io/badge/as%20of-Aug%205%2C%202026-172033)](#)
+[![As of](https://img.shields.io/badge/as%20of-Aug%206%2C%202026-172033)](#)
 [![Model](https://img.shields.io/badge/model-segment%20driver%20%2B%20FCFF%20DCF-2864dc)](#)
 
 Buy-side investment memos on individual companies. Each is a self-contained HTML
@@ -23,12 +23,12 @@ individually, and checkable against the next filing.
 | --- | --- | --- |
 | **Rating** | **SHORT** · conviction 2/3 · 18-month horizon | **NO POSITION** · conviction 1/3 |
 | Spot | $357.94 | $218.99 |
-| Bear / base / bull | $113.26 / $194.19 / $437.84 | $67.19 / $197.12 / $437.14 |
-| Expected value | **$247.05 (−31.0%)** | **$224.64 (+2.6%)** |
-| Risk / reward | 1.39 : 1 | 0.04 : 1 |
-| Breakeven p(bull) | 71% | 23% |
+| Bear / base / bull | $109.76 / $190.76 / $435.58 | $67.39 / $197.39 / $437.47 |
+| Expected value | **$243.96 (−31.8%)** | **$224.91 (+2.7%)** |
+| Risk / reward | 1.47 : 1 | 0.04 : 1 |
+| Breakeven p(bull) | 72% | 23% |
 | Position size | 5.00% of NAV *(concentration cap binding)* | 0.00% |
-| Street-calibrated value | $269.93 | $223.58 |
+| Street-calibrated value | $167.07 | $231.94 |
 | Street price target | $427.55 | $319.48 |
 | Memo | [Open →](https://jainabhishek.github.io/equity-valuation-reports/alphabet/memo.html) | [Open →](https://jainabhishek.github.io/equity-valuation-reports/nvidia/memo.html) |
 | Model | [Download](alphabet/model.xlsx) | [Download](nvidia/model.xlsx) |
@@ -41,8 +41,16 @@ Market data as of the 2026-08-06 close.
 The consensus feed carries D&A at a flat **4.6% of revenue** every year through
 2030 and EBIT margin flat at 32.5% to one decimal place. Alphabet spent **29.7%
 of revenue** on capex over the last twelve months and depreciated **5.7%** — a
-5.2× ratio. Those cannot both persist. A depreciation schedule built from capex
-vintages reaches 13.2% of revenue by 2030, taking roughly 500bp off EBIT margin.
+5.2× ratio — and Q2 alone ran at **37.5%**. Those cannot both persist. A
+depreciation schedule built from capex vintages reaches 14.2% of revenue by 2030,
+taking roughly 495bp off EBIT margin.
+
+Forecast year 2026 is anchored on filings rather than on a trailing ratio:
+**$80.6bn** of first-half capex is reported fact, and the two remaining quarters
+are held flat at the **$44.9bn** Q2 exit rate for a full year of **$170.4bn**.
+Over 2026–31 that path spends **$985bn** while the consensus feed depreciates
+only **$189bn** of it — a **$329bn** gap, and by 2031 **$82bn** a year of charge
+the consensus EBIT margin never takes.
 
 This is checkable every ninety days from the filings, which is what makes it a
 position rather than an opinion.
@@ -54,7 +62,7 @@ P/E of **19.0×** is **38.6×** on operating earnings.
 ### Nvidia — no variant, so no position
 
 Our revenue path sits inside the analyst range in every covered year and expected
-value is +6%, inside the noise. The scenario range spans $67 to $437; no
+value is +2.7%, inside the noise. The scenario range spans $67 to $437; no
 defensible position size survives that spread. The memo says so rather than
 manufacturing a view.
 
@@ -91,17 +99,20 @@ of passing through as zero. A terminal steady-state check compares the reinvestm
 the rate implied by g ÷ ROIC, so the model cannot capitalise a terminal cash flow
 computed at peak underinvestment.
 
-**Variant versus consensus.** The Street's revenue and EBIT margin run through
+**Variant versus consensus.** The Street's revenue, EBIT and EBITDA run through
 the *identical* engine, so `value(Street) − value(ours)` is pure forecast
-disagreement. Consensus supplies revenue and EBIT but not capex, D&A or working
-capital, so those are carried from our case and disclosed. Attribution uses exact
-Shapley values over all 2⁶ = 64 driver coalitions, which sum to the total without
-residual; one-at-a-time sensitivity does not, because DCF driver interactions are
-large.
+disagreement. D&A is the Street's own — EBITDA less EBIT — not ours: their EBIT
+margin already embeds their depreciation, so adding back ours would hand them a
+cash add-back their own earnings never charged. Capex and working capital are not
+supplied by the feed, so those are carried from our case and disclosed.
+Attribution uses exact Shapley values over all 2⁷ = 128 driver coalitions, which
+sum to the total without residual. The perturbed drivers are EBITDA margin and
+D&A, never EBIT directly, because EBIT is *derived* from those two — moving them
+independently would double-count depreciation.
 
 **Reverse DCF** is three independent solves — revenue CAGR, terminal EBIT margin,
 discount rate — reported as one sentence each. At $357.94 the market is paying for
-*either* a 27.8% revenue CAGR, *or* a 49.5% terminal EBIT margin, *or* a 6.13%
+*either* a 28.0% revenue CAGR, *or* a 48.6% terminal EBIT margin, *or* a 6.12%
 discount rate.
 
 **Decision layer.** Probabilities are integers in basis points summing to 10000,

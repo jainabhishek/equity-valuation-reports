@@ -119,12 +119,53 @@ def ttm(series, as_of=None, n=4):
     return sum(series[e]["val"] for e in window), window, ok
 
 
-def first_tag(ticker, candidates, taxonomy="us-gaap", unit=None):
-    """Return (tag, series) for the first candidate that reports data."""
+def fiscal_ytd(ticker, candidates, as_of, taxonomy="us-gaap", unit=None):
+    """The fiscal-year-to-date figure at as_of, as filed rather than derived.
+
+    10-Q cash-flow statements are cumulative from fiscal-year start, so the
+    longest sub-annual duration ending at as_of IS the YTD number the company
+    reported. Taking it directly avoids re-summing quarters we ourselves
+    unwound, which would inherit any error in that unwinding.
+
+    Returns {val, days, quarters_elapsed, start, accn, tag} or None.
+    """
+    if isinstance(as_of, str):
+        as_of = date.fromisoformat(as_of)
+    for tag in candidates:
+        rows = [r for r in _facts(ticker, tag, taxonomy, unit)
+                if r["end"] == as_of and 80 <= r["days"] <= 340]
+        if not rows:
+            continue
+        r = max(rows, key=lambda x: x["days"])
+        return {
+            "val": r["val"], "days": r["days"],
+            "quarters_elapsed": round(r["days"] / 91.3),
+            "start": str(r["start"]), "accn": r["accn"], "tag": tag,
+        }
+    return None
+
+
+def first_tag(ticker, candidates, taxonomy="us-gaap", unit=None, as_of=None):
+    """Return (tag, series) for the first candidate that reports data.
+
+    With as_of, a candidate must still be *live* — carrying an observation
+    within ~2 quarters of the as-of date. Filers abandon tags without warning:
+    Nvidia stopped reporting PaymentsToAcquirePropertyPlantAndEquipment after
+    2020 and moved to PaymentsToAcquireProductiveAssets, but the abandoned tag
+    still holds 30 quarters of pre-2020 data, so "has any data" picks the dead
+    one and the live capex series is never seen.
+    """
+    if isinstance(as_of, str):
+        as_of = date.fromisoformat(as_of)
     for tag in candidates:
         s = quarters(ticker, tag, taxonomy, unit)
-        if s:
-            return tag, s
+        if not s:
+            continue
+        if as_of is not None:
+            latest = max((e for e in s if e <= as_of), default=None)
+            if latest is None or (as_of - latest).days > 200:
+                continue
+        return tag, s
     return None, {}
 
 
@@ -161,11 +202,11 @@ CHAINS = {
 }
 
 
-def load(ticker, keys=None):
+def load(ticker, keys=None, as_of=None):
     """{key: (tag, series)} using the fallback chains."""
     out = {}
     for k, chain in CHAINS.items():
         if keys and k not in keys:
             continue
-        out[k] = first_tag(ticker, chain)
+        out[k] = first_tag(ticker, chain, as_of=as_of)
     return out
