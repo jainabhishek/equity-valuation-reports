@@ -14,8 +14,11 @@ CONCENTRATION_CAP = 0.05
 KELLY_FRACTION = 0.25
 ADV_LIMIT = 0.20         # may not exceed 20% of ADV over 5 days
 
-# 30-day average dollar volume, $/day, as of 2026-08-04.
-ADV_USD = {"GOOGL": 22.4e9, "NVDA": 41.8e9}
+# 30-session average dollar volume, $/day, computed from daily bars over the
+# sessions 2026-06-25..2026-08-06 rather than quoted from a screen. GOOGL is the
+# GOOGL line alone; Alphabet also trades as GOOG, so the true tradable liquidity
+# is roughly double this and the liquidity constraint below is conservative.
+ADV_USD = {"GOOGL": 11.96e9, "NVDA": 27.29e9}
 
 PROBS = {
     "GOOGL": {
@@ -25,14 +28,17 @@ PROBS = {
             "Alphabet has beaten EPS in all eight reported quarters and Cloud is currently "
             "supply-constrained rather than demand-constrained.")},
         "base": {"bp": 4500, "anchor": "judgment", "justification": (
-            "Modal because the arithmetic is close to mechanical: $985bn of cumulative capex "
-            "over six years cannot be carried at 4.6% of revenue in D&A under any useful life "
-            "Alphabet currently discloses. The uncertainty is timing and offsetting margin, "
-            "not direction.")},
+            "Modal because the arithmetic is close to mechanical, and management has now guided "
+            "to the input that drives it: $1,083bn of cumulative capex over six years cannot be "
+            "carried at 4.6% of revenue in D&A under any useful life Alphabet currently "
+            "discloses. The uncertainty is timing and offsetting margin, not direction.")},
         "bull": {"bp": 3000, "anchor": "consensus_dispersion", "justification": (
             "Carries real weight because it embeds the market's own implied ~6.1% discount rate "
             "and the possibility that AI capex proves front-loaded rather than permanent. "
-            "Thirty-nine analysts and a $427 median target sit closer to this case than to ours.")},
+            "Thirty-nine analysts and a $427 median target sit closer to this case than to ours. "
+            "Alphabet is also funding the build with equity and long-dated debt rather than "
+            "starving the business, which is what a company that believes the assets earn "
+            "their cost of capital does.")},
     },
     "NVDA": {
         "bear": {"bp": 2500, "anchor": "historical_base_rate", "justification": (
@@ -59,27 +65,36 @@ RATING = {
         "edge_statement": (
             "No proprietary information. The edge is that a depreciation schedule built from "
             "disclosed capex vintages contradicts the EBIT margin the consensus feed carries, "
-            "and that contradiction is checkable from public filings every ninety days."),
+            "and that contradiction is checkable from public filings every ninety days. Management "
+            "has since guided 2026 capex to $195-205bn and said the charge is coming -- 'higher "
+            "depreciation expense and related data center operations costs such as energy' -- "
+            "which takes the capex leg out of dispute and leaves the depreciation leg, where the "
+            "consensus feed has not moved."),
         "thesis": [
             {"kind": "What we think", "text":
              "The operating business is compounding above 20%. The reported earnings it produces "
              "are not the earnings the capex programme will leave behind."},
             {"kind": "Why it is not priced", "text":
-             "Consensus holds D&A at 4.6% of revenue through 2030 while capex runs at 34.6% of "
-             "revenue this year. Our vintage schedule reaches 14.0%."},
+             "Consensus holds D&A at 4.6% of revenue through 2030 while guided 2026 capex is "
+             "40.7% of revenue. Our vintage schedule reaches 15.5% by 2031."},
             {"kind": "What makes it work", "text":
-             "D&A is disclosed quarterly. Every print showing it climb toward capex closes the "
-             "gap. Next print 28 October 2026."},
+             "D&A is disclosed quarterly and capex is now guided, so both halves are observable. "
+             "Every print showing D&A climb toward capex closes the gap. Next print 28 October "
+             "2026."},
         ],
         "kill_criteria": [
             {"id": "k1", "statement": "Alphabet extends disclosed server useful life beyond six years",
              "observable": "Property & equipment useful-life disclosure, FY2026 Form 10-K",
              "threshold": "> 6 years", "check_date": "2027-02-28", "action": "exit full",
              "note": "Extending life defers the entire catch-up and breaks the thesis outright."},
-            {"id": "k2", "statement": "FY2027 capex guidance below $110bn",
+            {"id": "k2", "statement": "FY2027 capex guidance below $210bn",
              "observable": "Capex guidance, Q4 FY2026 earnings call",
-             "threshold": "< $110bn", "check_date": "2027-02-05", "action": "cut half",
-             "note": "A sharp step down means the build-out was front-loaded and FCF inflects early."},
+             "threshold": "< $210bn", "check_date": "2027-02-05", "action": "cut half",
+             "note": ("A sharp step down means the build-out was front-loaded and FCF inflects early. "
+                      "The threshold is the top of the guided 2026 range: management said capex will "
+                      "increase significantly in 2027, so guiding below 2026 would contradict them. "
+                      "The previous edition carried $110bn here, a level 2026 actuals had already "
+                      "passed twice over -- a kill criterion that cannot fire is not one.")},
             {"id": "k3", "statement": "D&A passes 9% of revenue while EBIT margin holds above 30%",
              "observable": "Depreciation / revenue and operating margin, quarterly",
              "threshold": "both true in one quarter", "check_date": "2027-07-31", "action": "cut half",
@@ -88,6 +103,14 @@ RATING = {
              "observable": "Google Cloud segment revenue growth, 10-Q",
              "threshold": "< 25% YoY x2", "check_date": "2027-04-30", "action": "review",
              "note": "Our supply-constrained framing would be wrong: demand, not capacity, binds."},
+            {"id": "k5", "statement": "ATM programme draws more than $10bn in a quarter",
+             "observable": "Shares issued under the ATM Program, quarterly 10-Q equity note",
+             "threshold": "> $10bn in one quarter", "check_date": "2026-10-28", "action": "review",
+             "note": ("$40bn is authorised and nothing was drawn at 30 June. Heavy drawing would say "
+                      "the capex programme is outrunning what operations and debt can fund. It cuts "
+                      "against the short only weakly -- stock sold at $354 against $187 of intrinsic "
+                      "value is accretive on our own numbers -- but it is the cleanest read on "
+                      "funding stress and it is disclosed quarterly.")},
         ],
         "catalysts": [
             {"date": "2026-10-28", "confirmed": True, "event": "Q3 FY2026 results",
@@ -107,6 +130,12 @@ RATING = {
             "published targets. Either we are missing something 39 analysts can see, or the consensus "
             "feed carries a margin assumption nobody has re-derived. We think the latter, but the base "
             "rate on that judgement is not favourable and the position is sized accordingly.",
+            "The capex guidance corroborates the spending leg of our thesis and is also the best "
+            "argument against it. A company raising $84.75bn of equity and $45bn of notes inside "
+            "three months to fund a build-out is not behaving like one that expects the assets to "
+            "depreciate into a hole; it is behaving like one that expects them to earn. If Cloud "
+            "compounds anywhere near the 82% it just printed, the denominator grows faster than "
+            "the charge and the catch-up never reaches the margin.",
         ],
         "pre_mortem": (
             "Eighteen months out the position is down 30%. What happened: Alphabet extended server "
@@ -131,8 +160,9 @@ RATING = {
              "Extraordinary economics: 64% EBIT margin, 2.6% capex intensity, $119bn of free cash "
              "flow. The business is not the question."},
             {"kind": "Why it is not priced", "text":
-             "It is priced. Our base case is 10% below spot, our revenue path is inside the analyst "
-             "range every year, and we hold no variant view."},
+             "It is priced. Our base case is 12% below spot, our revenue path is inside the analyst "
+             "range every year, and we hold no variant view. Nearly half of fiscal 2027 is "
+             "already reported or guided, which leaves less to disagree about than usual."},
             {"kind": "What makes it work", "text":
              "Nothing currently observable resolves the terminal-margin question, which is where the "
              "entire disagreement sits."},
@@ -152,8 +182,11 @@ RATING = {
              "note": "Inventory is $25.8bn and rising; it leads demand inflections both ways."},
         ],
         "catalysts": [
-            {"date": "2026-08-26", "confirmed": False, "event": "Q2 FY2027 results",
-             "learn": "Rubin ramp pricing, networking attach, China contribution", "tests": "k2"},
+            {"date": "2026-08-26", "confirmed": True, "event": "Q2 FY2027 results",
+             "learn": ("Whether the $91.0bn +/- 2% guide holds, Rubin ramp pricing, networking "
+                       "attach, and whether any China Data Center compute revenue returns -- the "
+                       "guide assumes none, so it is upside management has explicitly excluded"),
+             "tests": "k2"},
             {"date": "2026-11-18", "confirmed": False, "event": "Q3 FY2027 results",
              "learn": "Inventory and purchase commitments against the forward guide", "tests": "k3"},
             {"date": "2027-02-25", "confirmed": False, "event": "Q4 FY2027 results and Form 10-K",

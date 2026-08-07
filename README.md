@@ -2,7 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Live site](https://img.shields.io/badge/live%20site-github.io-0a8f86)](https://jainabhishek.github.io/equity-valuation-reports/)
-[![As of](https://img.shields.io/badge/as%20of-Aug%206%2C%202026-172033)](#)
+[![As of](https://img.shields.io/badge/as%20of-Aug%207%2C%202026-172033)](#)
 [![Model](https://img.shields.io/badge/model-segment%20driver%20%2B%20FCFF%20DCF-2864dc)](#)
 
 Buy-side investment memos on individual companies. Each is a self-contained HTML
@@ -22,49 +22,68 @@ individually, and checkable against the next filing.
 | | Alphabet (GOOGL) | Nvidia (NVDA) |
 | --- | --- | --- |
 | **Rating** | **SHORT** · conviction 2/3 · 18-month horizon | **NO POSITION** · conviction 1/3 |
-| Spot | $357.94 | $218.99 |
-| Bear / base / bull | $109.76 / $190.76 / $435.58 | $67.39 / $197.39 / $437.47 |
-| Expected value | **$243.96 (−31.8%)** | **$224.91 (+2.7%)** |
-| Risk / reward | 1.47 : 1 | 0.04 : 1 |
-| Breakeven p(bull) | 72% | 23% |
+| Spot | $354.24 | $223.90 |
+| Bear / base / bull | $105.48 / $186.74 / $433.18 | $67.39 / $197.39 / $437.47 |
+| Expected value | **$240.36 (−32.1%)** | **$224.91 (+0.5%)** |
+| Risk / reward | 1.44 : 1 | 0.01 : 1 |
+| Breakeven p(bull) | 71% | 25% |
 | Position size | 5.00% of NAV *(concentration cap binding)* | 0.00% |
-| Street-calibrated value | $167.07 | $231.94 |
+| Street-calibrated value | $159.72 | $231.98 |
 | Street price target | $427.55 | $319.48 |
 | Memo | [Open →](https://jainabhishek.github.io/equity-valuation-reports/alphabet/memo.html) | [Open →](https://jainabhishek.github.io/equity-valuation-reports/nvidia/memo.html) |
 | Model | [Download](alphabet/model.xlsx) | [Download](nvidia/model.xlsx) |
 
 Base year: trailing twelve months to 2026-06-30 (GOOGL) and 2026-04-26 (NVDA).
-Market data as of the 2026-08-06 close.
+Market data as of the 2026-08-07 session. Earlier editions are kept at their own
+dated URLs — see [the archive](archive/index.html).
 
 ### Alphabet — the variant is depreciation
 
 The consensus feed carries D&A at a flat **4.6% of revenue** every year through
 2030 and EBIT margin flat at 32.5% to one decimal place. Alphabet spent **29.7%
 of revenue** on capex over the last twelve months and depreciated **5.7%** — a
-5.2× ratio — and Q2 alone ran at **37.5%**. Those cannot both persist. A
-depreciation schedule built from capex vintages reaches 14.2% of revenue by 2030,
-taking roughly 495bp off EBIT margin.
+5.2× ratio. Those cannot both persist. A depreciation schedule built from capex
+vintages reaches **15.5% of revenue** by 2031, taking roughly 730bp off EBIT
+margin.
 
-Forecast year 2026 is anchored on filings rather than on a trailing ratio:
-**$80.6bn** of first-half capex is reported fact, and the two remaining quarters
-are held flat at the **$44.9bn** Q2 exit rate for a full year of **$170.4bn**.
-Over 2026–31 that path spends **$985bn** while the consensus feed depreciates
-only **$189bn** of it — a **$329bn** gap, and by 2031 **$82bn** a year of charge
-the consensus EBIT margin never takes.
+Forecast year 2026 is anchored on management guidance, not on our extrapolation.
+**$80.6bn** of first-half capex is reported fact, and on 22 July the CFO guided
+the full year to **$195–205bn**, up from $180–190bn. The base case takes the
+$200bn midpoint, which implies **$59.7bn** in each remaining quarter against the
+$44.9bn just reported. Over 2026–31 that path spends **$1,083bn** while the
+consensus feed depreciates only **$189bn** of it — a **$382bn** gap, and by 2031
+**$95bn** a year of charge the consensus EBIT margin never takes.
 
-This is checkable every ninety days from the filings, which is what makes it a
-position rather than an opinion.
+Management has also said the charge is coming, in terms: capex will "increase
+significantly in 2027", bringing "higher depreciation expense and related data
+center operations costs such as energy". The spending leg of the thesis is no
+longer a forecast we have to defend. The depreciation leg is what the consensus
+feed has not moved on, and it is checkable every ninety days from the filings —
+which is what makes it a position rather than an opinion.
 
 A quality-of-earnings pass also matters here: Alphabet's trailing twelve months
 include **$149bn of equity-securities gains — 50.7% of pretax income**. Reported
-P/E of **19.0×** is **38.6×** on operating earnings.
+P/E of **17.9×** is **36.2×** on operating earnings.
+
+Alphabet is funding the build in the capital markets, and the memo carries each
+piece explicitly: **$49.6bn** of net equity proceeds in June (including a $10bn
+Berkshire Hathaway private placement) plus a **$25.0bn** ten-tranche note
+offering priced 6 August, which the equity bridge picks up as a post-balance-sheet
+adjustment. A **$40bn** at-the-market equity programme is authorised and, as of
+30 June, entirely undrawn — so it is disclosed rather than put into the share
+count.
 
 ### Nvidia — no variant, so no position
 
 Our revenue path sits inside the analyst range in every covered year and expected
-value is +2.7%, inside the noise. The scenario range spans $67 to $437; no
+value is +0.5%, inside the noise. The scenario range spans $67 to $437; no
 defensible position size survives that spread. The memo says so rather than
 manufacturing a view.
+
+Nearly half of fiscal 2027 is already settled: **$81.6bn** reported for Q1 and
+**$91.0bn ±2%** guided for Q2 — **45.3%** of the year fixed before the segment
+build says anything. Our full-year figure leaves $104.1bn a quarter for the
+remaining two, 14.4% above the guided quarter. Q2 results land **26 August 2026**.
 
 Worth watching regardless: equity stakes in customers now stand at **28.6% of
 revenue**, up from roughly 3% a year ago.
@@ -75,7 +94,7 @@ revenue**, up from roughly 3% a year ago.
 | --- | --- |
 | `memo.html` | Primary deliverable. Front page: rating, thesis, variant table, Shapley price-to-value bridge, reverse-DCF triple, scenarios and expected value, sizing cascade, kill criteria, catalyst path, falsification and pre-mortem. Appendix: quality of earnings, segment build, equity bridge, sources and limitations. |
 | `model.xlsx` | Live model. Every driver is a blue input cell; change ad coverage or ASP and the value per share moves. One WACC definition, referenced everywhere. |
-| `report.html`, `banker_formula_workbook.xlsx`, `plan.json`, … | Earlier screen-grade artifacts, retained for comparison. **Superseded.** |
+| `archive/` | Every earlier edition at its own dated URL, each with a superseded banner and a note on what changed. Editions are archived, never overwritten: a call is only worth reading against what was knowable when it was made. |
 
 ## Method
 
@@ -83,6 +102,15 @@ revenue**, up from roughly 3% a year ago.
 drivers. Alphabet: Search (queries × ad coverage × price-per-click), YouTube
 (watch hours × ad load × CPM), Cloud (deliverable capacity), Network (runoff).
 Nvidia: Data Center (units × ASP × networking attach) plus the smaller segments.
+
+**Guidance outranks extrapolation.** Where management has guided a period, the
+model anchors on the guidance and the build fails if the base case drifts outside
+the range; scenarios may disagree with guidance, the base case may not. Where they
+have not (Nvidia does not guide capex), reported fiscal-year-to-date spend plus
+the exit quarter stands. This exists because the previous edition extrapolated a
+2026 Alphabet capex figure $25bn below a range management had already published:
+the build had a floor at capex already reported, but nothing that looked at what
+had been guided.
 
 **Depreciation is derived, not assumed.** We forecast EBITDA margin — a cash
 margin driven by mix, pricing and opex — and subtract a straight-line schedule
@@ -111,9 +139,16 @@ D&A, never EBIT directly, because EBIT is *derived* from those two — moving th
 independently would double-count depreciation.
 
 **Reverse DCF** is three independent solves — revenue CAGR, terminal EBIT margin,
-discount rate — reported as one sentence each. At $357.94 the market is paying for
-*either* a 28.0% revenue CAGR, *or* a 48.6% terminal EBIT margin, *or* a 6.12%
+discount rate — reported as one sentence each. At $354.24 the market is paying for
+*either* a 28.0% revenue CAGR, *or* a 47.1% terminal EBIT margin, *or* a 6.13%
 discount rate.
+
+**The bridge is rolled forward, not frozen at the filing.** Financing priced
+between the balance-sheet date and the valuation date is itemised with its
+accession number and carried on both legs, so a $25bn note issue shows up as the
+underwriting spread it actually costs rather than as a $25bn hole or a silent
+omission. Authorised-but-undrawn programmes are disclosed and deliberately kept
+out of the share count.
 
 **Decision layer.** Probabilities are integers in basis points summing to 10000,
 each with a stated anchor. Position size is computed through a constraint cascade
@@ -128,6 +163,9 @@ constraint published. Kill criteria name an observable, a threshold and a date.
 | Consensus estimates and price targets | FMP `analyst/*` |
 | Segment revenue | FMP `statements/revenue-product-segmentation` |
 | Earnings dates and surprise history | Robinhood `get_earnings_results` |
+| Prices and average dollar volume | Robinhood `get_equity_quotes`, `get_equity_historicals` |
+| Management guidance | The earnings call it was given on, quoted with date and speaker in `build/cases.py` |
+| Financing after the balance-sheet date | SEC prospectus filings (424B2/424B5/FWP), by accession number |
 
 Quarterly series are reconstructed from filed facts rather than taken from an
 aggregator. Two traps are handled explicitly, because both produce silently wrong
@@ -175,6 +213,13 @@ exactly what had happened to the previous set.
 - Our Alphabet valuation sits well below the Street's median target and below the
   lowest of 39 published targets. That is stated on the front page of the memo,
   along with what would make us wrong.
+- **Management guidance is quoted from earnings-call coverage, not from a filing.**
+  Alphabet's capex guidance was given on the July 22 call and does not appear in
+  the 8-K, the 10-Q, or the August prospectus supplements. It is corroborated
+  across independent reports of the call and recorded with its date and speaker,
+  but it is the one load-bearing input here that is not a filed fact.
+- The August 7 prices are the last regular-session trades rather than official
+  settled closes, which had not published when this was built.
 
 ## Disclaimer
 

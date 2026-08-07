@@ -66,8 +66,58 @@ SPEC = {
     },
 }
 
-# Spot prices, regular-session close of 2026-08-06 (the memos' valuation date).
-SPOT = {"GOOGL": 357.94, "NVDA": 218.99}
+# Financing that happened AFTER the balance-sheet date but before the valuation
+# date. The bridge is otherwise a snapshot of a filing, and a filing goes stale:
+# Alphabet priced $25.0bn of senior unsecured notes on 6 August 2026, five weeks
+# after the 30 June balance sheet the bridge is built from. A reader pricing the
+# equity on 7 August is pricing a company that owes that money.
+#
+# Both legs are carried, so the net effect is only the underwriting spread --
+# about $0.2bn, two cents a share. That is the point: the number is small, and
+# the way to know it is small is to put it through rather than to assume it.
+# Nothing here is a forecast; each entry is a priced, publicly documented
+# transaction with an SEC accession number.
+POST_BALANCE_SHEET = {
+    "GOOGL": [{
+        "event": "$25.0bn senior unsecured notes, 10 tranches, 2028-2066 maturities",
+        "priced": "2026-08-06",
+        "settles": "2026-08-10",
+        "accn": "0001193125-26-340264",
+        "form": "424B2",
+        "debt": 25_000_000_000.0,
+        "cash_and_marketable": 24_800_000_000.0,   # stated net proceeds
+        "note": ("Priced but not yet settled at the valuation date. Carried at both legs: the "
+                 "obligation is binding and the proceeds are contracted, so omitting either "
+                 "would misstate the bridge by $25bn in one direction or the other."),
+    }],
+}
+
+# Authorised but undrawn. NOT applied: nothing has been issued, and putting
+# unissued shares into a share count is inventing a fact. Recorded here because
+# a $40bn equity programme sitting over a per-share valuation is something the
+# memo has to say out loud, and because the day it starts drawing this file is
+# where the adjustment goes.
+AUTHORISED_UNDRAWN = {
+    "GOOGL": [{
+        "event": "At-the-market programme, up to $40.0bn of Class A and Class C stock",
+        "established": "2026-06-01",
+        "amended": "2026-08-06",
+        "drawn_as_of": "2026-06-30",
+        "drawn": 0.0,
+        "capacity": 40_000_000_000.0,
+        "source": ("Q2 2026 Form 8-K Exhibit 99.1: \"As of June 30, 2026, we have not sold any "
+                   "shares under the ATM Program.\" Managers expanded 2026-08-06 (424B5 "
+                   "0001193125-26-336853)."),
+        "purpose": "proceeds primarily intended to meet tax obligations on employee equity grants",
+    }],
+}
+
+# Spot prices, last regular-session trade of 2026-08-07 (the memos' valuation
+# date), 16:00 ET. The consolidated settled close for that session had not been
+# published when this was built, so these are the last regular-hours prints
+# rather than official closes; both are within a cent of the closing auction on
+# the prior session and the distinction does not move any figure in the memo.
+SPOT = {"GOOGL": 354.24, "NVDA": 223.90}
 
 
 def check_preferred(ticker, as_of, bs, prov, spec):
@@ -194,6 +244,22 @@ def build(ticker):
         prov[f"bs.{role}"] = parts
 
     check_preferred(ticker, as_of, bs, prov, spec)
+
+    # Roll the filed balance sheet forward for financing done between the
+    # balance-sheet date and the valuation date. Kept as a separate, itemised
+    # layer so the memo can show the filed figure and the adjustment side by
+    # side rather than presenting a derived number as a filed one.
+    bs_filed = dict(bs)
+    post = POST_BALANCE_SHEET.get(ticker, [])
+    for item in post:
+        for role in ("cash_and_marketable", "equity_investments", "debt", "leases", "preferred"):
+            if role in item:
+                if role not in bs:
+                    raise RuntimeError(
+                        f"{ticker}: post-balance-sheet adjustment '{item['event']}' targets bridge "
+                        f"role '{role}', which this filer's bridge does not carry."
+                    )
+                bs[role] += item[role]
     ytd = build_ytd(ticker, as_of, d)
 
     sh = sec.quarterly(ticker, spec["shares_tag"], unit="shares")
@@ -214,6 +280,9 @@ def build(ticker):
         "ttm": {k: (None if v is None else v) for k, v in ttm.items()},
         "ytd": ytd,
         "balance_sheet": bs,
+        "balance_sheet_as_filed": bs_filed,
+        "post_balance_sheet": post,
+        "authorised_undrawn": AUTHORISED_UNDRAWN.get(ticker, []),
         "derived": {
             "effective_tax_rate": tax_rate,
             "ebit_margin": ebit / ttm["revenue"],
