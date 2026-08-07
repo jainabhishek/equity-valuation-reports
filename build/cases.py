@@ -11,6 +11,58 @@ from __future__ import annotations
 
 FIRST_YEAR = {"GOOGL": 2026, "NVDA": 2027}  # first forecast year (NVDA fiscal)
 
+# Management capex guidance for forecast year 1, where it exists.
+#
+# This outranks any extrapolation we would build. The previous edition anchored
+# forecast year 1 on reported first-half spend plus the exit quarter held flat,
+# which produced $170.4bn for calendar 2026 -- $25bn to $35bn BELOW the range
+# management had already guided to on 22 July, two weeks before that edition was
+# published. Holding the exit quarter flat is a defensible way to forecast a
+# stub when nobody has told you the answer. It is not defensible once they have.
+#
+# Nvidia carries no entry: it guides revenue and gross margin quarterly but does
+# not guide capex, so the exit-rate anchor stands there. An absent entry means
+# "not guided", never "guidance ignored".
+CAPEX_GUIDANCE = {
+    "GOOGL": {
+        "fiscal_year": 2026,
+        "low": 195e9,
+        "high": 205e9,
+        "prior_low": 180e9,
+        "prior_high": 190e9,
+        "as_of": "2026-07-22",
+        "source": "Q2 2026 earnings call, 22 July 2026 (CFO Anat Ashkenazi)",
+        "quote": ("We are updating our full-year 2026 CapEx guidance range to $195 billion-$205 "
+                  "billion, up from our previous estimate of $180 billion-$190 billion."),
+        "forward": ("we continue to expect our CapEx to increase significantly in 2027 and will "
+                    "provide more details at a later date"),
+    },
+}
+
+# Management revenue guidance for the quarter after the base-year cut-off.
+#
+# Unlike capex guidance this does NOT anchor anything -- one guided quarter is
+# not a full year, and re-anchoring an annual figure on it would throw away the
+# segment build. It is a falsifier: forecasting a year that is already
+# arithmetically impossible given a reported quarter plus a guided quarter is an
+# error, and without this record nothing in the build would notice.
+#
+# Alphabet carries no entry: it does not guide revenue.
+REVENUE_GUIDANCE = {
+    "NVDA": {
+        "fiscal_year": 2027,
+        "quarter": 2,
+        "period_end": "2026-07-26",
+        "mid": 91.0e9,
+        "tolerance": 0.02,
+        "as_of": "2026-05-20",
+        "source": "Q1 FY2027 results, 20 May 2026",
+        "quote": "revenue is expected to be $91.0 billion, plus or minus 2%",
+        "caveat": ("assumes no Data Center compute revenue from China, so any easing there is "
+                   "upside management has explicitly excluded"),
+    },
+}
+
 # Historical capex by fiscal year, $bn, from SEC XBRL (see depreciation.py).
 HIST_CAPEX = {
     "GOOGL": {2021: 24.6, 2022: 31.5, 2023: 32.3, 2024: 52.5, 2025: 91.4},

@@ -1,0 +1,34 @@
+{
+  "_provenance": {
+    "source": "FMP analyst/financial-estimates + analyst/price-target-consensus",
+    "retrieved": "2026-08-05",
+    "note": "revenue/ebit/eps in USD. GOOGL fiscal year = calendar. NVDA fiscal year ends late January, so FY2028 is mostly calendar 2027.",
+    "known_defects": [
+      "GOOGL 2026E netIncomeAvg 253.6bn vs ebitAvg 160.8bn: the Street is including non-operating equity-securities gains in 2026 and excluding them from 2027 onward. 2026E EPS of 20.27 is therefore NOT comparable to 2027E EPS of 15.01.",
+      "NVDA FY2030E epsAvg 12.29 is below FY2029E 15.23 on only 12-13 analysts vs 16-31 for adjacent years. Small-cohort artifact; do not model the implied decline.",
+      "NVDA FY2029E netIncomeAvg 378.1bn exceeds ebitAvg 329.2bn, which is not internally coherent. Treat NVDA out-year net income and EPS as low-confidence; revenue and EBIT carry the larger analyst cohorts."
+    ]
+  },
+  "GOOGL": {
+    "price_target": {"high": 475, "low": 350, "consensus": 427.55, "median": 425},
+    "estimates": [
+      {"fy": 2025, "date": "2025-12-31", "revenue_low": 392950332751, "revenue_avg": 400299098598, "revenue_high": 464015448532, "ebit_avg": 130020829268, "ebitda_avg": 148513721240, "net_income_avg": 129768555260, "eps_avg": 10.63583, "eps_low": 10.51508, "eps_high": 10.70627, "n_revenue": 35, "n_eps": 37},
+      {"fy": 2026, "date": "2026-12-31", "revenue_low": 488834946807, "revenue_avg": 495194912007, "revenue_high": 500626666069, "ebit_avg": 160843862337, "ebitda_avg": 183720721278, "net_income_avg": 253551676910, "eps_avg": 20.26656, "eps_low": 19.46617, "eps_high": 21.53137, "n_revenue": 35, "n_eps": 39},
+      {"fy": 2027, "date": "2027-12-31", "revenue_low": 574063447987, "revenue_avg": 605866802904, "revenue_high": 653723173062, "ebit_avg": 196791110486, "ebitda_avg": 224780754666, "net_income_avg": 183453232700, "eps_avg": 15.00594, "eps_low": 13.92608, "eps_high": 16.67666, "n_revenue": 39, "n_eps": 42},
+      {"fy": 2028, "date": "2028-12-31", "revenue_low": 539933823678, "revenue_avg": 721625171799, "revenue_high": 798798263142, "ebit_avg": 234390493475, "ebitda_avg": 267727906407, "net_income_avg": 216967566850, "eps_avg": 17.71595, "eps_low": 13.68528, "eps_high": 20.25033, "n_revenue": 38, "n_eps": 34},
+      {"fy": 2029, "date": "2029-12-31", "revenue_low": 714927001762, "revenue_avg": 815730364847, "revenue_high": 879702248650, "ebit_avg": 264956725778, "ebitda_avg": 302641580849, "net_income_avg": 248266676320, "eps_avg": 20.29981, "eps_low": 17.03871, "eps_high": 22.36937, "n_revenue": 29, "n_eps": 30},
+      {"fy": 2030, "date": "2030-12-31", "revenue_low": 820560723599, "revenue_avg": 936258242857, "revenue_high": 1009682263958, "ebit_avg": 304105289199, "ebitda_avg": 347358253305, "net_income_avg": 297992633324, "eps_avg": 24.36571, "eps_low": 20.45144, "eps_high": 26.84979, "n_revenue": 35, "n_eps": 16}
+    ]
+  },
+  "NVDA": {
+    "price_target": {"high": 500, "low": 218, "consensus": 319.48, "median": 300},
+    "estimates": [
+      {"fy": 2026, "date": "2026-01-25", "revenue_low": 210599426336, "revenue_avg": 213656385457, "revenue_high": 215270058959, "ebit_avg": 102734526955, "ebitda_avg": 109273535564, "net_income_avg": 115312140024, "eps_avg": 4.69388, "eps_low": 4.67378, "eps_high": 4.73408, "n_revenue": 34, "n_eps": 30},
+      {"fy": 2027, "date": "2027-01-25", "revenue_low": 364137279674, "revenue_avg": 393421082449, "revenue_high": 402545598372, "ebit_avg": 189172575924, "ebitda_avg": 201213329304, "net_income_avg": 218278540240, "eps_avg": 9.00092, "eps_low": 8.11964, "eps_high": 12.16956, "n_revenue": 40, "n_eps": 33},
+      {"fy": 2028, "date": "2028-01-25", "revenue_low": 454422134234, "revenue_avg": 562864133910, "revenue_high": 621815128083, "ebit_avg": 270647565312, "ebitda_avg": 287874166846, "net_income_avg": 308396589940, "eps_avg": 12.75249, "eps_low": 9.7901, "eps_high": 14.82211, "n_revenue": 40, "n_eps": 31},
+      {"fy": 2029, "date": "2029-01-25", "revenue_low": 596685287724, "revenue_avg": 684573570460, "revenue_high": 786109764326, "ebit_avg": 329170325412, "ebitda_avg": 350121875544, "net_income_avg": 378147863740, "eps_avg": 15.2316, "eps_low": 13.45093, "eps_high": 17.90917, "n_revenue": 27, "n_eps": 16},
+      {"fy": 2030, "date": "2030-01-25", "revenue_low": 646708625745, "revenue_avg": 774228304289, "revenue_high": 886253376196, "ebit_avg": 372279903671, "ebitda_avg": 395975359982, "net_income_avg": 301277060012, "eps_avg": 12.29, "eps_low": 9.6585, "eps_high": 14.60175, "n_revenue": 13, "n_eps": 12},
+      {"fy": 2031, "date": "2031-01-25", "revenue_low": 839470948392, "revenue_avg": 1005000000000, "revenue_high": 1150416018302, "ebit_avg": 483244155654, "ebitda_avg": 514002439045, "net_income_avg": 490280000020, "eps_avg": 20.0, "eps_low": 15.71766, "eps_high": 23.76201, "n_revenue": 22, "n_eps": 13}
+    ]
+  }
+}

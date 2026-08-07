@@ -11,7 +11,7 @@ import decision
 
 DATA = Path(__file__).parent / "data"
 OUT = Path(__file__).parent.parent
-AS_OF = "2026-08-06"
+AS_OF = "2026-08-07"
 
 CSS = """
 :root{--bg:#fbfaf8;--fg:#16181d;--muted:#5f6672;--line:#e2ded7;--card:#fff;
@@ -95,6 +95,13 @@ def esc(s):
     return html.escape(str(s))
 
 
+def ordinal_suffix(n):
+    """st/nd/rd/th for an integer, with the 11-13 exception."""
+    if 11 <= n % 100 <= 13:
+        return "th"
+    return {1: "st", 2: "nd", 3: "rd"}.get(n % 10, "th")
+
+
 def render(ticker, res, base_year):
     spec = cases.SPEC[ticker]
     r = res[ticker]
@@ -162,7 +169,7 @@ def render(ticker, res, base_year):
         elif p > 1:
             ptxt = '<span class="warn">above high</span>'
         else:
-            ptxt = f"{p * 100:.0f}th"
+            ptxt = f"{p * 100:.0f}{ordinal_suffix(round(p * 100))}"
         A(f'<tr><td>{row["fy"]}</td><td class="num">${bn(row["ours"])}bn</td>'
           f'<td class="num">${bn(row["street_avg"])}bn</td>'
           f'<td class="num">{bn(row["street_low"])}&ndash;{bn(row["street_high"])}</td>'
@@ -210,14 +217,53 @@ def render(ticker, res, base_year):
     street_last = r["street_case"]["da_pct_revenue_path"][-1]
     A(f'<h3>How year 1 is anchored</h3>')
     A(f'<p>Forecast year {fy0} is part history. <b>${bn(ytd["capex"]["val"], 1)}bn</b> of capex through '
-      f'Q{ytd["quarters_elapsed"]} is a filed fact, not an estimate. The remaining '
-      f'{ytd["quarters_remaining"]} quarter{"s" if ytd["quarters_remaining"] != 1 else ""} are held at '
-      f'the last observed quarterly rate of <b>${bn(ytd["exit_quarter_capex"]["val"], 1)}bn</b> '
-      f'({ytd["exit_quarter_capex"]["period_end"]}), giving <b>${bn(anch["year_one_capex"], 1)}bn</b> '
-      f'for the full year. Freezing the exit rate is deliberately conservative: quarterly capex has '
-      f'risen in each of the last seven quarters, so this assumes the ramp stops today. Anchoring on '
-      f'a trailing-twelve-month ratio instead &mdash; the conventional choice &mdash; would put the '
-      f'full year below the half-year already reported.</p>')
+      f'Q{ytd["quarters_elapsed"]} is a filed fact, not an estimate.</p>')
+    if anch.get("guided"):
+        cg = r["capex_guidance"]
+        A(f'<p>The rest of the year is not an estimate either: management guided full-year capex to '
+          f'<b>${bn(anch["guidance_low"], 0)}&ndash;{bn(anch["guidance_high"], 0)}bn</b> on '
+          f'{cg["as_of"]}, up from ${bn(cg["prior_low"], 0)}&ndash;{bn(cg["prior_high"], 0)}bn. '
+          f'The base case takes the midpoint, <b>${bn(anch["year_one_capex"], 1)}bn</b>. That implies '
+          f'<b>${bn(anch["implied_remaining_quarterly"], 1)}bn</b> in each remaining quarter, '
+          f'{pct(anch["vs_exit_quarter"], 0, True)} on the ${bn(anch["exit_quarter"], 1)}bn just '
+          f'reported. Bear and bull are allowed to disagree with guidance and land at '
+          f'${bn(r["capex_anchor"]["bear"]["year_one_capex"], 0)}bn and '
+          f'${bn(r["capex_anchor"]["bull"]["year_one_capex"], 0)}bn; the base case is not, and the '
+          f'build fails if it drifts outside the range.</p>')
+        A(f'<div class="callout"><b>What this replaced.</b> The previous edition of this memo held '
+          f'the exit quarter flat and carried <b>${bn(anch["exit_rate_alternative"], 1)}bn</b> for '
+          f'{fy0} &mdash; ${bn(anch["guidance_low"] - anch["exit_rate_alternative"], 0)}bn below the '
+          f'bottom of a range management had already published two weeks before that edition went '
+          f'out. Freezing a quarterly figure that has risen for seven consecutive quarters is a '
+          f'reasonable way to forecast a stub when nobody has guided. It is not a reasonable way to '
+          f'forecast one when somebody has. Nothing in the build looked at guidance, so nothing '
+          f'caught it; a check now fails the build instead.</div>')
+        A(f'<p class="sub">Source: {esc(cg["source"])}. &ldquo;{esc(cg["quote"])}&rdquo; On the year '
+          f'after: &ldquo;{esc(cg["forward"])}&rdquo; &mdash; our {fy0 + 1} path carries '
+          f'${bn(base["rows"][1]["capex"], 0)}bn, only '
+          f'{pct(base["rows"][1]["capex"] / base["rows"][0]["capex"] - 1, 0, True)} on {fy0}, so if '
+          f'&ldquo;significantly&rdquo; means what it usually means this path is still too low.</p>')
+    else:
+        A(f'<p>The remaining '
+          f'{ytd["quarters_remaining"]} quarter{"s" if ytd["quarters_remaining"] != 1 else ""} are held at '
+          f'the last observed quarterly rate of <b>${bn(ytd["exit_quarter_capex"]["val"], 1)}bn</b> '
+          f'({ytd["exit_quarter_capex"]["period_end"]}), giving <b>${bn(anch["year_one_capex"], 1)}bn</b> '
+          f'for the full year. This company does not guide capex, so the exit rate is the best '
+          f'available anchor; where management does guide, guidance outranks it.</p>')
+    ranch = r["revenue_anchor"]["base"]
+    if ranch:
+        A(f'<p>Revenue in year 1 is anchored the same way, one level down. '
+          f'<b>${bn(ranch["reported"], 1)}bn</b> is reported for Q{ranch["reported_quarters"]} and '
+          f'Q{ranch["guided_quarter"]} is guided to <b>${bn(ranch["guided_mid"], 1)}bn</b> '
+          f'(&plusmn;{pct(ranch["guided_high"] / ranch["guided_mid"] - 1, 0)}), so '
+          f'<b>{pct(ranch["covered"])}</b> of the year is fixed before our segment build says '
+          f'anything. Our ${bn(ranch["year_one_revenue"], 0)}bn leaves '
+          f'<b>${bn(ranch["stub_per_quarter"], 1)}bn</b> a quarter for the remaining '
+          f'{ranch["stub_quarters"]}, {pct(ranch["stub_vs_guided_quarter"], 1, True)} on the guided '
+          f'quarter. Note the guide {esc(ranch["caveat"])}.</p>')
+        A(f'<p class="sub">Source: {esc(ranch["source"])}. This does not set the forecast &mdash; one '
+          f'guided quarter is not a year &mdash; but a year-1 figure below reported plus guided is '
+          f'arithmetic that has already been falsified, and the build refuses it.</p>')
     if ticker == "GOOGL":
         A(f'<div class="warnbox"><b>The arithmetic the thesis rests on.</b> Over {fy0}&ndash;'
           f'{fy0 + 5} this capex path spends <b>${bn(cum_capex, 0)}bn</b>. Our vintage schedule '
@@ -421,6 +467,53 @@ def render(ticker, res, base_year):
     A(f'<tr><td><b>Value per share</b></td><td class="num"><b>${scen["base"]:,.2f}</b></td><td class="sub"></td></tr>')
     A('</tbody></table></div>')
 
+    post = by.get("post_balance_sheet") or []
+    if post:
+        filed = by["balance_sheet_as_filed"]
+        A('<h3>Financing between the balance-sheet date and the valuation date</h3>')
+        A(f'<p>The bridge above is not the {by["as_of"]} balance sheet unchanged. A filing goes '
+          f'stale, and the reader is pricing the company as it stands today, so priced financing '
+          f'completed after the balance-sheet date is rolled in and itemised here.</p>')
+        A('<div class="scroll"><table><thead><tr><th>Event</th><th>Priced</th><th>Debt $bn</th>'
+          '<th>Cash $bn</th><th>Filing</th></tr></thead><tbody>')
+        for it in post:
+            A(f'<tr><td>{esc(it["event"])}</td><td class="num">{esc(it["priced"])}</td>'
+              f'<td class="num">{bn(it.get("debt", 0.0), 1)}</td>'
+              f'<td class="num">{bn(it.get("cash_and_marketable", 0.0), 1)}</td>'
+              f'<td class="sub">{esc(it["form"])} {esc(it["accn"])}</td></tr>')
+        net = sum(it.get("cash_and_marketable", 0.0) - it.get("debt", 0.0) for it in post)
+        A(f'<tr><td><b>Net effect on equity value</b></td><td></td><td></td>'
+          f'<td class="num"><b>{bn(net, 1)}</b></td>'
+          f'<td class="sub"><b>${net / r["diluted_shares"]:,.2f}</b> per share</td></tr>')
+        A('</tbody></table></div>')
+        A(f'<p class="sub">Debt as filed at {by["as_of"]} was ${bn(filed["debt"], 1)}bn; the bridge '
+          f'carries ${bn(bi["debt"], 1)}bn. Cash as filed was ${bn(filed["cash_and_marketable"], 1)}bn '
+          f'against ${bn(bi["cash_and_marketable"], 1)}bn. Both legs are carried, so what survives is '
+          f'the underwriting spread. The number is small; the reason to know it is small is that it '
+          f'went through the bridge rather than being waved off.</p>')
+
+    undrawn = by.get("authorised_undrawn") or []
+    if undrawn:
+        A('<h3>Authorised but undrawn &mdash; and deliberately not in the share count</h3>')
+        for it in undrawn:
+            sh = it["capacity"] / spot
+            shares_after = r["diluted_shares"] + sh
+            vps_after = (scen["base"] * r["diluted_shares"] + it["capacity"]) / shares_after
+            direction = "accretive to" if vps_after > scen["base"] else "dilutive to"
+            A(f'<div class="warnbox"><b>{esc(it["event"])}.</b> Established {esc(it["established"])}, '
+              f'managers expanded {esc(it["amended"])}. Drawn as of {esc(it["drawn_as_of"])}: '
+              f'<b>${bn(it["drawn"], 1)}bn</b>. Nothing has been issued, so nothing is in the '
+              f'{r["diluted_shares"] / 1e6:,.0f}m share count &mdash; putting unissued shares into a '
+              f'share count is inventing a fact. Drawn in full at ${spot:,.2f} it would be roughly '
+              f'<b>{sh / 1e6:,.0f}m shares</b>, <b>{pct(sh / r["diluted_shares"])}</b> more stock. '
+              f'The share count is not the interesting part: because those shares would be sold at '
+              f'${spot:,.2f} against our estimate of ${scen["base"]:,.2f} of intrinsic value, a full '
+              f'draw is <b>{direction}</b> value per share, taking the base case to '
+              f'<b>${vps_after:,.2f}</b>. Selling stock the seller thinks is expensive is a transfer '
+              f'from the buyer, and on our numbers that is what this programme is. '
+              f'{esc(it["purpose"]).capitalize()}.<br>'
+              f'<span class="sub">{esc(it["source"])}</span></div>')
+
     ss = base.get("steady_state") or {}
     if ss:
         ok = "pos" if ss.get("consistent") else "warn"
@@ -442,7 +535,16 @@ def render(ticker, res, base_year):
     A('<li><b>Segment revenue:</b> FMP <code>statements/revenue-product-segmentation</code>. No SEC '
       'fallback exists &mdash; <code>companyfacts</code> flattens dimensioned facts &mdash; so the '
       'only control is reconciling the segment sum to consolidated revenue.</li>')
-    A('<li><b>Earnings dates and surprise history:</b> Robinhood <code>get_earnings_results</code>.</li>')
+    A('<li><b>Earnings dates and surprise history:</b> Robinhood <code>get_earnings_results</code>. '
+      'Prices and average dollar volume from Robinhood <code>get_equity_quotes</code> and '
+      '<code>get_equity_historicals</code>.</li>')
+    A('<li><b>Management guidance:</b> quoted from the earnings call it was given on, and recorded in '
+      '<code>build/cases.py</code> with the date and speaker, so that the figure the model anchors on '
+      'and the sentence management said are the same object. Guidance is management\'s own statement, '
+      'not a third party\'s conclusion, and it outranks any extrapolation we would build for a period '
+      'they have already guided.</li>')
+    A('<li><b>Financing after the balance-sheet date:</b> SEC prospectus filings (424B2/424B5/FWP), '
+      'itemised in Appendix C with accession numbers rather than folded silently into the bridge.</li>')
     A('<li><b>Not used:</b> third-party model outputs (vendor DCFs, quantitative scores, aggregated '
       'ratings). They are other people\'s conclusions, not evidence.</li>')
     A('</ul>')
@@ -461,7 +563,7 @@ def render(ticker, res, base_year):
     A('</ul>')
 
     A(f'<footer>Prepared {AS_OF}. Base year TTM to {by["as_of"]}; market data as of the '
-      f'2026-08-06 close. Analytical research on public information; not investment advice, '
+      f'2026-08-07 session. Analytical research on public information; not investment advice, '
       f'not a recommendation to any person, and not a solicitation. Position sizing is illustrative '
       f'against a notional $1bn book. The author may hold positions in the securities discussed.'
       f'</footer></div>')

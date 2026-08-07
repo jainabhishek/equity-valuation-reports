@@ -64,6 +64,26 @@ def note(ws, row, text):
     return row + 1
 
 
+def year_one_capex_note(res):
+    """One line on how forecast year 1 capex was anchored, for the Notes tab.
+
+    The workbook is a second implementation, not a printout, so it has to carry
+    the same provenance as the memo rather than pointing at it.
+    """
+    a = res["capex_anchor"]["base"]
+    if a.get("guided"):
+        return (f"Management guided full-year capex to ${a['guidance_low'] / 1e9:,.0f}-"
+                f"{a['guidance_high'] / 1e9:,.0f}bn ({a['guidance_source']}); the base case takes "
+                f"the midpoint, ${a['year_one_capex'] / 1e9:,.1f}bn, against "
+                f"${a['ytd_actual'] / 1e9:,.1f}bn already reported. Holding the exit quarter flat "
+                f"instead would give ${a['exit_rate_alternative'] / 1e9:,.1f}bn, below the guided "
+                f"range. Guidance outranks extrapolation for a period management has guided.")
+    return (f"No capex guidance is published for this filer, so year 1 is "
+            f"${a['ytd_actual'] / 1e9:,.1f}bn reported plus {res['ytd']['quarters_remaining']} "
+            f"quarter(s) at the ${a['exit_quarter'] / 1e9:,.1f}bn exit rate, giving "
+            f"${a['year_one_capex'] / 1e9:,.1f}bn.")
+
+
 def build(ticker, slug):
     res = json.loads((DATA / "results.json").read_text())[ticker]
     by = json.loads((DATA / "base_year.json").read_text())[ticker]
@@ -363,7 +383,7 @@ def build(ticker, slug):
     # ================= Variant vs Street =================
     st = sheet(wb, "Variant", [16, 16, 16, 16, 16, 14, 14, 14])
     r = title(st, 1, "Our forecast against the analyst distribution")
-    r = note(st, r, "Street figures are the consensus feed as retrieved 2026-08-05. "
+    r = note(st, r, "Street figures are the consensus feed as retrieved 2026-08-07. "
                     "Low/high are the support of published estimates, not a confidence interval.")
     r += 1
     r = hdr(st, r, ["Fiscal year", "Our revenue", "Street avg", "Street low", "Street high",
@@ -437,9 +457,11 @@ def build(ticker, slug):
         "Quarterly series are reconstructed from filed facts: Q4 is derived as fiscal year minus the "
         "nine-month cumulative, and cash-flow items are unwound from year-to-date cumulatives.",
         "Consensus estimates and price targets: FMP analyst/financial-estimates and "
-        "analyst/price-target-consensus, retrieved 2026-08-05.",
+        "analyst/price-target-consensus, retrieved 2026-08-07.",
         "Segment revenue: FMP statements/revenue-product-segmentation. No SEC fallback exists because "
         "companyfacts flattens dimensioned facts; the segment sum is reconciled to consolidated revenue.",
+        "",
+        f"YEAR-1 CAPEX ANCHOR. {year_one_capex_note(res)}",
         "",
         "MODEL DESIGN. We forecast EBITDA margin and derive EBIT by subtracting a depreciation schedule "
         "built from capex vintages. Forecasting EBIT margin directly hides the depreciation assumption.",

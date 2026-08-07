@@ -13,34 +13,43 @@ DATA = Path(__file__).parent / "data"
 YEARS = model.YEARS
 
 
-def anchored_capex(declared, delta, revenue, ytd):
-    """Capex intensity path anchored on reported spend, not on a trailing ratio.
+def anchored_capex(declared, delta, revenue, ytd, guidance=None):
+    """Capex intensity path anchored on the best evidence available for year 1.
 
     Forecast year 1 is part history. At 2026-06-30, calendar 2026 is half
-    reported: $80.6bn of Alphabet capex is a filed fact, not a forecast. So
-    year 1 is built as
+    reported: $80.6bn of Alphabet capex is a filed fact, not a forecast. The
+    anchor is therefore chosen in this order:
 
-        reported fiscal-YTD  +  remaining quarters at the last observed rate
+      1. management guidance for the year, if it exists;
+      2. otherwise reported fiscal-YTD + remaining quarters at the exit rate.
 
-    and only the stub is a forecast. Holding the exit quarter flat is
-    deliberately conservative: Alphabet's quarterly capex has risen for seven
-    consecutive quarters, so freezing it assumes the ramp stops today. The
-    trailing-twelve-month ratio this replaces put full-year 2026 capex below
-    six months of actual spend.
+    Guidance ranks first because it is management telling us the answer for a
+    year they are half way through, and because the extrapolation it replaces
+    is only ever an assumption about the stub. For Alphabet the two differ by a
+    lot: holding the $44.9bn Q2 exit quarter flat gives $170.4bn for calendar
+    2026, against a guided $195-205bn. Freezing a quarterly figure that has
+    risen for seven consecutive quarters is conservative when nobody has
+    guided; it is simply wrong once somebody has.
 
     Later years fade to the declared terminal intensity, preserving the shape
     of the declared path. Terminal intensity stays a stated judgment about
     steady-state reinvestment; it is not rescaled by a year-1 revision.
 
     Scenario deltas move the forecast stub and the fade, never the reported
-    portion -- bear and bull disagree about the future, not about what happened.
+    portion -- bear and bull disagree about the future, not about what
+    happened. Against a guided year the same deltas span the guided range:
+    Alphabet's bear (+2.0% of stub revenue) lands near the top of $195-205bn
+    and its bull (-2.5%) near the bottom, which is the right shape. Bear spends
+    more and gets less; bull finds the build front-loaded.
     """
     ytd_capex = ytd["capex"]["val"]
     ytd_revenue = ytd["revenue"]["val"]
     stub_revenue = max(revenue[0] - ytd_revenue, 0.0)
-    y1_capex = (ytd_capex
-                + ytd["quarters_remaining"] * ytd["exit_quarter_capex"]["val"]
-                + delta * stub_revenue)
+    if guidance is not None:
+        anchor = (guidance["low"] + guidance["high"]) / 2
+    else:
+        anchor = ytd_capex + ytd["quarters_remaining"] * ytd["exit_quarter_capex"]["val"]
+    y1_capex = anchor + delta * stub_revenue
     y1 = y1_capex / revenue[0]
 
     terminal = declared[-1] + delta
@@ -55,13 +64,24 @@ def anchored_capex(declared, delta, revenue, ytd):
     return path
 
 
-def check_year_one_capex(ticker, rows, ytd):
-    """Year 1 cannot forecast less capex than the company has already spent.
+def check_year_one_capex(ticker, scenario, rows, ytd, guidance=None):
+    """Year 1 cannot contradict what is already known about year 1.
 
-    This is the check the trailing-ratio anchor needed and did not have: a
-    full-year 2026 figure of $145.1bn against $80.6bn of reported first-half
-    spend implied a second half below the first quarter, which nothing had
-    guided to and no reviewer had queried.
+    Two ways to get this wrong, both of which have actually happened here:
+
+      * forecasting less than the company has already spent. A full-year 2026
+        figure of $145.1bn against $80.6bn of reported first-half spend implied
+        a second half below the first quarter, which nothing had guided to and
+        no reviewer had queried.
+      * forecasting outside the range management has guided to. The exit-rate
+        anchor that fixed the first defect produced $170.4bn against a guided
+        $195-205bn, and shipped, because nothing in the build looked at
+        guidance at all.
+
+    The base case must sit inside the guided range. Bear and bull are allowed
+    outside it -- disagreeing with guidance is what a scenario is for -- but
+    the base case claiming a number management has ruled out is an error, not
+    a view.
     """
     y1, actual = rows[0]["capex"], ytd["capex"]["val"]
     if y1 < actual:
@@ -70,11 +90,73 @@ def check_year_one_capex(ticker, rows, ytd):
             f"capex of {actual/1e9:,.1f}bn at {ytd['capex']['start']}..(Q{ytd['quarters_elapsed']}). "
             "The year-1 anchor is wrong."
         )
-    implied_stub = (y1 - actual) / max(ytd["quarters_remaining"], 1)
-    exit_q = ytd["exit_quarter_capex"]["val"]
-    return {"year_one_capex": y1, "ytd_actual": actual,
-            "implied_remaining_quarterly": implied_stub,
-            "exit_quarter": exit_q, "vs_exit_quarter": implied_stub / exit_q - 1}
+    out = {"year_one_capex": y1, "ytd_actual": actual,
+           "implied_remaining_quarterly": (y1 - actual) / max(ytd["quarters_remaining"], 1),
+           "exit_quarter": ytd["exit_quarter_capex"]["val"], "guided": guidance is not None}
+    out["vs_exit_quarter"] = out["implied_remaining_quarterly"] / out["exit_quarter"] - 1
+
+    if guidance is not None:
+        if guidance["low"] < actual:
+            raise RuntimeError(
+                f"{ticker}: guided full-year capex low end {guidance['low']/1e9:,.1f}bn is below "
+                f"reported fiscal-YTD capex of {actual/1e9:,.1f}bn. The guidance record is stale "
+                f"or mis-keyed -- check CAPEX_GUIDANCE against {guidance['source']}."
+            )
+        if scenario == "base" and not (guidance["low"] <= y1 <= guidance["high"]):
+            raise RuntimeError(
+                f"{ticker}: base-case year-1 capex {y1/1e9:,.1f}bn falls outside management "
+                f"guidance of {guidance['low']/1e9:,.0f}-{guidance['high']/1e9:,.0f}bn "
+                f"({guidance['source']}). The base case may not contradict guidance."
+            )
+        out.update(guidance_low=guidance["low"], guidance_high=guidance["high"],
+                   guidance_source=guidance["source"], guidance_as_of=guidance["as_of"],
+                   inside_guidance=guidance["low"] <= y1 <= guidance["high"],
+                   exit_rate_alternative=(actual + ytd["quarters_remaining"]
+                                          * ytd["exit_quarter_capex"]["val"]))
+    return out
+
+
+def check_year_one_revenue(ticker, rows, ytd, guidance):
+    """Year 1 revenue must clear what is already reported plus what is guided.
+
+    The capex anchor has a floor; revenue did not, and the same class of defect
+    is available on this side of the model. Nvidia's fiscal 2027 is a quarter
+    reported ($81.6bn) and a quarter guided ($91.0bn +/- 2%), which fixes more
+    than a third of the year before the segment build says anything. A forecast
+    below that sum is not a bearish view, it is arithmetic that has already
+    been falsified.
+    """
+    if guidance is None:
+        return None
+    y1 = rows[0]["revenue"]
+    reported = ytd["revenue"]["val"]
+    if ytd["quarters_elapsed"] + 1 != guidance["quarter"]:
+        raise RuntimeError(
+            f"{ticker}: revenue guidance is for Q{guidance['quarter']} but {ytd['quarters_elapsed']} "
+            f"quarter(s) are reported, so the guided quarter is not the next one. "
+            f"Check REVENUE_GUIDANCE against {guidance['source']}."
+        )
+    lo = guidance["mid"] * (1 - guidance["tolerance"])
+    hi = guidance["mid"] * (1 + guidance["tolerance"])
+    floor = reported + lo
+    if y1 < floor:
+        raise RuntimeError(
+            f"{ticker}: forecast year-1 revenue {y1/1e9:,.1f}bn is below reported "
+            f"{reported/1e9:,.1f}bn plus the low end of guidance {lo/1e9:,.1f}bn. The remaining "
+            f"{ytd['quarters_remaining'] - 1} quarter(s) would have to be negative."
+        )
+    remaining_q = ytd["quarters_remaining"] - 1
+    stub = y1 - reported - guidance["mid"]
+    return {
+        "year_one_revenue": y1, "reported": reported, "reported_quarters": ytd["quarters_elapsed"],
+        "guided_mid": guidance["mid"], "guided_low": lo, "guided_high": hi,
+        "guided_quarter": guidance["quarter"], "guided_period_end": guidance["period_end"],
+        "covered": (reported + guidance["mid"]) / y1,
+        "stub": stub, "stub_quarters": remaining_q,
+        "stub_per_quarter": stub / remaining_q if remaining_q else None,
+        "stub_vs_guided_quarter": (stub / remaining_q / guidance["mid"] - 1) if remaining_q else None,
+        "source": guidance["source"], "as_of": guidance["as_of"], "caveat": guidance["caveat"],
+    }
 
 
 def make_drivers(ticker, scenario, base_revenue, ytd):
@@ -103,7 +185,8 @@ def make_drivers(ticker, scenario, base_revenue, ytd):
         nwc_pct_revenue=d["nwc_pct_revenue"], terminal_growth=tg, wacc=wacc, label=scenario,
     )
     rev = model.build_revenue(cases.SPEC[ticker]["base_segments"], probe)["total"]
-    capex_pct = anchored_capex(d["capex_pct_revenue"], adj.get("capex_delta", 0.0), rev, ytd)
+    capex_pct = anchored_capex(d["capex_pct_revenue"], adj.get("capex_delta", 0.0), rev, ytd,
+                               guidance=cases.CAPEX_GUIDANCE.get(ticker))
 
     capex_abs = [rev[i] * capex_pct[i] / 1e9 for i in range(YEARS)]
     da_abs = cases.depreciation_path(ticker, capex_abs, cases.FIRST_YEAR[ticker], YEARS)
@@ -151,8 +234,18 @@ def main():
         for s in ("bear", "base", "bull"):
             dv = make_drivers(ticker, s, bp["revenue"], ytd)
             scen[s] = {"drivers": dv, "result": model.dcf(bp, dv)}
-        capex_anchor = {s: check_year_one_capex(ticker, v["result"]["rows"], ytd)
+        guide = cases.CAPEX_GUIDANCE.get(ticker)
+        if guide is not None and guide["fiscal_year"] != fy0:
+            raise RuntimeError(
+                f"{ticker}: CAPEX_GUIDANCE is keyed to fiscal year {guide['fiscal_year']} but the "
+                f"first forecast year is {fy0}. Guidance for the wrong year would anchor year 1 "
+                "on a figure that does not describe it."
+            )
+        capex_anchor = {s: check_year_one_capex(ticker, s, v["result"]["rows"], ytd, guide)
                         for s, v in scen.items()}
+        rev_guide = cases.REVENUE_GUIDANCE.get(ticker)
+        revenue_anchor = {s: check_year_one_revenue(ticker, v["result"]["rows"], ytd, rev_guide)
+                          for s, v in scen.items()}
 
         base_dv = scen["base"]["drivers"]
         base_res = scen["base"]["result"]
@@ -214,6 +307,9 @@ def main():
             "bridge": bridge,
             "reverse": rev_triple,
             "capex_anchor": capex_anchor,
+            "capex_guidance": guide,
+            "revenue_anchor": revenue_anchor,
+            "revenue_guidance": rev_guide,
             "ytd": ytd,
             "consensus_price_target": cons[ticker]["price_target"],
         }

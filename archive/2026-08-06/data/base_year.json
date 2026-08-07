@@ -2,7 +2,7 @@
   "GOOGL": {
     "ticker": "GOOGL",
     "as_of": "2026-06-30",
-    "spot": 354.24,
+    "spot": 357.94,
     "diluted_shares_m": 12309.0,
     "ttm": {
       "revenue": 445867000000,
@@ -56,43 +56,12 @@
       "quarters_remaining": 2
     },
     "balance_sheet": {
-      "cash_and_marketable": 267274000000.0,
-      "equity_investments": 124259000000.0,
-      "debt": 125164000000.0,
-      "leases": 18037000000.0,
-      "preferred": 18023000000.0
-    },
-    "balance_sheet_as_filed": {
       "cash_and_marketable": 242474000000.0,
       "equity_investments": 124259000000.0,
       "debt": 100164000000.0,
       "leases": 18037000000.0,
       "preferred": 18023000000.0
     },
-    "post_balance_sheet": [
-      {
-        "event": "$25.0bn senior unsecured notes, 10 tranches, 2028-2066 maturities",
-        "priced": "2026-08-06",
-        "settles": "2026-08-10",
-        "accn": "0001193125-26-340264",
-        "form": "424B2",
-        "debt": 25000000000.0,
-        "cash_and_marketable": 24800000000.0,
-        "note": "Priced but not yet settled at the valuation date. Carried at both legs: the obligation is binding and the proceeds are contracted, so omitting either would misstate the bridge by $25bn in one direction or the other."
-      }
-    ],
-    "authorised_undrawn": [
-      {
-        "event": "At-the-market programme, up to $40.0bn of Class A and Class C stock",
-        "established": "2026-06-01",
-        "amended": "2026-08-06",
-        "drawn_as_of": "2026-06-30",
-        "drawn": 0.0,
-        "capacity": 40000000000.0,
-        "source": "Q2 2026 Form 8-K Exhibit 99.1: \"As of June 30, 2026, we have not sold any shares under the ATM Program.\" Managers expanded 2026-08-06 (424B5 0001193125-26-336853).",
-        "purpose": "proceeds primarily intended to meet tax obligations on employee equity grants"
-      }
-    ],
     "derived": {
       "effective_tax_rate": 0.183995001152809,
       "ebit_margin": 0.3311032213642185,
@@ -102,14 +71,14 @@
       "equity_sec_gains": 148982000000,
       "reported_eps": 19.83954829799334,
       "economic_eps": 9.786756517167365,
-      "reported_pe": 17.855245224299257,
-      "economic_pe": 36.19585297525412,
+      "reported_pe": 18.041741405786123,
+      "economic_pe": 36.57391489939718,
       "fcf_cfo_less_capex": 53273000000,
       "fcff": 13300185969.81311,
       "capex_pct_revenue": 0.2969540244063813,
       "da_pct_revenue": 0.056602080889592635,
       "sbc_pct_revenue": 0.06312869084278495,
-      "net_debt": -124073000000.0,
+      "net_debt": -124273000000.0,
       "equity_investments_per_share": 10.094971159314323,
       "equity_investments_pct_revenue": 0.27869073064389155
     },
@@ -426,7 +395,7 @@
   "NVDA": {
     "ticker": "NVDA",
     "as_of": "2026-04-26",
-    "spot": 223.9,
+    "spot": 218.99,
     "diluted_shares_m": 24391.0,
     "ttm": {
       "revenue": 253491000000,
@@ -486,15 +455,6 @@
       "leases": 4344000000.0,
       "preferred": 0.0
     },
-    "balance_sheet_as_filed": {
-      "cash_and_marketable": 52470000000.0,
-      "equity_investments": 72573000000.0,
-      "debt": 8470000000.0,
-      "leases": 4344000000.0,
-      "preferred": 0.0
-    },
-    "post_balance_sheet": [],
-    "authorised_undrawn": [],
     "derived": {
       "effective_tax_rate": 0.1574616111442492,
       "ebit_margin": 0.6402002437956377,
@@ -504,8 +464,8 @@
       "equity_sec_gains": 0.0,
       "reported_eps": 6.543930138165717,
       "economic_eps": 5.605811259704626,
-      "reported_pe": 34.21491294568738,
-      "economic_pe": 39.940695401114425,
+      "reported_pe": 33.46459931208611,
+      "economic_pe": 39.06481860602969,
       "fcf_cfo_less_capex": 119076000000,
       "fcff": 133388342435.4555,
       "capex_pct_revenue": 0.025925969758295166,
