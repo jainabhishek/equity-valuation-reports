@@ -167,9 +167,9 @@ def main():
                 failures.append(f"NVDA {label} FY{exp_row['year']}: workbook {got} vs python {exp}")
 
     wb = load_workbook(path, data_only=False)
-    required_order = ["Cover", "Review", "Sources", "Drivers", "WACC", "Revenue",
-                      "Depreciation", "Equity Bridge", "Valuation", "Scenarios",
-                      "Reverse DCF", "Sensitivities", "Decision", "Checks", "Notes"]
+    required_order = ["Cover", "Decision", "Sources", "Drivers", "Revenue", "WACC",
+                      "Depreciation", "Equity Bridge", "Scenarios", "Valuation",
+                      "Reverse DCF", "Sensitivities", "Checks", "Notes"]
     checks += 1
     if wb.sheetnames != required_order:
         failures.append(f"NVDA sheet order {wb.sheetnames} != {required_order}")
@@ -182,11 +182,23 @@ def main():
         if not str(wb["Scenarios"][cell].value).startswith("="):
             failures.append(f"NVDA Scenarios {cell} is not formula-linked")
     memo_text = (OUT / "nvidia" / "memo.html").read_text()
-    forbidden = ("Alphabet’s WACC", "expected value is 3%", "equity stakes in customers", "Probability-weighted value")
+    forbidden = (
+        "Alphabet’s WACC", "expected value is 3%", "equity stakes in customers",
+        "Probability-weighted value", "Highest-priority findings", "prior memo",
+        "rate-limit response", "Share-ready; not capital-ready",
+    )
     for phrase in forbidden:
         checks += 1
         if phrase in memo_text:
             failures.append(f"NVDA memo retains prohibited legacy claim: {phrase}")
+    required_memo = (
+        "Decision hinge", "Confirmed catalyst", "August 26, 2026 at 2:00 p.m. Pacific",
+        "Downside and squeeze mechanics", "Evidence required before initiating a position",
+    )
+    for phrase in required_memo:
+        checks += 1
+        if phrase not in memo_text:
+            failures.append(f"NVDA memo is missing PM decision content: {phrase}")
     print("  PM architecture, source controls and zero-risk gates ",
           "ok" if not any(x.startswith("NVDA") for x in failures) else "review")
 

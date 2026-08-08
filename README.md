@@ -73,8 +73,8 @@ that spending would increase significantly.
 
 ## Nvidia: selected thesis and decision rule
 
-Nvidia's operating results are exceptional; the public-information work does not
-establish an investable variant at the August 7 price. The base revenue path is
+The public-information work does not establish an investable Nvidia variant at
+the August 7 price. The base revenue path is
 inside the frozen FY2027 aggregator range. The stock/model disagreement is a
 duration argument: spot implies an 8.62% WACC on the base operating path versus
 the explicit 10.70% CAPM case, or a blunt 36% uniform uplift to base revenue.
@@ -86,10 +86,11 @@ The current result is `WATCHLIST / NO POSITION / 0.0%` because:
 - customer-financing exposure within $18.6bn of Q1 private investments and
   $27bn of investment commitments is not quantified;
 - channel, lead-time, backlog and cancellation evidence is absent;
-- Q2 actuals and forward guidance are not filed at this cut;
+- Q2 results are scheduled for August 26 at 2:00 p.m. Pacific; actuals and
+  forward guidance are not filed at this cut;
 - live options, short interest, borrow, crowding and portfolio factor data are
   missing; and
-- the bear/base/bull DCF states span $57.22 to $377.68.
+- the bear/base/bull DCF states span $57.23 to $377.69.
 
 The conditional rule is symmetric. A long requires observable upside to a
 frozen consensus, cleared demand-quality work and at least 20% net underwritten
@@ -99,8 +100,8 @@ controlled uncapped upside and at least 20% net downside after implementation.
 ## Nvidia model architecture
 
 The workbook is authored separately with `@oai/artifact-tool` and recalculated
-against the Python model. Its 15-sheet stack begins with `Cover`, `Review` and
-`Sources`, then carries the calculation and decision layers:
+against the Python model. Its 14-sheet stack opens with `Cover`, `Decision` and
+`Sources`, then carries the calculation and support layers:
 
 1. `Drivers` distinguishes filed facts, market observations and analyst inputs.
 2. `Revenue` anchors FY2027 on Q1 actual revenue and the Q2 guide, and uses
@@ -119,10 +120,6 @@ against the Python model. Its 15-sheet stack begins with `Cover`, `Review` and
 8. `Reverse DCF`, `Sensitivities`, `Decision` and `Checks` expose what spot must
    assume, the duration risk, the seven open capital gates and a forced zero
    position.
-
-The review also corrects the prior memo's Alphabet WACC copy, contradictory
-upside language, zeroed Q1 equity-security gains and unsupported claim that the
-entire strategic equity portfolio funds customers.
 
 ## Alphabet sources
 
@@ -149,6 +146,7 @@ authorized capital or inserted into the share count.
 | Q1 financials, investments, commitments, concentration, D&A and share count | Nvidia Q1 FY2027 Form 10-Q |
 | Current reporting framework, Data Center detail and Q2 guide | Nvidia Q1 FY2027 filed earnings release |
 | FY2026 historical revenue | Nvidia FY2026 Form 10-K |
+| Q2 FY2027 event timing | Nvidia investor-relations event page; August 26 at 2:00 p.m. Pacific |
 | Risk-free rate | U.S. Treasury daily yield curve, 4.65% on August 7 |
 | Price | Read-only Robinhood regular-hours snapshot; refresh before risk |
 | FY2027–28 revenue consensus | Frozen FMP aggregator snapshot; broker provenance and revisions remain open |

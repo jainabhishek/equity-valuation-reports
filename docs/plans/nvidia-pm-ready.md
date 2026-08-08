@@ -37,8 +37,8 @@ is incomplete.
 
 - Freeze broker-level consensus with provider, retrieval timestamp, statistic,
   cohort and revision history around the next earnings event.
-- Reconcile Q2 FY2027 actuals and guidance to the model; the date remains a
-  re-verification item until the official IR calendar is available.
+- Freeze the estimate tape before Nvidia's confirmed August 26 Q2 event, then
+  reconcile actuals, guidance and post-print revisions to the model.
 - Quantify customer-financing and strategic-investment demand exposure instead
   of treating the entire investment portfolio as customer funding.
 - Obtain channel, lead-time, backlog and cancellation evidence sufficient to
@@ -56,9 +56,9 @@ is incomplete.
    reverse DCF, checks and HTML memo.
 2. Build the Excel workbook separately with `@oai/artifact-tool`; every key
    output must be formula-linked to visible assumptions.
-3. Add Cover, Review, Sources, Drivers, WACC, Revenue, Depreciation, Equity
-   Bridge, Valuation, Scenarios, Reverse DCF, Sensitivities, Decision, Checks and
-   Notes sheets in that order.
+3. Add Cover, Decision, Sources, Drivers, Revenue, WACC, Depreciation, Equity
+   Bridge, Scenarios, Valuation, Reverse DCF, Sensitivities, Checks and Notes
+   sheets in that order.
 4. Extend independent verification to compare Python outputs with workbook
    formulas and to fail on the legacy errors above.
 5. Render every worksheet and inspect the memo at desktop and mobile widths.
@@ -68,12 +68,13 @@ is incomplete.
 ## Acceptance criteria
 
 - The memo is internally consistent and labels the output `WATCHLIST / NO
-  POSITION` and `share-ready, not capital-ready`.
+  POSITION`, with public evidence sufficient to stay flat and insufficient to
+  initiate a position.
 - Q1 equity-security gains, current reporting architecture, WACC, terminal
   reinvestment, D&A and the equity bridge are corrected.
 - Bear, base and bull values are formula-driven and ordered.
-- The workbook contains a first-visible Cover, source ledger, review log,
-  decision gates and pass/fail checks.
+- The workbook contains a first-visible Cover, a second-tab Decision page,
+  source ledger, evidence gates and pass/fail checks.
 - No formula errors appear in the final workbook; Python and workbook headline
   outputs tie within stated tolerances.
 - The memo has no horizontal overflow at mobile width and no unresolved browser
