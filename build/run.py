@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import copy
 import json
+from dataclasses import replace
 from pathlib import Path
 
 import cases
@@ -159,6 +160,105 @@ def check_year_one_revenue(ticker, rows, ytd, guidance):
     }
 
 
+def check_year_one_segments(ticker, scenario, segment_paths, ytd, actuals):
+    """No segment may forecast a stub below what its own exit quarter printed.
+
+    The consolidated checks above cannot see a mix error. Forecast 2026 Cloud of
+    $91.0bn against $44.8bn reported implied $23.1bn in each remaining quarter
+    against a $24.8bn exit quarter -- a sequential decline in the fastest-growing
+    segment in the company -- while consolidated 2026 revenue looked entirely
+    reasonable, because other segments were forecast above their exit rates and
+    absorbed it. A total can be right for wrong reasons. Each part cannot.
+
+    The floor is the exit quarter less SEGMENT_DECLINE_TOLERANCE, not the exit
+    quarter itself: segments do have soft quarters, and a zero-tolerance floor
+    turns ordinary noise into a build failure. Declines beyond that need an entry
+    in SEGMENT_DECLINE_EXEMPT saying why, which is a sentence somebody has to
+    write rather than a number that quietly passes.
+
+    Applied to every scenario. A bear case is entitled to a pessimistic view of
+    the future; it is not entitled to a pessimistic view of a quarter that has
+    already been reported.
+    """
+    if actuals is None:
+        return None
+    if actuals["fiscal_year"] != cases.FIRST_YEAR[ticker]:
+        raise RuntimeError(
+            f"{ticker}: SEGMENT_ACTUALS is keyed to fiscal year {actuals['fiscal_year']} but the "
+            f"first forecast year is {cases.FIRST_YEAR[ticker]}."
+        )
+    quarters = actuals["quarters"]
+    if len(quarters) != ytd["quarters_elapsed"]:
+        raise RuntimeError(
+            f"{ticker}: SEGMENT_ACTUALS carries {len(quarters)} quarter(s) but "
+            f"{ytd['quarters_elapsed']} are reported in the consolidated YTD. The segment record "
+            "is stale; add the missing quarter from its earnings release."
+        )
+
+    # Two reconciliations, because they catch different mistakes.
+    #
+    # First, within each quarter: the segment lines plus hedging must sum to the
+    # total printed on the same page. Without this a single mis-keyed segment
+    # passes silently -- the totals still tie to XBRL, because the total is a
+    # separate field nobody touched. That is the same shape of error as the Cloud
+    # defect this function exists to catch, one level further down, and the first
+    # draft of this check had it.
+    for q in quarters:
+        seg_sum = sum(q["segments"].values()) + q.get("hedging", 0.0)
+        if abs(seg_sum - q["total_reported"]) > 1:      # $1m, i.e. a rounding unit
+            raise RuntimeError(
+                f"{ticker}: segment lines for {q['period_end']} sum to ${seg_sum:,.0f}m plus "
+                f"hedging, against a printed total of ${q['total_reported']:,.0f}m "
+                f"(accn {q['accn']}). A segment is mis-keyed."
+            )
+
+    # Second, across quarters: the recorded totals must reconcile to the
+    # consolidated YTD already in base_year.json, which comes from XBRL. Two
+    # independent sources for the same fact; if they disagree, one was keyed wrong.
+    recorded_total = sum(q["total_reported"] for q in quarters) * 1e6
+    if abs(recorded_total - ytd["revenue"]["val"]) > 1e6:
+        raise RuntimeError(
+            f"{ticker}: SEGMENT_ACTUALS quarterly totals sum to {recorded_total/1e9:,.3f}bn but "
+            f"consolidated fiscal-YTD revenue is {ytd['revenue']['val']/1e9:,.3f}bn "
+            f"(accn {ytd['revenue']['accn']}). One of the two is mis-keyed."
+        )
+
+    remaining = ytd["quarters_remaining"]
+    exempt = cases.SEGMENT_DECLINE_EXEMPT.get(ticker, {})
+    rows, worst = [], None
+    for seg in segment_paths:
+        reported = sum(q["segments"].get(seg, 0.0) for q in quarters) * 1e6
+        exit_q = quarters[-1]["segments"].get(seg, 0.0) * 1e6
+        y1 = segment_paths[seg][0]
+        if y1 < reported:
+            raise RuntimeError(
+                f"{ticker} [{scenario}]: forecast {cases.FIRST_YEAR[ticker]} {seg} revenue of "
+                f"{y1/1e9:,.1f}bn is below the {reported/1e9:,.1f}bn already reported through "
+                f"Q{ytd['quarters_elapsed']}."
+            )
+        implied = (y1 - reported) / remaining if remaining else None
+        vs_exit = (implied / exit_q - 1) if (implied is not None and exit_q) else None
+        rows.append({"segment": seg, "year_one": y1, "reported": reported, "exit_quarter": exit_q,
+                     "implied_per_quarter": implied, "vs_exit_quarter": vs_exit,
+                     "exempt": seg in exempt})
+        if vs_exit is not None and (worst is None or vs_exit < worst["vs_exit_quarter"]):
+            worst = rows[-1]
+        if vs_exit is not None and vs_exit < -cases.SEGMENT_DECLINE_TOLERANCE and seg not in exempt:
+            raise RuntimeError(
+                f"{ticker} [{scenario}]: forecast {cases.FIRST_YEAR[ticker]} {seg} revenue of "
+                f"{y1/1e9:,.1f}bn against {reported/1e9:,.1f}bn reported implies "
+                f"{implied/1e9:,.1f}bn in each of the {remaining} remaining quarter(s), "
+                f"{vs_exit:+.1%} against the {exit_q/1e9:,.1f}bn exit quarter "
+                f"({quarters[-1]['period_end']}, accn {quarters[-1]['accn']}). That is a sequential "
+                f"decline the reported quarters do not support. Either raise the year-1 driver or "
+                f"add '{seg}' to SEGMENT_DECLINE_EXEMPT['{ticker}'] with the reason."
+            )
+    return {"rows": rows, "worst": worst, "reported_quarters": ytd["quarters_elapsed"],
+            "remaining_quarters": remaining, "tolerance": cases.SEGMENT_DECLINE_TOLERANCE,
+            "sources": [{"period_end": q["period_end"], "accn": q["accn"], "form": q["form"]}
+                        for q in quarters]}
+
+
 def make_drivers(ticker, scenario, base_revenue, ytd):
     """Build a Drivers object, deriving EBIT margin from the depreciation schedule."""
     spec = cases.SPEC[ticker]
@@ -219,6 +319,124 @@ def base_point(ticker, by):
     }
 
 
+def eps_variant(ticker, base_dv, est, fy0, diluted_shares, tax_rate):
+    """Restate the depreciation variant in EPS, because EPS is what analysts publish.
+
+    The memo has been stating its variant as "consensus carries D&A at 4.6% of
+    revenue". That is true of the feed and it is the wrong thing to lean on. The
+    feed's EBIT margin is 32.48% in every single forecast year and its implied
+    D&A is 4.62% in every single forecast year, to four significant figures --
+    EBIT growth equals revenue growth to a decimal place in all five. No panel of
+    forty analysts produces that. It is a vendor applying a constant margin to a
+    revenue consensus, so disagreeing with it is not disagreeing with anybody.
+
+    The feed's EPS line is different in kind: it moves independently year to
+    year and it carries the largest analyst cohort of any field. So: take the
+    Street's own revenue and EBITDA, substitute our depreciation schedule for
+    theirs, and read off the EPS it implies. If we are right about depreciation
+    and they are right about everything else, that is roughly where EPS lands --
+    and unlike a D&A ratio, it is checked against a printed number four times a
+    year.
+
+    Only computed where EPS_CORROBORATION says the feed's EPS is sound. Nvidia
+    has no entry: its feed net income exceeds EBIT in five forecast years, and a
+    variant stated against an incoherent number would be worse than no variant.
+    """
+    corr = cases.EPS_CORROBORATION.get(ticker)
+    if corr is None:
+        return None
+    by_fy = {e["fy"]: e for e in est}
+    rows = []
+    for i in range(YEARS):
+        fy = fy0 + i
+        e = by_fy.get(fy)
+        if not e or not e.get("ebitda_avg") or not e.get("eps_avg"):
+            continue
+        street_rev, street_ebit = e["revenue_avg"], e["ebit_avg"]
+        street_da = e["ebitda_avg"] - street_ebit
+        our_da = base_dv.da_pct_revenue[i] * street_rev
+        our_ebit = e["ebitda_avg"] - our_da
+        eps_delta = (street_ebit - our_ebit) * (1 - tax_rate[i]) / diluted_shares
+        rows.append({
+            "fy": fy,
+            "street_eps": e["eps_avg"], "n_eps": e.get("n_eps"),
+            "street_da": street_da, "street_da_pct": street_da / street_rev,
+            "our_da_pct": base_dv.da_pct_revenue[i], "our_da_on_street_revenue": our_da,
+            "street_ebit_margin": street_ebit / street_rev,
+            "restated_ebit_margin": our_ebit / street_rev,
+            "eps_delta": eps_delta,
+            "restated_eps": e["eps_avg"] - eps_delta,
+            "eps_delta_pct": -eps_delta / e["eps_avg"] if e["eps_avg"] else None,
+        })
+    flat_ebit = len({round(r["street_ebit_margin"], 4) for r in rows}) == 1 if rows else False
+    flat_da = len({round(r["street_da_pct"], 4) for r in rows}) == 1 if rows else False
+    headline = next((r for r in rows if r["fy"] == corr["fiscal_year"]), None)
+    if headline is None:
+        raise RuntimeError(
+            f"{ticker}: EPS_CORROBORATION is keyed to fiscal year {corr['fiscal_year']}, which the "
+            f"consensus feed does not carry an estimate for. The corroboration record is stale."
+        )
+    if not (corr["reported_low"] <= headline["street_eps"] <= corr["reported_high"] * 1.05):
+        raise RuntimeError(
+            f"{ticker}: feed {corr['fiscal_year']}E EPS of {headline['street_eps']:.2f} is outside "
+            f"the {corr['reported_low']:.2f}-{corr['reported_high']:.2f} range independently "
+            f"reported for Street consensus. The feed's EPS is no longer corroborated, so the "
+            f"variant may not be stated against it -- re-check EPS_CORROBORATION."
+        )
+    return {
+        "rows": rows,
+        "headline": headline,
+        "corroboration": corr,
+        "feed_margin_is_constant": flat_ebit and flat_da,
+        "note": ("The feed's EBIT margin and implied D&A are identical in every forecast year, "
+                 "which is a vendor derivation rather than an analyst forecast. The EPS line is "
+                 "not: it is the field with the largest cohort and it is what the variant is "
+                 "stated against."),
+    }
+
+
+def wacc_sensitivity(bp, base_dv, base_res, reverse, grid=(0.0650, 0.0700, 0.0757, 0.0800,
+                                                            0.0850, 0.0875, 0.0900, 0.0950)):
+    """Value per share across the discount rate, published rather than implied.
+
+    Terminal value is ~89% of enterprise value here, so the discount rate is not
+    one assumption among many: it is most of the answer. The base case uses a
+    CAPM build of 8.75%; widely published estimates of Alphabet's WACC sit near
+    7.5%, and the reverse DCF says the market is discounting at ~6.1%. Those are
+    large differences and they belong in a table the reader can look at, not in
+    a single number in a footnote.
+
+    This is disclosure, not a change of view. 8.75% remains the base case. But a
+    memo whose conclusion moves by a third across the range of defensible
+    discount rates should say so, because a reader who prefers 7.5% is not
+    disagreeing with the depreciation work at all -- they are disagreeing with
+    one input, and they are entitled to know what it is worth.
+    """
+    out = []
+    for w in sorted(set(grid) | {base_dv.wacc}):
+        dv = replace(base_dv, wacc=w)
+        try:
+            r = model.dcf(bp, dv)
+        except ValueError:      # WACC - g below the stability floor
+            continue
+        vps = r["value_per_share"]
+        out.append({
+            "wacc": w,
+            "value_per_share": vps,
+            "vs_base": vps / base_res["value_per_share"] - 1,
+            "vs_spot": vps / bp["spot"] - 1,
+            "tv_pct_ev": r["tv_pct_ev"],
+            "is_base": abs(w - base_dv.wacc) < 1e-9,
+            "note": ("base case, CAPM build" if abs(w - base_dv.wacc) < 1e-9
+                     else "published third-party WACC estimates cluster here" if w == 0.0757
+                     else None),
+        })
+    return {"grid": out, "base_wacc": base_dv.wacc,
+            "market_implied_wacc": reverse["implied_wacc"],
+            "terminal_growth": base_dv.terminal_growth,
+            "tv_pct_ev": base_res["tv_pct_ev"]}
+
+
 def main():
     by = json.loads((DATA / "base_year.json").read_text())
     cons = json.loads((DATA / "consensus.json").read_text())
@@ -246,6 +464,13 @@ def main():
         rev_guide = cases.REVENUE_GUIDANCE.get(ticker)
         revenue_anchor = {s: check_year_one_revenue(ticker, v["result"]["rows"], ytd, rev_guide)
                           for s, v in scen.items()}
+        seg_actuals = cases.SEGMENT_ACTUALS.get(ticker)
+        segment_anchor = {
+            s: check_year_one_segments(
+                ticker, s, model.build_revenue(bp["segments"], v["drivers"])["by_segment"],
+                ytd, seg_actuals)
+            for s, v in scen.items()
+        }
 
         base_dv = scen["base"]["drivers"]
         base_res = scen["base"]["result"]
@@ -310,6 +535,10 @@ def main():
             "capex_guidance": guide,
             "revenue_anchor": revenue_anchor,
             "revenue_guidance": rev_guide,
+            "segment_anchor": segment_anchor,
+            "eps_variant": eps_variant(ticker, base_dv, est, fy0, bp["diluted_shares"],
+                                       base_dv.tax_rate),
+            "wacc_sensitivity": wacc_sensitivity(bp, base_dv, base_res, rev_triple),
             "ytd": ytd,
             "consensus_price_target": cons[ticker]["price_target"],
         }

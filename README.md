@@ -23,12 +23,12 @@ individually, and checkable against the next filing.
 | --- | --- | --- |
 | **Rating** | **SHORT** · conviction 2/3 · 18-month horizon | **NO POSITION** · conviction 1/3 |
 | Spot | $354.24 | $223.90 |
-| Bear / base / bull | $105.48 / $186.74 / $433.18 | $67.39 / $197.39 / $437.47 |
-| Expected value | **$240.36 (−32.1%)** | **$224.91 (+0.5%)** |
-| Risk / reward | 1.44 : 1 | 0.01 : 1 |
-| Breakeven p(bull) | 71% | 25% |
+| Bear / base / bull | $107.50 / $190.51 / $442.53 | $67.39 / $197.39 / $437.47 |
+| Expected value | **$245.37 (−30.7%)** | **$224.91 (+0.5%)** |
+| Risk / reward | 1.23 : 1 | 0.01 : 1 |
+| Breakeven p(bull) | 69% | 25% |
 | Position size | 5.00% of NAV *(concentration cap binding)* | 0.00% |
-| Street-calibrated value | $159.72 | $231.98 |
+| Street-calibrated value | $160.36 | $231.98 |
 | Street price target | $427.55 | $319.48 |
 | Memo | [Open →](https://jainabhishek.github.io/equity-valuation-reports/alphabet/memo.html) | [Open →](https://jainabhishek.github.io/equity-valuation-reports/nvidia/memo.html) |
 | Model | [Download](alphabet/model.xlsx) | [Download](nvidia/model.xlsx) |
@@ -37,29 +37,43 @@ Base year: trailing twelve months to 2026-06-30 (GOOGL) and 2026-04-26 (NVDA).
 Market data as of the 2026-08-07 session. Earlier editions are kept at their own
 dated URLs — see [the archive](archive/index.html).
 
-### Alphabet — the variant is depreciation
+### Alphabet — the variant is depreciation, stated in EPS
 
-The consensus feed carries D&A at a flat **4.6% of revenue** every year through
-2030 and EBIT margin flat at 32.5% to one decimal place. Alphabet spent **29.7%
-of revenue** on capex over the last twelve months and depreciated **5.7%** — a
-5.2× ratio. Those cannot both persist. A depreciation schedule built from capex
-vintages reaches **15.5% of revenue** by 2031, taking roughly 730bp off EBIT
-margin.
+Put our depreciation schedule through the Street's own revenue and EBITDA and
+**2027 EPS is $12.20 against the $15.01 that forty-two analysts publish** — a
+19% gap that a printed number tests every ninety days. That is the variant.
 
-Forecast year 2026 is anchored on management guidance, not on our extrapolation.
-**$80.6bn** of first-half capex is reported fact, and on 22 July the CFO guided
-the full year to **$195–205bn**, up from $180–190bn. The base case takes the
-$200bn midpoint, which implies **$59.7bn** in each remaining quarter against the
-$44.9bn just reported. Over 2026–31 that path spends **$1,083bn** while the
-consensus feed depreciates only **$189bn** of it — a **$382bn** gap, and by 2031
-**$95bn** a year of charge the consensus EBIT margin never takes.
+It is deliberately *not* stated as "consensus carries D&A at 4.6% of revenue",
+which is how earlier editions put it. That comparison was weaker than it looked:
+the feed's EBIT margin is **32.48%** and its implied D&A **4.62%** in every
+single forecast year, to four significant figures, with EBIT growth equal to
+revenue growth to a decimal place in all of them. That is a vendor holding a
+ratio constant against a revenue consensus, not forty analysts agreeing on a
+margin. Published EPS is a real forecast with a real cohort behind it, so that
+is what the variant is now measured against.
+
+The underlying arithmetic is unchanged. Forecast year 2026 is anchored on
+management guidance: **$80.6bn** of first-half capex is reported fact, and on
+22 July the CFO guided the full year to **$195–205bn**, up from $180–190bn. The
+base case takes the $200bn midpoint — **$59.7bn** in each remaining quarter
+against the $44.9bn just reported. Over 2026–31 that path spends **$1,093bn**
+while the consensus feed depreciates only **$193bn** of it, a **$381bn** gap,
+and by 2031 **$95bn** a year of charge the consensus EBIT margin never takes.
 
 Management has also said the charge is coming, in terms: capex will "increase
 significantly in 2027", bringing "higher depreciation expense and related data
 center operations costs such as energy". The spending leg of the thesis is no
-longer a forecast we have to defend. The depreciation leg is what the consensus
-feed has not moved on, and it is checkable every ninety days from the filings —
-which is what makes it a position rather than an opinion.
+longer a forecast we have to defend, and it is checkable every ninety days from
+the filings — which is what makes it a position rather than an opinion.
+
+**The discount rate is worth more than the depreciation argument, and the memo
+now says so.** Terminal value is 89% of enterprise value and the base case
+discounts at 8.75%. Published third-party estimates of Alphabet's WACC cluster
+near **7.57%**, which on this same model gives **$243.01** rather than $190.51;
+the reverse DCF implies the market is discounting at **6.19%**. A reader who
+prefers 7.5% and accepts every other number here is most of the way to the
+Street's range without disagreeing with the thesis at all. The full sensitivity
+is published in the memo rather than left implicit in one input.
 
 A quality-of-earnings pass also matters here: Alphabet's trailing twelve months
 include **$149bn of equity-securities gains — 50.7% of pretax income**. Reported
@@ -107,10 +121,24 @@ Nvidia: Data Center (units × ASP × networking attach) plus the smaller segment
 model anchors on the guidance and the build fails if the base case drifts outside
 the range; scenarios may disagree with guidance, the base case may not. Where they
 have not (Nvidia does not guide capex), reported fiscal-year-to-date spend plus
-the exit quarter stands. This exists because the previous edition extrapolated a
+the exit quarter stands. This exists because an earlier edition extrapolated a
 2026 Alphabet capex figure $25bn below a range management had already published:
 the build had a floor at capex already reported, but nothing that looked at what
 had been guided.
+
+**Every segment is checked against its own reported quarters.** A consolidated
+total can be right while the mix inside it is wrong, and consolidated checks
+cannot see that. The edition before this one forecast 2026 Cloud revenue of
+$91.0bn against $44.8bn already reported — implying $23.1bn in each remaining
+quarter, *below* the $24.8bn the June quarter had just printed, in the one
+segment growing 82% year over year with a backlog that had added $54bn in three
+months to reach $514bn. Consolidated revenue looked entirely reasonable because
+other segments were forecast above their own exit rates and absorbed it. Each
+segment's implied stub is now measured against its exit quarter, a decline
+beyond 2% fails the build unless the reason is written down, and Cloud carries
+$97.5bn. Segment revenue is not in XBRL, so the reported quarters are keyed from
+the 8-K earnings releases and their sum must tie to the XBRL consolidated
+year-to-date figure or the build fails.
 
 **Depreciation is derived, not assumed.** We forecast EBITDA margin — a cash
 margin driven by mix, pricing and opex — and subtract a straight-line schedule
@@ -140,8 +168,15 @@ independently would double-count depreciation.
 
 **Reverse DCF** is three independent solves — revenue CAGR, terminal EBIT margin,
 discount rate — reported as one sentence each. At $354.24 the market is paying for
-*either* a 28.0% revenue CAGR, *or* a 47.1% terminal EBIT margin, *or* a 6.13%
+*either* a 28.0% revenue CAGR, *or* a 46.4% terminal EBIT margin, *or* a 6.19%
 discount rate.
+
+**The discount rate is published as a table, not a number.** Terminal value is
+89% of enterprise value, so the WACC is not one assumption among many — it is
+most of the answer. The memo prints value per share across 6.50%–9.50% with the
+base case, the published third-party consensus and the market-implied rate all
+marked, because a valuation this far below the market owes the reader the input
+that moves it most.
 
 **The bridge is rolled forward, not frozen at the filing.** Financing priced
 between the balance-sheet date and the valuation date is itemised with its
@@ -161,7 +196,8 @@ constraint published. Kill criteria name an observable, a threshold and a date.
 | --- | --- |
 | Statement historicals, equity bridge, share counts | SEC XBRL `companyconcept` |
 | Consensus estimates and price targets | FMP `analyst/*` |
-| Segment revenue | FMP `statements/revenue-product-segmentation` |
+| Segment revenue, annual history | FMP `statements/revenue-product-segmentation` |
+| Segment revenue, reported quarters of the forecast year | SEC 8-K earnings releases, by accession number, keyed into `build/cases.py` and reconciled to the XBRL consolidated total |
 | Earnings dates and surprise history | Robinhood `get_earnings_results` |
 | Prices and average dollar volume | Robinhood `get_equity_quotes`, `get_equity_historicals` |
 | Management guidance | The earnings call it was given on, quoted with date and speaker in `build/cases.py` |
@@ -206,9 +242,21 @@ exactly what had happened to the previous set.
   calibrated to reported D&A, not a disclosed figure. It is the single most
   load-bearing input in the model, and Alphabet kill criterion k1 exists to
   monitor exactly it.
-- **The consensus feed holds D&A at a constant share of revenue** in every year,
-  which may be an artifact of the aggregator rather than what individual analysts
-  model. The comparison is to the feed we can observe, and is labelled as such.
+- **The consensus feed's margin decomposition is a vendor derivation, not an
+  analyst forecast.** EBIT margin is 32.48% and implied D&A 4.62% in every single
+  forecast year, to four significant figures. Nothing is inferred from it any
+  more: the variant is stated against published EPS, which moves independently
+  year to year and carries the largest cohort in the feed (42 estimates for
+  2027). Independent reporting of Street 2027 EPS ($14.20–$14.68) brackets the
+  $15.01 the feed carries, which is the basis for treating that field as real.
+- **Whether individual analysts have modelled the depreciation wave is not
+  something this data can settle.** Some sell-side commentary says they have. The
+  feed cannot confirm it either way, so the memo claims only that our schedule
+  implies lower EPS than the published number — not that nobody has thought
+  about it.
+- **The discount rate moves the answer more than the thesis does.** 8.75% is a
+  CAPM build; at the 7.57% third-party estimates cluster around, the base case is
+  $243.01 rather than $190.51. The sensitivity is published in full.
 - Segment sums reconcile to consolidated revenue within 0.2% (GOOGL) and 1.0% (NVDA).
 - Our Alphabet valuation sits well below the Street's median target and below the
   lowest of 39 published targets. That is stated on the front page of the memo,

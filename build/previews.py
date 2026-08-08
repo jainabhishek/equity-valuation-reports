@@ -133,9 +133,9 @@ def main():
 
     # ---- per-company cards, 1000x520
     for ticker, name, f, slug in (("GOOGL", "Alphabet", g, "alphabet"), ("NVDA", "Nvidia", n, "nvidia")):
-        thesis = ("Consensus carries D&amp;A at 4.6% of revenue while" if ticker == "GOOGL"
+        thesis = ("Our vintage depreciation schedule puts 2027 EPS at" if ticker == "GOOGL"
                   else "Priced. Our range is $67&#8211;$437;")
-        thesis2 = ("guided 2026 capex is 40.7%. Those cannot both persist."
+        thesis2 = ("$12.20. Forty-two analysts publish $15.01."
                    if ticker == "GOOGL" else "no defensible position size survives that spread.")
         inner = card(80, 300, 840, 175, ticker, name, f)
         svg = shell(1000, 520, inner, f"{ticker} &#183; INVESTMENT MEMO", name,
