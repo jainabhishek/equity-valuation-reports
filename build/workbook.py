@@ -514,10 +514,19 @@ def build(ticker, slug):
 
 
 if __name__ == "__main__":
-    # Alphabet's PM-ready package has a dated stub, point-in-time share bridge,
-    # quarterly placed-in-service D&A and implementation gates.  Keep the
-    # generic builder for Nvidia until it receives the same company-specific
-    # remediation.
+    import os
+    import shutil
+    import subprocess
+
     import alphabet_pm
+
     print("wrote", alphabet_pm.build_workbook())
-    print("wrote", build("NVDA", "nvidia"))
+    node = os.environ.get("NODE_BIN") or shutil.which("node")
+    if not node:
+        bundled = Path.home() / ".cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node"
+        node = str(bundled) if bundled.exists() else None
+    if not node:
+        raise SystemExit("Node.js is required for the @oai/artifact-tool Nvidia workbook build")
+    script = Path(__file__).resolve().with_name("nvidia_workbook.mjs")
+    subprocess.run([node, str(script)], check=True, cwd=OUT)
+    print("wrote", OUT / "nvidia" / "model.xlsx")

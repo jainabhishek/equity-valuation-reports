@@ -2,7 +2,7 @@
 
 These were previously hand-made and hardcoded the old valuations, so the landing
 page and social cards published numbers that contradicted the memos. Generating
-them from results.json means they cannot drift again.
+them from the company PM JSON files keeps the public cards aligned.
 """
 from __future__ import annotations
 
@@ -10,8 +10,6 @@ import json
 from pathlib import Path
 
 import cairosvg
-
-import decision
 
 DATA = Path(__file__).parent / "data"
 ASSETS = Path(__file__).parent.parent / "assets"
@@ -34,15 +32,13 @@ def facts(ticker):
         return {"spot": pm["inputs"]["spot"], "scen": scen,
                 "rating": "WAIT FOR PROOF", "ev": ev,
                 "ev_pct": ev / pm["inputs"]["spot"] - 1, "rr": 0.0, "size": 0.0}
-    res = json.loads((DATA / "results.json").read_text())[ticker]
-    scen = {k: res["scenarios"][k]["value_per_share"] for k in ("bear", "base", "bull")}
-    meta = decision.RATING[ticker]
-    direction = "SHORT" if meta["rating"] == "SHORT" else "LONG"
-    sz = decision.size(ticker, scen, decision.PROBS[ticker], res["spot"], direction)
+    pm = json.loads((DATA / "nvidia_pm.json").read_text())
+    scen = {k: pm["scenarios"][k]["value_per_share"] for k in ("bear", "base", "bull")}
+    reference = scen["base"]
     return {
-        "spot": res["spot"], "scen": scen, "rating": meta["rating"],
-        "ev": sz["expected_value"], "ev_pct": sz["expected_value"] / res["spot"] - 1,
-        "rr": sz["risk_reward"], "size": sz["position_size"],
+        "spot": pm["market"]["spot"], "scen": scen, "rating": "NO POSITION",
+        "ev": reference, "ev_pct": reference / pm["market"]["spot"] - 1,
+        "rr": 0.0, "size": 0.0, "reference_label": "Base DCF", "show_reference_marker": False,
     }
 
 
@@ -58,8 +54,9 @@ def scenario_bar(x, y, w, f, scale_lo=None, scale_hi=None):
              f'fill="{BLUE}" opacity="0.42"/>')
     # base case
     o.append(f'<circle cx="{px(f["scen"]["base"]):.1f}" cy="{y + 3.5}" r="6" fill="{WHITE}"/>')
-    # expected value
-    o.append(f'<circle cx="{px(f["ev"]):.1f}" cy="{y + 3.5}" r="5" fill="{PURPLE}"/>')
+    # Reference marker is useful only when it differs from the base marker.
+    if f.get("show_reference_marker", True):
+        o.append(f'<circle cx="{px(f["ev"]):.1f}" cy="{y + 3.5}" r="5" fill="{PURPLE}"/>')
     # spot
     o.append(f'<rect x="{px(f["spot"]) - 1.5:.1f}" y="{y - 7}" width="3" height="21" rx="1.5" fill="{RED}"/>')
     return "".join(o)
@@ -84,7 +81,7 @@ def card(x, y, w, h, ticker, name, f):
              f'text-anchor="end">bull ${f["scen"]["bull"]:,.0f}</text>')
 
     cols = [("Spot", f'${f["spot"]:,.2f}', MUTED),
-            ("Expected value", f'${f["ev"]:,.2f}', WHITE),
+            (f.get("reference_label", "Expected value"), f'${f["ev"]:,.2f}', WHITE),
             ("vs spot", f'{f["ev_pct"] * 100:+.1f}%', RED if f["ev_pct"] < 0 else PURPLE)]
     cw = (w - 52) / 3
     for i, (lab, val, col) in enumerate(cols):
@@ -141,15 +138,15 @@ def main():
     # ---- per-company cards, 1000x520
     for ticker, name, f, slug in (("GOOGL", "Alphabet", g, "alphabet"), ("NVDA", "Nvidia", n, "nvidia")):
         thesis = ("Wait for proof: D&amp;A must cause an unoffset EPS cut;" if ticker == "GOOGL"
-                  else "Priced. Our range is $67&#8211;$437;")
+                  else "Watchlist: no verified variant; DCF range $57&#8211;$378;")
         thesis2 = ("borrow, crowding, options and hedge gates remain open."
-                   if ticker == "GOOGL" else "no defensible position size survives that spread.")
+                   if ticker == "GOOGL" else "all seven capital gates remain open.")
         inner = card(80, 250, 840, 225, ticker, name, f)
         svg = shell(1000, 520, inner, f"{ticker} &#183; INVESTMENT MEMO", name,
                     [thesis, thesis2],
                     (["No position", "Implementation gate open", "Dated FCFF cross-check"]
                      if ticker == "GOOGL" else
-                     [f'R:R {f["rr"]:.2f}', f'Size {f["size"] * 100:.2f}% NAV', "6-yr FCFF DCF"]))
+                     ["No position", "CAPM + reverse DCF", "7 capital gates open"]))
         cairosvg.svg2png(bytestring=svg.encode(), write_to=str(ASSETS / f"{slug}-preview.png"),
                          output_width=1000, output_height=520)
 
