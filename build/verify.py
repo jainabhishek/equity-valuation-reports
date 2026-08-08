@@ -15,6 +15,7 @@ import formulas
 from openpyxl import load_workbook
 
 import alphabet_pm
+import nvidia_pm
 
 DATA = Path(__file__).parent / "data"
 OUT = Path(__file__).parent.parent
@@ -128,47 +129,66 @@ def main():
         failures.append("GOOGL has an uncleared implementation gate but non-zero size")
     print("  formula architecture and PM gates          ", "ok" if not failures else "review")
 
-    # Nvidia continues to use the generic two-company engine.
-    for ticker, slug in (("NVDA", "nvidia"),):
-        path = OUT / slug / "model.xlsx"
-        book = path.name
-        print(f"\n{'=' * 66}\n{ticker}: recalculating {path.name}\n{'=' * 66}")
-        sol = solve(path)
+    # Nvidia is independently implemented in Python and @oai/artifact-tool.
+    ticker, slug = "NVDA", "nvidia"
+    path = OUT / slug / "model.xlsx"
+    book = path.name
+    pm = nvidia_pm.build_data(write=False)
+    print(f"\n{'=' * 66}\n{ticker}: recalculating PM-ready {path.name}\n{'=' * 66}")
+    sol = solve(path)
+    expected_cells = {
+        ("Valuation", "J18", "Bear value per share"): pm["scenarios"]["bear"]["value_per_share"],
+        ("Valuation", "J41", "Base value per share"): pm["scenarios"]["base"]["value_per_share"],
+        ("Valuation", "J64", "Bull value per share"): pm["scenarios"]["bull"]["value_per_share"],
+        ("WACC", "B14", "Calculated WACC"): pm["wacc"]["built_wacc"],
+        ("Reverse DCF", "B7", "Value at implied WACC"): pm["market"]["spot"],
+        ("Decision", "B13", "Position size"): 0.0,
+        ("Checks", "B15", "Check failures"): 0.0,
+    }
+    for (sheet_name, cell, label), exp in expected_cells.items():
+        got = find(sol, sheet_name, cell, book)
+        checks += 1
+        tol = TOL if abs(exp) < 1000 else max(abs(exp) * 1e-8, 1e-6)
+        ok = got is not None and abs(got - exp) <= tol
+        print(f"  {label:<42} {'ok' if ok else 'MISMATCH'}")
+        if not ok:
+            failures.append(f"NVDA {sheet_name}/{cell} {label}: workbook {got} vs python {exp}")
 
-        expected = {
-            "Value per share": res[ticker]["scenarios"]["base"]["value_per_share"],
-            "Enterprise value": res[ticker]["scenarios"]["base"]["enterprise_value"],
-            "Equity value": res[ticker]["scenarios"]["base"]["equity_value"],
-            "Terminal value % of EV": res[ticker]["scenarios"]["base"]["tv_pct_ev"],
-        }
-        for label, exp in expected.items():
-            r = label_row(path, "Valuation", label)
-            got = find(sol, "Valuation", f"B{r}", book)
+    # Base D&A and DCF FCFF tie year by year, not only at the headline.
+    for i, exp_row in enumerate(pm["scenarios"]["base"]["rows"]):
+        col = chr(ord("B") + i)
+        for sheet_name, cell, exp, label in (
+            ("Depreciation", f"{col}25", exp_row["da"], "D&A"),
+            ("Valuation", f"{col}42", exp_row["dcf_fcff"], "DCF FCFF"),
+        ):
+            got = find(sol, sheet_name, cell, book)
             checks += 1
-            if got is None:
-                failures.append(f"{ticker} {label}: workbook produced no value")
-                print(f"  {label:<26} MISSING")
-                continue
-            tol = TOL if "share" in label else max(abs(exp) * 1e-6, 1e-6)
-            ok = abs(got - exp) <= tol
-            if not ok:
-                failures.append(f"{ticker} {label}: workbook {got:,.6f} vs python {exp:,.6f}")
-            flag = "ok" if ok else "MISMATCH"
-            if abs(exp) > 1000:
-                print(f"  {label:<26} workbook {got / 1e9:>12,.3f}bn   python {exp / 1e9:>12,.3f}bn   {flag}")
-            else:
-                print(f"  {label:<26} workbook {got:>12,.4f}     python {exp:>12,.4f}     {flag}")
+            if got is None or abs(got - exp) > max(abs(exp) * 1e-8, 1e-6):
+                failures.append(f"NVDA {label} FY{exp_row['year']}: workbook {got} vs python {exp}")
 
-        # every forecast-year FCFF must tie as well, not just the headline
-        r = label_row(path, "Valuation", "FCFF")
-        for i in range(6):
-            col = chr(ord("B") + i)
-            got = find(sol, "Valuation", f"{col}{r}", book)
-            exp = res[ticker]["scenarios"]["base"]["rows"][i]["fcff"]
-            checks += 1
-            if got is None or abs(got - exp) > max(abs(exp) * 1e-6, 1.0):
-                failures.append(f"{ticker} FCFF year {i + 1}: workbook {got} vs python {exp:,.2f}")
-        print(f"  {'FCFF, all 6 years':<26} {'ok' if not any('FCFF' in f for f in failures) else 'MISMATCH'}")
+    wb = load_workbook(path, data_only=False)
+    required_order = ["Cover", "Review", "Sources", "Drivers", "WACC", "Revenue",
+                      "Depreciation", "Equity Bridge", "Valuation", "Scenarios",
+                      "Reverse DCF", "Sensitivities", "Decision", "Checks", "Notes"]
+    checks += 1
+    if wb.sheetnames != required_order:
+        failures.append(f"NVDA sheet order {wb.sheetnames} != {required_order}")
+    for cell in ("B19", "C19", "D19", "E19", "F19", "G19", "B25", "G25"):
+        checks += 1
+        if not str(wb["Depreciation"][cell].value).startswith("="):
+            failures.append(f"NVDA Depreciation {cell} is not formula-driven")
+    for cell in ("H26", "H27", "H28"):
+        checks += 1
+        if not str(wb["Scenarios"][cell].value).startswith("="):
+            failures.append(f"NVDA Scenarios {cell} is not formula-linked")
+    memo_text = (OUT / "nvidia" / "memo.html").read_text()
+    forbidden = ("Alphabet’s WACC", "expected value is 3%", "equity stakes in customers", "Probability-weighted value")
+    for phrase in forbidden:
+        checks += 1
+        if phrase in memo_text:
+            failures.append(f"NVDA memo retains prohibited legacy claim: {phrase}")
+    print("  PM architecture, source controls and zero-risk gates ",
+          "ok" if not any(x.startswith("NVDA") for x in failures) else "review")
 
     print(f"\n{'=' * 66}")
     if failures:

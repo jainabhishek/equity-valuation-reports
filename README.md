@@ -5,9 +5,9 @@
 [![As of](https://img.shields.io/badge/as%20of-Aug%208%2C%202026-172033)](#)
 
 Public-information equity research with self-contained HTML memos and live Excel
-models. The current Alphabet package is designed for hedge-fund PM review: it
-separates calculation integrity from trade actionability and recommends no risk
-until the evidence and implementation gates clear.
+models. Both packages are designed for hedge-fund PM review: they separate
+calculation integrity from trade actionability and recommend no risk until the
+evidence and implementation gates clear.
 
 **Live site:** [jainabhishek.github.io/equity-valuation-reports](https://jainabhishek.github.io/equity-valuation-reports/)
 
@@ -15,11 +15,11 @@ until the evidence and implementation gates clear.
 
 | | Alphabet (GOOGL) | Nvidia (NVDA) |
 | --- | --- | --- |
-| **Stance** | **WAIT FOR PROOF / NO POSITION** | **NO POSITION** |
+| **Stance** | **WAIT FOR PROOF / NO POSITION** | **WATCHLIST / NO POSITION** |
 | Market data | $354.24, August 7 regular-hours last trade | $223.90 |
-| Primary scenario range | $273.91 / $334.68 / $398.41 | $67.39 / $197.39 / $437.47 |
-| Probability-weighted value | **$335.42 (−5.3%)** · illustrative only | **$224.91 (+0.5%)** |
-| Position size | **0.0%** · implementation gates open | **0.0%** |
+| Primary scenario range | $273.91 / $334.68 / $398.41 | $57.22 / $165.40 / $377.68 |
+| Decision reference | **$335.42 (−5.3%)** · illustrative expected value | **$165.40 (−26.1%)** · base DCF, no probabilities |
+| Position size | **0.0%** · implementation gates open | **0.0%** · seven gates open |
 | Alphabet DCF cross-check | **$143.64** · 90% terminal value, not the catalyst | — |
 | Memo | [Open →](https://jainabhishek.github.io/equity-valuation-reports/alphabet/memo.html) | [Open →](https://jainabhishek.github.io/equity-valuation-reports/nvidia/memo.html) |
 | Model | [Download](alphabet/model.xlsx) | [Download](nvidia/model.xlsx) |
@@ -71,7 +71,60 @@ capex is $200bn, the midpoint of management's $195–205bn guide; FY2027 is a
 visible $230bn analyst assumption, +15%, consistent with management's direction
 that spending would increase significantly.
 
-## Sources
+## Nvidia: selected thesis and decision rule
+
+Nvidia's operating results are exceptional; the public-information work does not
+establish an investable variant at the August 7 price. The base revenue path is
+inside the frozen FY2027 aggregator range. The stock/model disagreement is a
+duration argument: spot implies an 8.62% WACC on the base operating path versus
+the explicit 10.70% CAPM case, or a blunt 36% uniform uplift to base revenue.
+Neither is a differentiated near-term earnings call.
+
+The current result is `WATCHLIST / NO POSITION / 0.0%` because:
+
+- no broker-level consensus cohort or revision history has been frozen;
+- customer-financing exposure within $18.6bn of Q1 private investments and
+  $27bn of investment commitments is not quantified;
+- channel, lead-time, backlog and cancellation evidence is absent;
+- Q2 actuals and forward guidance are not filed at this cut;
+- live options, short interest, borrow, crowding and portfolio factor data are
+  missing; and
+- the bear/base/bull DCF states span $57.22 to $377.68.
+
+The conditional rule is symmetric. A long requires observable upside to a
+frozen consensus, cleared demand-quality work and at least 20% net underwritten
+return. A short requires a reported break in the base path, estimate revisions,
+controlled uncapped upside and at least 20% net downside after implementation.
+
+## Nvidia model architecture
+
+The workbook is authored separately with `@oai/artifact-tool` and recalculated
+against the Python model. Its 15-sheet stack begins with `Cover`, `Review` and
+`Sources`, then carries the calculation and decision layers:
+
+1. `Drivers` distinguishes filed facts, market observations and analyst inputs.
+2. `Revenue` anchors FY2027 on Q1 actual revenue and the Q2 guide, and uses
+   Nvidia's current Data Center / Edge Computing framework.
+3. `WACC` builds CAPM from the 4.65% Treasury, 1.35x beta, 4.50% ERP, after-tax
+   debt cost and market-value weights.
+4. `Depreciation` separates opening D&A from formula-driven forecast capex
+   vintages with short- and long-lived asset buckets.
+5. `Equity Bridge` credits cash at par but haircuts public, private and
+   equity-method stakes by scenario. Operating leases are disclosed without a
+   second deduction from cash flows that already include lease expense.
+6. `Valuation` subtracts reported Q1 CFO less capex from FY2027 FCFF and
+   normalizes terminal reinvestment with `g / terminal ROIC`.
+7. `Scenarios` treats bear, base and bull as unweighted states. No unsupported
+   expected value or Kelly sizing remains.
+8. `Reverse DCF`, `Sensitivities`, `Decision` and `Checks` expose what spot must
+   assume, the duration risk, the seven open capital gates and a forced zero
+   position.
+
+The review also corrects the prior memo's Alphabet WACC copy, contradictory
+upside language, zeroed Q1 equity-security gains and unsupported claim that the
+entire strategic equity portfolio funds customers.
+
+## Alphabet sources
 
 | Need | Source / treatment |
 | --- | --- |
@@ -89,23 +142,38 @@ through June 30; the August 6 debt filing was preliminary with amounts still
 blank as of August 8. Registered but unsold capacity is not described as
 authorized capital or inserted into the share count.
 
+## Nvidia sources
+
+| Need | Source / treatment |
+| --- | --- |
+| Q1 financials, investments, commitments, concentration, D&A and share count | Nvidia Q1 FY2027 Form 10-Q |
+| Current reporting framework, Data Center detail and Q2 guide | Nvidia Q1 FY2027 filed earnings release |
+| FY2026 historical revenue | Nvidia FY2026 Form 10-K |
+| Risk-free rate | U.S. Treasury daily yield curve, 4.65% on August 7 |
+| Price | Read-only Robinhood regular-hours snapshot; refresh before risk |
+| FY2027–28 revenue consensus | Frozen FMP aggregator snapshot; broker provenance and revisions remain open |
+| Beta, ERP, terminal ROIC, asset lives, haircuts and hurdle | Analyst assumptions, labeled at point of use |
+
 ## Build and verification
 
 From `build/`:
 
 ```bash
 python3 alphabet_pm.py              # Alphabet JSON, model and memo
-python3 render.py                   # Alphabet PM memo + Nvidia memo
-./.venv/bin/python workbook.py      # Alphabet PM workbook + Nvidia workbook
+python3 nvidia_pm.py                # Nvidia JSON and memo
+node nvidia_workbook.mjs            # Nvidia formula workbook via artifact-tool
+python3 render.py                   # Both PM memos
+./.venv/bin/python workbook.py      # Both workbooks
 ./.venv/bin/python previews.py      # landing/social images
 ./.venv/bin/python verify.py        # independent formula recalculation
 ```
 
-`verify.py` recalculates the Excel files with a formula engine and currently
-checks 71 items: Alphabet's dated FCFF periods, WACC, point-in-time shares,
-terminal mechanics, scenario targets, expected value, formula architecture,
-sensitivity center, zero-size gate and prohibited legacy claims, plus Nvidia's
-existing model tie-outs.
+`verify.py` recalculates both Excel files with a formula engine and compares them
+with separate Python implementations. It checks dated FCFF periods, D&A,
+capital bridges, WACC, terminal mechanics, scenario values, sensitivity centers,
+zero-size gates, sheet architecture and prohibited legacy claims. The Nvidia
+workbook is also imported, traced, formula-error scanned and rendered one sheet
+at a time with `@oai/artifact-tool` before circulation.
 
 ## Known limitations
 
@@ -117,6 +185,13 @@ existing model tie-outs.
   historical vintage are not disclosed.
 - The Alphabet DCF is highly terminal-sensitive and should not be treated as a
   precise price target.
+- Nvidia's FY2027 stub uses reported Q1 CFO less capex as an FCFF proxy; replace
+  it with the filed Q2 bridge after results.
+- Nvidia's revenue states are consolidated analyst scenarios. The current Data
+  Center / Edge framework does not yet have enough reported history for a
+  bottom-up forecast.
+- Nvidia's DCF is 48%–76% terminal value across states and is a duration risk
+  frame, not an executable price target.
 
 Analytical research on public information. Not investment advice, a
 recommendation, or a solicitation.

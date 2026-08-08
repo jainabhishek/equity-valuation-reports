@@ -1,229 +1,58 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>NVIDIA Corporation (NVDA) — investment memo</title><style>
-:root{--bg:#fbfaf8;--fg:#16181d;--muted:#5f6672;--line:#e2ded7;--card:#fff;
---pos:#0f7a52;--neg:#b3261e;--warn:#8a6100;--accent:#1a4fa0;--mono:ui-monospace,SFMono-Regular,Menlo,monospace}
-@media(prefers-color-scheme:dark){:root{--bg:#12141a;--fg:#e9e6e1;--muted:#9aa3b0;--line:#282d38;
---card:#191c24;--pos:#4ec99a;--neg:#f2857c;--warn:#e0b062;--accent:#7aa7f0}}
-:root[data-theme=dark]{--bg:#12141a;--fg:#e9e6e1;--muted:#9aa3b0;--line:#282d38;--card:#191c24;
---pos:#4ec99a;--neg:#f2857c;--warn:#e0b062;--accent:#7aa7f0}
-:root[data-theme=light]{--bg:#fbfaf8;--fg:#16181d;--muted:#5f6672;--line:#e2ded7;--card:#fff;
---pos:#0f7a52;--neg:#b3261e;--warn:#8a6100;--accent:#1a4fa0}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--fg);
-font:16px/1.55 ui-serif,Georgia,'Times New Roman',serif;-webkit-font-smoothing:antialiased}
-.wrap{max-width:1120px;margin:0 auto;padding:40px 28px 90px}
-h1{font-size:31px;margin:.1em 0 .05em;letter-spacing:-.015em}
-h2{font-size:13px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);
-margin:38px 0 12px;font-family:system-ui,sans-serif;font-weight:600}
-h3{font-size:16px;margin:20px 0 6px}
-p{margin:.55em 0}
-.sub{color:var(--muted);font-size:14px}
-.eyebrow{font-family:system-ui,sans-serif;font-size:11px;letter-spacing:.16em;
-text-transform:uppercase;color:var(--muted)}
-.rule{height:1px;background:var(--line);margin:26px 0}
-.card{background:var(--card);border:1px solid var(--line);border-radius:9px;padding:18px 20px}
-.grid{display:grid;gap:14px}
-.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}
-.g4{grid-template-columns:repeat(4,1fr)}
-.kpi{font-family:system-ui,sans-serif}
-.kpi .lab{font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted)}
-.kpi .val{font-size:25px;font-weight:600;letter-spacing:-.02em;margin-top:3px}
-.kpi .note{font-size:12px;color:var(--muted);margin-top:2px}
-.pos{color:var(--pos)}.neg{color:var(--neg)}.warn{color:var(--warn)}
-.tag{display:inline-block;font-family:system-ui,sans-serif;font-size:11px;font-weight:600;
-letter-spacing:.06em;padding:3px 9px;border-radius:999px;border:1px solid var(--line);
-color:var(--muted);margin-right:6px}
-.tag.big{font-size:13px;padding:5px 14px;color:var(--fg)}
-table{border-collapse:collapse;width:100%;font-family:system-ui,sans-serif;font-size:13px;margin:8px 0}
-th,td{padding:7px 9px;border-bottom:1px solid var(--line);text-align:right}
-th:first-child,td:first-child{text-align:left}
-th{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:600}
-tbody tr:hover{background:color-mix(in srgb,var(--accent) 6%,transparent)}
-.scroll{overflow-x:auto;max-width:100%}
-.num{font-variant-numeric:tabular-nums;font-family:var(--mono);font-size:12.5px}
-ol,ul{padding-left:20px;margin:.5em 0}li{margin:.35em 0}
-.thesis{counter-reset:t}
-.thesis li{list-style:none;position:relative;padding-left:34px;margin:14px 0}
-.thesis li:before{counter-increment:t;content:counter(t);position:absolute;left:0;top:1px;
-width:22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;
-font:600 12px/22px system-ui,sans-serif;text-align:center}
-.thesis .k{font-family:system-ui,sans-serif;font-size:11px;text-transform:uppercase;
-letter-spacing:.08em;color:var(--muted);display:block}
-.bar{height:26px;position:relative;background:color-mix(in srgb,var(--muted) 12%,transparent);
-border-radius:3px;margin:3px 0}
-.bar span{position:absolute;top:0;bottom:0;border-radius:3px}
-.bridge td.b{padding:0;width:52%}
-.callout{border-left:3px solid var(--accent);padding:10px 0 10px 16px;margin:16px 0}
-.warnbox{border-left:3px solid var(--warn);padding:10px 0 10px 16px;margin:16px 0}
-footer{margin-top:50px;padding-top:18px;border-top:1px solid var(--line);
-color:var(--muted);font-size:12px;font-family:system-ui,sans-serif}
-code{font-family:var(--mono);font-size:12px;background:color-mix(in srgb,var(--muted) 12%,transparent);
-padding:1px 5px;border-radius:3px}
-@media(max-width:800px){.g2,.g3,.g4{grid-template-columns:1fr}.wrap{padding:24px 16px 60px}h1{font-size:25px}}
-@media print{body{background:#fff}.wrap{max-width:none}}
-</style></head><body><div class="wrap"><div class="eyebrow">Equity research &middot; internal memorandum &middot; 2026-08-07</div>
-<h1>NVIDIA Corporation <span class="sub">(NVDA)</span></h1>
-<p class="sub">Six-year segment-driver model with a vintage depreciation schedule. Base year TTM to 2026-04-26, all statement inputs from SEC XBRL.</p>
-<p style="margin-top:14px"><span class="tag big warn"><b>NO POSITION</b></span><span class="tag">Conviction 1/3</span><span class="tag">12-month horizon</span><span class="tag">Edge: none</span></p>
-<div class="grid g4" style="margin-top:20px">
-<div class="card kpi"><div class="lab">Spot</div><div class="val">$223.90</div><div class="note">as of 2026-08-07</div></div>
-<div class="card kpi"><div class="lab">Expected value</div><div class="val">$224.91</div><div class="note"><span class="pos">+0.5%</span> vs spot</div></div>
-<div class="card kpi"><div class="lab">Position size</div><div class="val">0.0%</div><div class="note">implementation gate open</div></div>
-<div class="card kpi"><div class="lab">Breakeven p(bull)</div><div class="val">25%</div><div class="note">vs 25% assumed</div></div>
-</div>
-<h2>Thesis</h2><ol class="thesis">
-<li><span class="k">What we think</span>Extraordinary economics: 64% EBIT margin, 2.6% capex intensity, $119bn of free cash flow. The business is not the question.</li>
-<li><span class="k">Why it is not priced</span>It is priced. Our base case is 12% below spot, our revenue path is inside the analyst range every year, and we hold no variant view. Nearly half of fiscal 2027 is already reported or guided, which leaves less to disagree about than usual.</li>
-<li><span class="k">What makes it work</span>Nothing currently observable resolves the terminal-margin question, which is where the entire disagreement sits.</li>
-</ol>
-<div class="callout"><b>Edge type: none.</b> We have no edge here and the honest output is no position. Our revenue path sits inside the analyst range in every covered year, expected value is 3% above spot -- inside the noise -- and the scenario range spans $67 to $437. No defensible position size survives that spread.</div>
-<h2>The variant &mdash; where we differ from consensus</h2>
-<div class="scroll"><table><thead><tr><th>Fiscal year</th><th>Our revenue</th><th>Street avg</th><th>Street low&ndash;high</th><th>&Delta;</th><th>Percentile</th><th>Analysts</th><th>Our EBIT mgn</th><th>Street EBIT mgn</th></tr></thead><tbody>
-<tr><td>2027</td><td class="num">$381bn</td><td class="num">$394bn</td><td class="num">364&ndash;403</td><td class="num neg">-3.2%</td><td class="num">43rd</td><td class="num">40</td><td class="num">64.0%</td><td class="num">48.1%</td></tr>
-<tr><td>2028</td><td class="num">$552bn</td><td class="num">$564bn</td><td class="num">455&ndash;623</td><td class="num neg">-2.1%</td><td class="num">58th</td><td class="num">40</td><td class="num">61.9%</td><td class="num">48.1%</td></tr>
-<tr><td>2029</td><td class="num">$699bn</td><td class="num">$687bn</td><td class="num">597&ndash;786</td><td class="num pos">+1.8%</td><td class="num">54th</td><td class="num">27</td><td class="num">59.2%</td><td class="num">48.1%</td></tr>
-<tr><td>2030</td><td class="num">$805bn</td><td class="num">$774bn</td><td class="num">646&ndash;885</td><td class="num pos">+4.0%</td><td class="num">67th</td><td class="num">13</td><td class="num">56.4%</td><td class="num">48.1%</td></tr>
-<tr><td>2031</td><td class="num">$863bn</td><td class="num">$1,005bn</td><td class="num">838&ndash;1,149</td><td class="num neg">-14.2%</td><td class="num">8th</td><td class="num">21</td><td class="num">53.6%</td><td class="num">48.1%</td></tr>
-</tbody></table></div>
-<h2>Why the margins differ: the depreciation schedule</h2>
-<p>We forecast EBITDA margin &mdash; a cash margin driven by mix, pricing and opex &mdash; and <em>derive</em> EBIT by subtracting depreciation built from the capex programme, vintage by vintage. Forecasting EBIT margin directly, which both the published consensus feed and most sell-side models do, hides the depreciation assumption inside a single number.</p>
-<div class="warnbox">The consensus feed carries D&amp;A at a flat <b>3.1% of revenue in every year</b> and EBIT margin flat to one decimal place. NVIDIA Corporation spent <b>2.6% of revenue</b> on capex in the last twelve months and depreciated <b>1.3%</b> &mdash; a ratio of <b>2.0&times;</b>. Those cannot both persist.</div>
-<div class="scroll"><table><thead><tr><th>Year</th><th>Revenue</th><th>Growth</th><th>EBITDA mgn</th><th>Capex</th><th>Capex %rev</th><th>D&amp;A</th><th>D&amp;A %rev</th><th>EBIT mgn</th><th>FCFF</th></tr></thead><tbody>
-<tr><td>2027E</td><td class="num">$381bn</td><td class="num">76.4%</td><td class="num">64.5%</td><td class="num">$7bn</td><td class="num">1.8%</td><td class="num">$2bn</td><td class="num">0.5%</td><td class="num">64.0%</td><td class="num">$181bn</td></tr>
-<tr><td>2028E</td><td class="num">$552bn</td><td class="num">44.9%</td><td class="num">62.5%</td><td class="num">$14bn</td><td class="num">2.5%</td><td class="num">$3bn</td><td class="num">0.6%</td><td class="num">61.9%</td><td class="num">$256bn</td></tr>
-<tr><td>2029E</td><td class="num">$699bn</td><td class="num">26.7%</td><td class="num">60.0%</td><td class="num">$22bn</td><td class="num">3.2%</td><td class="num">$6bn</td><td class="num">0.8%</td><td class="num">59.2%</td><td class="num">$314bn</td></tr>
-<tr><td>2030E</td><td class="num">$805bn</td><td class="num">15.2%</td><td class="num">57.5%</td><td class="num">$28bn</td><td class="num">3.5%</td><td class="num">$9bn</td><td class="num">1.1%</td><td class="num">56.4%</td><td class="num">$348bn</td></tr>
-<tr><td>2031E</td><td class="num">$863bn</td><td class="num">7.1%</td><td class="num">55.0%</td><td class="num">$30bn</td><td class="num">3.5%</td><td class="num">$12bn</td><td class="num">1.4%</td><td class="num">53.6%</td><td class="num">$362bn</td></tr>
-<tr><td>2032E</td><td class="num">$889bn</td><td class="num">3.1%</td><td class="num">53.5%</td><td class="num">$31bn</td><td class="num">3.5%</td><td class="num">$16bn</td><td class="num">1.8%</td><td class="num">51.7%</td><td class="num">$366bn</td></tr>
-</tbody></table></div>
-<h3>How year 1 is anchored</h3>
-<p>Forecast year 2027 is part history. <b>$1.8bn</b> of capex through Q1 is a filed fact, not an estimate.</p>
-<p>The remaining 3 quarters are held at the last observed quarterly rate of <b>$1.8bn</b> (2026-04-26), giving <b>$7.0bn</b> for the full year. This company does not guide capex, so the exit rate is the best available anchor; where management does guide, guidance outranks it.</p>
-<p>Revenue in year 1 is anchored the same way, one level down. <b>$81.6bn</b> is reported for Q1 and Q2 is guided to <b>$91.0bn</b> (&plusmn;2%), so <b>45.3%</b> of the year is fixed before our segment build says anything. Our $381bn leaves <b>$104.1bn</b> a quarter for the remaining 2, +14.4% on the guided quarter. Note the guide assumes no Data Center compute revenue from China, so any easing there is upside management has explicitly excluded.</p>
-<p class="sub">Source: Q1 FY2027 results, 20 May 2026. This does not set the forecast &mdash; one guided quarter is not a year &mdash; but a year-1 figure below reported plus guided is arithmetic that has already been falsified, and the build refuses it.</p>
-<h2>Price-to-value bridge</h2>
-<p>Contributions are exact Shapley values over all 2<sup>7</sup> = 128 driver coalitions, so they sum to the total without residual (residual $+0.0000). One-at-a-time sensitivity would not, because DCF driver interactions are large.</p>
-<div class="scroll"><table class="bridge"><thead><tr><th>Step</th><th>$/share</th><th class="b"></th></tr></thead><tbody>
-<tr><td><b>Street-calibrated value</b></td><td class="num">$231.98</td><td class="b"></td></tr>
-<tr><td>revenue</td><td class="num neg">-48.74</td><td class="b"><div class="bar"><span style="left:0.0%;width:50.0%;background:var(--neg)"></span></div></td></tr>
-<tr><td>ebitda margin</td><td class="num pos">+15.48</td><td class="b"><div class="bar"><span style="left:50%;width:15.88567955431629%;background:var(--pos)"></span></div></td></tr>
-<tr><td>da pct revenue</td><td class="num neg">-1.34</td><td class="b"><div class="bar"><span style="left:48.624732370224784%;width:1.3752676297752138%;background:var(--neg)"></span></div></td></tr>
-<tr><td><b>Our base case</b></td><td class="num"><b>$197.39</b></td><td class="b"></td></tr>
-<tr><td>Market price</td><td class="num">$223.90</td><td class="b"></td></tr>
-</tbody></table></div>
-<p class="sub">The gap from our base case to the market price is not decomposed into drivers, because it is not a forecast disagreement &mdash; it is the discount rate and terminal assumptions the market is applying. That is stated below rather than disguised as precision.</p>
-<h2>What the market is paying for</h2>
-<p>At <b>$223.90</b>, holding everything else at our base case, the market is paying for <em>either</em>&hellip;</p>
-<div class="grid g3">
-<div class="card kpi"><div class="lab">Revenue CAGR</div><div class="val">29.9%</div><div class="note">vs our 26.6% base</div></div>
-<div class="card kpi"><div class="lab">Terminal EBIT margin</div><div class="val">59.7%</div><div class="note">vs our 51.7% terminal</div></div>
-<div class="card kpi"><div class="lab">Discount rate (WACC)</div><div class="val">8.94%</div><div class="note">vs our 9.75% build</div></div>
-</div>
-<h3>What the discount rate is worth</h3>
-<p>Terminal value is <b>71.2%</b> of enterprise value, so the discount rate is not one assumption among many &mdash; it is most of the answer. Our <b>9.75%</b> is a CAPM build. Widely published third-party estimates of Alphabet's WACC cluster near <b>7.5%</b>. The reverse DCF above says the market is discounting at <b>8.94%</b>. Those are large differences and the reader should see what each is worth rather than take ours on trust.</p>
-<div class="scroll"><table><thead><tr><th>WACC</th><th>Value/share</th><th>vs our base</th><th>vs spot</th><th>TV % of EV</th><th></th></tr></thead><tbody>
-<tr><td class="num">6.50%</td><td class="num"><b>$377.99</b></td><td class="num">+91.5%</td><td class="num pos">+68.8%</td><td class="num">83.7%</td><td class="sub"></td></tr>
-<tr><td class="num">7.00%</td><td class="num"><b>$331.09</b></td><td class="num">+67.7%</td><td class="num pos">+47.9%</td><td class="num">81.6%</td><td class="sub"></td></tr>
-<tr><td class="num">7.57%</td><td class="num"><b>$290.14</b></td><td class="num">+47.0%</td><td class="num pos">+29.6%</td><td class="num">79.3%</td><td class="sub">published third-party WACC estimates cluster here</td></tr>
-<tr><td class="num">8.00%</td><td class="num"><b>$265.44</b></td><td class="num">+34.5%</td><td class="num pos">+18.6%</td><td class="num">77.6%</td><td class="sub"></td></tr>
-<tr><td class="num">8.50%</td><td class="num"><b>$241.57</b></td><td class="num">+22.4%</td><td class="num pos">+7.9%</td><td class="num">75.7%</td><td class="sub"></td></tr>
-<tr><td class="num">8.75%</td><td class="num"><b>$231.20</b></td><td class="num">+17.1%</td><td class="num pos">+3.3%</td><td class="num">74.8%</td><td class="sub"></td></tr>
-<tr><td class="num">9.00%</td><td class="num"><b>$221.69</b></td><td class="num">+12.3%</td><td class="num neg">-1.0%</td><td class="num">73.9%</td><td class="sub"></td></tr>
-<tr><td class="num">9.50%</td><td class="num"><b>$204.86</b></td><td class="num">+3.8%</td><td class="num neg">-8.5%</td><td class="num">72.1%</td><td class="sub"></td></tr>
-<tr style="background:#f7faff"><td class="num">9.75%</td><td class="num"><b>$197.39</b></td><td class="num">+0.0%</td><td class="num neg">-11.8%</td><td class="num">71.2%</td><td class="sub">base case, CAPM build</td></tr>
-</tbody></table></div>
-<p class="sub">This is disclosure, not a change of view: 9.75% remains the base case, and the depreciation work is independent of it. But a reader who prefers 7.5% is not disagreeing with the thesis &mdash; they are disagreeing with one input, and on our own numbers that input is worth more than the entire depreciation argument. Saying so is the honest way to publish a valuation this far below the market.</p>
-<h2>Scenarios and expected value</h2>
-<div class="scroll"><table><thead><tr><th>Case</th><th>Value/share</th><th>vs spot</th><th>Probability</th><th>WACC</th><th>Terminal g</th><th>TV % of EV</th><th>Anchor</th></tr></thead><tbody>
-<tr><td><b>Bear</b></td><td class="num">$67.39</td><td class="num neg">-69.9%</td><td class="num">25%</td><td class="num">11.00%</td><td class="num">2.0%</td><td class="num">53%</td><td>historical base rate</td></tr>
-<tr><td><b>Base</b></td><td class="num">$197.39</td><td class="num neg">-11.8%</td><td class="num">50%</td><td class="num">9.75%</td><td class="num">3.0%</td><td class="num">71%</td><td>consensus dispersion</td></tr>
-<tr><td><b>Bull</b></td><td class="num">$437.47</td><td class="num pos">+95.4%</td><td class="num">25%</td><td class="num">9.25%</td><td class="num">3.5%</td><td class="num">80%</td><td>judgment</td></tr>
-<tr><td><b>Expected value</b></td><td class="num"><b>$224.91</b></td><td class="num pos"><b>+0.5%</b></td><td class="num">100%</td><td colspan="4"></td></tr>
-<tr><td>Street-calibrated (their revenue, EBIT and D&amp;A; our capex, our engine)</td><td class="num">$231.98</td><td class="num pos">+3.6%</td><td colspan="5"></td></tr>
-<tr><td>Street published price target (median 300, range 218&ndash;500)</td><td class="num">$319.48</td><td class="num pos">+42.7%</td><td colspan="5"></td></tr>
-</tbody></table></div>
-<div class="grid g3" style="margin-top:6px">
-<div class="card"><b>Bear &middot; 25%</b><p class="sub" style="margin-top:6px">A digestion year of the kind semiconductor cycles have produced repeatedly, plus custom-ASIC share gain on incremental sockets and gross-margin compression from HBM and advanced packaging cost. A cycle, not a thesis break.</p></div>
-<div class="card"><b>Base &middot; 50%</b><p class="sub" style="margin-top:6px">Our revenue path sits within the analyst range in every covered year, so this is genuinely the central expectation rather than a variant. The disagreement with the Street is on terminal margin, not near-term demand.</p></div>
-<div class="card"><b>Bull &middot; 25%</b><p class="sub" style="margin-top:6px">Rubin holds pricing, networking attach keeps climbing, and accelerated computing takes a larger share of a still-growing infrastructure budget. The width of this case against the bear case is the reason we carry no position.</p></div>
-</div>
-<h2>Capital implementation</h2>
-<p>There is no percentage recommendation. Basis: no capital recommendation; implementation inputs missing.</p>
-<div class="scroll"><table><thead><tr><th>Term</th><th>Value</th><th>Note</th></tr></thead><tbody>
-<tr><td>Scenario expected value</td><td class="num">$224.91</td><td class="sub">illustrative probability-weighted arithmetic</td></tr>
-<tr><td>Current capital</td><td class="num">0.00%</td><td class="sub">no position</td></tr>
-<tr><td>Binding constraint</td><td class="num">implementation evidence missing</td><td class="sub">borrow, carry, crowding, hedge and portfolio inputs absent</td></tr>
-</tbody></table></div>
-<h2>Kill criteria</h2>
-<div class="scroll"><table><thead><tr><th>#</th><th>If this happens</th><th>Observable</th><th>Threshold</th><th>By</th><th>Action</th></tr></thead><tbody>
-<tr><td>k1</td><td><b>Equity stakes in customers exceed 40% of revenue</b><br><span class="sub">Currently 28.6%, up from ~3% a year ago. The cleanest tell on demand quality.</span></td><td class="sub">Equity securities (marketable + non-marketable) / TTM revenue</td><td class="num">&gt; 40%</td><td class="num">2027-02-28</td><td><b>review</b></td></tr>
-<tr><td>k2</td><td><b>Gross margin below 68% for two consecutive quarters</b><br><span class="sub">Would confirm the cost and mix compression the base case models.</span></td><td class="sub">GrossProfit / Revenues, quarterly</td><td class="num">&lt; 68% x2</td><td class="num">2027-05-31</td><td><b>review</b></td></tr>
-<tr><td>k3</td><td><b>Inventory grows faster than guided forward revenue</b><br><span class="sub">Inventory is $25.8bn and rising; it leads demand inflections both ways.</span></td><td class="sub">InventoryNet vs next-quarter revenue guidance</td><td class="num">two consecutive quarters</td><td class="num">2027-05-31</td><td><b>review</b></td></tr>
-</tbody></table></div>
-<h2>Catalyst path</h2>
-<div class="scroll"><table><thead><tr><th>Date</th><th>Event</th><th>What we learn</th><th>Tests</th></tr></thead><tbody>
-<tr><td class="num">2026-08-26</td><td><b>Q2 FY2027 results</b></td><td class="sub">Whether the $91.0bn +/- 2% guide holds, Rubin ramp pricing, networking attach, and whether any China Data Center compute revenue returns -- the guide assumes none, so it is upside management has explicitly excluded</td><td class="num">k2</td></tr>
-<tr><td class="num">2026-11-18 <span class="sub">(tentative)</span></td><td><b>Q3 FY2027 results</b></td><td class="sub">Inventory and purchase commitments against the forward guide</td><td class="num">k3</td></tr>
-<tr><td class="num">2027-02-25 <span class="sub">(tentative)</span></td><td><b>Q4 FY2027 results and Form 10-K</b></td><td class="sub">Customer concentration and the full equity-stake disclosure</td><td class="num">k1</td></tr>
-</tbody></table></div>
-<h2>What would make us wrong</h2>
-<p>The case for owning it anyway: on an EV/NOPAT basis for a business growing revenue 85% at 64% operating margins the multiple is not obviously wrong, and our terminal-margin fade to 53.5% may be too aggressive for a company with this much architectural lock-in. If terminal margin holds at 60% the base case clears spot comfortably.</p>
-<p>The case for shorting it: $72.6bn of equity stakes in customers who use the proceeds to buy accelerators means some share of reported demand is self-funded, and that share is rising fast. We cannot size it from public disclosure, which is precisely why we will not take the other side either.</p>
-<h3>Pre-mortem</h3><p>Twelve months out we have missed a double. What happened: Rubin shipped into a market still short of compute, networking attach kept climbing, and the terminal-margin debate never arrived because revenue grew fast enough to make it irrelevant on any horizon that mattered. We stood aside because our range was wide -- and a wide range is not the same thing as an unfavourable one.</p>
-<div class="rule"></div><h2>Appendix A &mdash; quality of earnings</h2>
-<div class="scroll"><table><thead><tr><th>TTM to 2026-04-26</th><th>$bn</th><th>Comment</th></tr></thead><tbody>
-<tr><td>Revenue</td><td class="num">253.5</td><td class="sub"></td></tr>
-<tr><td>Operating income (EBIT)</td><td class="num">162.3</td><td class="sub">64.0% margin</td></tr>
-<tr><td>Non-operating income</td><td class="num">27.2</td><td class="sub">14.3% of pretax income</td></tr>
-<tr><td>&nbsp;&nbsp;of which equity-securities gains</td><td class="num">0.0</td><td class="sub">non-cash marks on investment stakes</td></tr>
-<tr><td>Reported net income</td><td class="num">159.6</td><td class="sub">includes the marks above</td></tr>
-<tr><td>NOPAT (EBIT after tax)</td><td class="num">136.7</td><td class="sub">at 15.7% effective rate</td></tr>
-</tbody></table></div>
-<div class="grid g3" style="margin-top:10px">
-<div class="card kpi"><div class="lab">Reported diluted EPS</div><div class="val">$6.54</div><div class="note">as filed</div></div>
-<div class="card kpi"><div class="lab">Reported P/E</div><div class="val">34.2x</div><div class="note">what screens show</div></div>
-<div class="card kpi"><div class="lab">EV / NOPAT</div><div class="val">39.1x</div><div class="note">enterprise value / enterprise earnings</div></div>
-</div>
-<h2>Appendix B &mdash; segment build</h2>
-<p>Every revenue line is the product of named quantities, not a growth rate. Each driver can be disagreed with individually and checked against disclosure.</p>
-<div class="scroll"><table><thead><tr><th>Segment / driver</th><th>2027E</th><th>2028E</th><th>2029E</th><th>2030E</th><th>2031E</th><th>2032E</th></tr></thead><tbody>
-<tr><td><b>Data Center</b> ($bn)</td><td class="num"><b>355</b></td><td class="num"><b>523</b></td><td class="num"><b>668</b></td><td class="num"><b>772</b></td><td class="num"><b>826</b></td><td class="num"><b>851</b></td></tr>
-<tr><td class="sub">&nbsp;&nbsp;units</td><td class="num sub">+52.0%</td><td class="num sub">+30.0%</td><td class="num sub">+18.0%</td><td class="num sub">+10.0%</td><td class="num sub">+5.0%</td><td class="num sub">+2.0%</td></tr>
-<tr><td class="sub">&nbsp;&nbsp;asp</td><td class="num sub">+16.0%</td><td class="num sub">+10.0%</td><td class="num sub">+6.0%</td><td class="num sub">+3.0%</td><td class="num sub">+1.0%</td><td class="num sub">+0.0%</td></tr>
-<tr><td class="sub">&nbsp;&nbsp;attach networking</td><td class="num sub">+4.0%</td><td class="num sub">+3.0%</td><td class="num sub">+2.0%</td><td class="num sub">+2.0%</td><td class="num sub">+1.0%</td><td class="num sub">+1.0%</td></tr>
-<tr><td><b>Gaming</b> ($bn)</td><td class="num"><b>18</b></td><td class="num"><b>19</b></td><td class="num"><b>21</b></td><td class="num"><b>22</b></td><td class="num"><b>22</b></td><td class="num"><b>23</b></td></tr>
-<tr><td class="sub">&nbsp;&nbsp;growth</td><td class="num sub">+12.0%</td><td class="num sub">+8.0%</td><td class="num sub">+6.0%</td><td class="num sub">+5.0%</td><td class="num sub">+4.0%</td><td class="num sub">+3.0%</td></tr>
-<tr><td><b>Professional Visualization</b> ($bn)</td><td class="num"><b>4</b></td><td class="num"><b>4</b></td><td class="num"><b>5</b></td><td class="num"><b>5</b></td><td class="num"><b>6</b></td><td class="num"><b>6</b></td></tr>
-<tr><td class="sub">&nbsp;&nbsp;growth</td><td class="num sub">+20.0%</td><td class="num sub">+15.0%</td><td class="num sub">+12.0%</td><td class="num sub">+10.0%</td><td class="num sub">+8.0%</td><td class="num sub">+6.0%</td></tr>
-<tr><td><b>Automotive</b> ($bn)</td><td class="num"><b>3</b></td><td class="num"><b>4</b></td><td class="num"><b>5</b></td><td class="num"><b>6</b></td><td class="num"><b>7</b></td><td class="num"><b>8</b></td></tr>
-<tr><td class="sub">&nbsp;&nbsp;growth</td><td class="num sub">+35.0%</td><td class="num sub">+30.0%</td><td class="num sub">+25.0%</td><td class="num sub">+20.0%</td><td class="num sub">+15.0%</td><td class="num sub">+12.0%</td></tr>
-<tr><td><b>OEM &amp; other</b> ($bn)</td><td class="num"><b>1</b></td><td class="num"><b>1</b></td><td class="num"><b>1</b></td><td class="num"><b>1</b></td><td class="num"><b>1</b></td><td class="num"><b>1</b></td></tr>
-<tr><td class="sub">&nbsp;&nbsp;growth</td><td class="num sub">+5.0%</td><td class="num sub">+5.0%</td><td class="num sub">+5.0%</td><td class="num sub">+5.0%</td><td class="num sub">+5.0%</td><td class="num sub">+5.0%</td></tr>
-<tr><td><b>Total revenue</b> ($bn)</td><td class="num"><b>381</b></td><td class="num"><b>552</b></td><td class="num"><b>699</b></td><td class="num"><b>805</b></td><td class="num"><b>863</b></td><td class="num"><b>889</b></td></tr>
-</tbody></table></div>
-<h2>Appendix C &mdash; equity bridge and balance sheet</h2>
-<div class="scroll"><table><thead><tr><th>Item</th><th>$bn</th><th>Note</th></tr></thead><tbody>
-<tr><td>Enterprise value (base case)</td><td class="num">4,702</td><td class="sub"></td></tr>
-<tr><td>+ Cash &amp; marketable securities</td><td class="num">52.5</td><td class="sub"></td></tr>
-<tr><td>+ Equity investments (stakes)</td><td class="num">72.6</td><td class="sub">28.6% of revenue &mdash; $2.98/share. Omitted from the published report's bridge.</td></tr>
-<tr><td>&minus; Debt</td><td class="num">8.5</td><td class="sub"></td></tr>
-<tr><td>&minus; Operating leases</td><td class="num">4.3</td><td class="sub"></td></tr>
-<tr><td><b>Equity value</b></td><td class="num"><b>4,815</b></td><td class="sub">&divide; 24,391m diluted shares</td></tr>
-<tr><td><b>Value per share</b></td><td class="num"><b>$197.39</b></td><td class="sub"></td></tr>
-</tbody></table></div>
-<h2>Appendix D &mdash; sources and method</h2>
-<ul>
-<li><b>Financial statements:</b> SEC XBRL <code>companyconcept</code> API, CIK 0001045810. Quarterly series are reconstructed from filed facts, with Q4 derived as fiscal year minus the nine-month cumulative and cash-flow items unwound from year-to-date cumulatives.</li>
-<li><b>Consensus estimates and price targets:</b> FMP <code>analyst/financial-estimates</code> and <code>analyst/price-target-consensus</code>.</li>
-<li><b>Segment revenue:</b> FMP <code>statements/revenue-product-segmentation</code>. No SEC fallback exists &mdash; <code>companyfacts</code> flattens dimensioned facts &mdash; so the only control is reconciling the segment sum to consolidated revenue.</li>
-<li><b>Earnings dates and surprise history:</b> Robinhood <code>get_earnings_results</code>. Prices and average dollar volume from Robinhood <code>get_equity_quotes</code> and <code>get_equity_historicals</code>.</li>
-<li><b>Management guidance:</b> quoted from the earnings call it was given on, and recorded in <code>build/cases.py</code> with the date and speaker, so that the figure the model anchors on and the sentence management said are the same object. Guidance is management's own statement, not a third party's conclusion, and it outranks any extrapolation we would build for a period they have already guided.</li>
-<li><b>Financing after the balance-sheet date:</b> SEC prospectus filings (424B2/424B5/FWP), itemised in Appendix C with accession numbers rather than folded silently into the bridge.</li>
-<li><b>Not used:</b> third-party model outputs (vendor DCFs, quantitative scores, aggregated ratings). They are other people's conclusions, not evidence.</li>
-</ul>
-<h3>Known limitations</h3><ul>
-<li>We have no channel checks, expert calls, or alternative data. The edge claimed here is analytical, derived entirely from public filings.</li>
-<li>The asset-life split driving the depreciation schedule (short-lived equipment versus long-lived shells) is a stated assumption calibrated to reported D&amp;A, not a disclosed figure. It is the single most load-bearing assumption in the model and kill criterion k1 exists to monitor it.</li>
-<li>The consensus feed holds D&amp;A at a constant share of revenue in every year, which may be an artefact of the aggregator rather than what individual analysts model. The comparison is to the feed we can observe, and is labelled as such.</li>
-<li>Segment sum reconciles to consolidated revenue within 1.0%.</li>
-</ul>
-<footer>Prepared 2026-08-07. Base year TTM to 2026-04-26; market data as of the 2026-08-07 session. Analytical research on public information; not investment advice, not a recommendation to any person, and not a solicitation. No percentage sizing is provided without implementation and portfolio inputs. The author may hold positions in the securities discussed.</footer></div></body></html>
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Nvidia PM review memo, public-information research as of 2026-08-07.">
+<link rel="icon" href="data:,"><title>Nvidia PM memo | 2026-08-07</title>
+<style>
+:root{--ink:#151923;--muted:#626b78;--line:#dfe3e8;--paper:#f7f7f5;--card:#fff;--navy:#163a5f;--teal:#0b6b68;--red:#a63d40;--soft:#eef2f5}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.page{max-width:1160px;margin:0 auto;padding:38px 28px 84px}a{color:var(--navy);text-underline-offset:2px}h1{font:700 clamp(2rem,5vw,4.1rem)/.98 Georgia,serif;letter-spacing:-.045em;margin:.22em 0 .18em}h2{font-size:1.05rem;letter-spacing:.08em;text-transform:uppercase;margin:44px 0 14px}h3{font-size:1rem;margin:22px 0 7px}p{margin:.55em 0}.eyebrow,.label{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700}.muted{color:var(--muted)}
+.hero{background:var(--navy);color:#fff;border-radius:16px;padding:34px 36px;box-shadow:0 12px 40px rgba(22,58,95,.13)}.hero .muted,.hero .eyebrow{color:#c9d5df}.tags{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0}.tag{border:1px solid rgba(255,255,255,.32);border-radius:999px;padding:5px 10px;font-size:.76rem;font-weight:700;letter-spacing:.04em}.hero-grid{display:grid;grid-template-columns:1.35fr repeat(3,.75fr);gap:18px;margin-top:26px}.metric{border-top:1px solid rgba(255,255,255,.28);padding-top:12px}.metric .value{font-size:1.75rem;font-weight:750;letter-spacing:-.035em}.metric .note{font-size:.78rem;color:#c9d5df}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:19px 20px}.callout{border-left:4px solid var(--teal);background:#edf6f5;padding:16px 18px;margin:18px 0;border-radius:0 10px 10px 0}.risk{border-left-color:var(--red);background:#f7eded}.fixed{color:var(--teal);font-weight:800}.open,.negative{color:var(--red);font-weight:800}.positive{color:var(--teal);font-weight:800}
+.scroll{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:#fff}table{border-collapse:collapse;width:100%;font-size:.82rem;min-width:720px}th,td{padding:10px 11px;border-bottom:1px solid var(--line);text-align:right;vertical-align:top}th{font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);background:var(--soft)}th:first-child,td:first-child{text-align:left}tr:last-child td{border-bottom:0}ul,ol{padding-left:21px}li{margin:.42em 0}.number{font-variant-numeric:tabular-nums}.compact table{min-width:520px}footer{margin-top:50px;border-top:1px solid var(--line);padding-top:18px;color:var(--muted);font-size:.78rem}
+@media(max-width:820px){.page{padding:18px 14px 56px}.hero{padding:24px 20px;border-radius:12px}.hero-grid,.grid2,.grid3{grid-template-columns:1fr}h2{margin-top:34px}.metric .value{font-size:1.5rem}}
+@media print{body{background:#fff}.page{max-width:none;padding:20px}.hero{box-shadow:none}}
+</style></head><body><main class="page">
+<section class="hero"><div class="eyebrow">Public-information equity research · PM review cut · 2026-08-07</div>
+<h1>Nvidia <span style="font-weight:400">NVDA</span></h1>
+<p class="muted">A risk frame for the next earnings decision, rebuilt around current disclosure and auditable valuation mechanics.</p>
+<div class="tags"><span class="tag">WATCHLIST / NO POSITION</span><span class="tag">Share-ready; not capital-ready</span><span class="tag">Edge: none established</span><span class="tag">Position: 0.0%</span></div>
+<div class="hero-grid"><div class="metric"><div class="label">PM call</div><div class="value">Do not force a trade</div><div class="note">The business is exceptional. The model has no verified near-term variant and every implementation gate is open.</div></div>
+<div class="metric"><div class="label">Spot</div><div class="value">$223.90</div><div class="note">Aug. 7 regular-hours snapshot</div></div>
+<div class="metric"><div class="label">Base DCF</div><div class="value">$165.40</div><div class="note">-26.1% vs spot</div></div>
+<div class="metric"><div class="label">State range</div><div class="value">$57.22–$377.68</div><div class="note">Unweighted; not a probability distribution</div></div></div></section>
+
+<h2>PM decision</h2><div class="grid2"><div class="card"><div class="label">What is mispriced?</div><p><b>Nothing we can establish from public information today.</b> The base revenue path is 3.2% below the frozen FY2027 consensus average and remains inside its range. The apparent valuation gap is a duration and discount-rate argument, not a differentiated earnings call.</p></div>
+<div class="card"><div class="label">What would change the call?</div><p>A verified estimate revision, observable demand-quality evidence and a cleared implementation ledger. Until then, a low DCF is not a short catalyst and an exceptional franchise is not a long entry.</p></div></div>
+<div class="callout"><b>Action:</b> keep size at zero through the next print. Re-underwrite after actual revenue, gross margin, forward guidance and consensus revisions are frozen. For reference, the current base DCF supports a 20% margin-of-safety entry near <b>$137.83</b>; that is a model output, not a standing limit order.</div>
+
+<h2>Highest-priority findings</h2><p class="muted">All eight defects from the review have been remediated in this memo and the linked workbook.</p><div class="scroll"><table><thead><tr><th>Finding</th><th>Status</th><th>Resolution</th></tr></thead><tbody><tr><td>Internal contradictions and Alphabet copy</td><td><span class='fixed'>Fixed</span></td><td>One decision, one valuation set; company reference corrected.</td></tr><tr><td>Q1 equity-security gains silently set to zero</td><td><span class='fixed'>Fixed</span></td><td>$15.936bn is shown and separated from operating earnings.</td></tr><tr><td>FY2027 D&A below a defensible run-rate</td><td><span class='fixed'>Fixed</span></td><td>Opening D&A plus forecast capex vintages; Q1/amortization floor checked.</td></tr><tr><td>Retired product-market disclosure used in forecast</td><td><span class='fixed'>Fixed</span></td><td>Consolidated scenarios anchored on Q1 actual and Q2 guidance.</td></tr><tr><td>Hardcoded WACC described as CAPM</td><td><span class='fixed'>Fixed</span></td><td>Treasury, beta, ERP, debt cost and capital weights are visible.</td></tr><tr><td>Unnormalized terminal FCFF</td><td><span class='fixed'>Fixed</span></td><td>Terminal reinvestment equals growth divided by terminal ROIC.</td></tr><tr><td>Full credit to strategic and illiquid stakes</td><td><span class='fixed'>Fixed</span></td><td>Public, private and equity-method stakes carry explicit haircuts.</td></tr><tr><td>Unsupported scenario probabilities drove sizing</td><td><span class='fixed'>Fixed</span></td><td>Scenarios are unweighted states; position size remains zero.</td></tr></tbody></table></div>
+
+<h2>What the tape must be underwriting</h2><div class="grid3"><div class="card"><div class="label">Base CAPM</div><p style="font-size:1.55rem;font-weight:800">10.7%</p><p class="muted">4.65% Treasury + 1.35 beta × 4.50% ERP; debt weight is immaterial.</p></div><div class="card"><div class="label">Spot-implied WACC</div><p style="font-size:1.55rem;font-weight:800">8.6%</p><p class="muted">Holding the base operating path, terminal ROIC and stake haircuts constant.</p></div><div class="card"><div class="label">Or: operating uplift</div><p style="font-size:1.55rem;font-weight:800">+36.0%</p><p class="muted">Uniform revenue scale required at 10.7% WACC; an intentionally blunt reverse-DCF diagnostic.</p></div></div>
+<p>At spot, the model requires either a discount rate about <b>208bp</b> below the explicit CAPM build or a revenue path scaled to <b>$1,209bn</b> by FY2032. Those are not equivalent forecasts; they identify the two assumptions doing the work.</p>
+
+<h2>Near-term setup</h2><div class="grid2"><div class="card"><div class="label">Reported and guided</div><ul><li>Q1 FY2027 revenue: <b>$81.6bn</b>, +85% year over year.</li><li>Data Center: <b>$75.2bn</b>; compute $60.4bn and networking $14.8bn under the prior sub-markets.</li><li>Q2 revenue guide: <b>$91.0bn ±2%</b>, with no China Data Center compute revenue assumed.</li><li>Q1 gross margin: <b>74.9%</b>.</li></ul></div>
+<div class="card"><div class="label">What base needs</div><ul><li>FY2027 revenue: <b>$380.9bn</b>.</li><li>After Q1 and Q2 midpoint: <b>$208.3bn</b> in H2, or $104.1bn per quarter.</li><li>That run-rate is <b>+14.4%</b> versus Q2 guidance.</li><li>Frozen FY2027 consensus: <b>$393.7bn</b>, range $364.4–$402.8bn, 40 estimates.</li></ul></div></div>
+<div class="callout risk"><b>Catalyst control:</b> August 26 appears in the prior market calendar, but Nvidia IR returned a rate-limit response during this rebuild. Treat the date as expected, not confirmed, and reverify it before the event.</div>
+
+<h2>Quality of earnings and demand</h2><div class="grid2"><div class="card"><div class="label">Non-operating gain</div><p>Q1 cash-flow reconciliation reports <b>$15.936bn</b> of equity-security gains. That is <b>22.8%</b> of pretax income. The prior memo showed zero because a rejected tag was converted to 0.0; this version keeps the amount visible and does not treat it as operating earnings.</p></div>
+<div class="card"><div class="label">Demand-quality evidence</div><p>Nvidia invested <b>$18.6bn</b> in private companies and infrastructure funds in Q1. The filing says <i>some</i> investees include AI model makers that may indirectly use Nvidia products. It does not support calling the entire $72.6bn equity portfolio customer financing.</p></div></div>
+<div class="grid3" style="margin-top:14px"><div class="card"><div class="label">Concentration</div><p>Three direct customers were 21%, 17% and 16% of revenue; A/R concentration was 30%, 18% and 16%.</p></div><div class="card"><div class="label">Commitments</div><p>$119bn manufacturing and capacity, $30bn cloud service and $27bn contingent investment commitments.</p></div><div class="card"><div class="label">Inventory</div><p>$25.8bn at April 26. Read it with forward guidance, lead times and cancellation behavior, not alone.</p></div></div>
+
+<h2>Valuation states</h2><p class="muted">Values are present values as of the August decision cut. FY2027 DCF cash flow subtracts reported Q1 CFO less capex from the full-year model; the April 26 balance sheet therefore is not double-counted. Probabilities are deliberately omitted.</p><div class="scroll"><table><thead><tr><th>State</th><th>Value/share</th><th>Vs spot</th><th>Revenue CAGR</th><th>FY32 EBIT margin</th><th>WACC</th><th>g</th><th>Terminal ROIC</th><th>TV / EV</th></tr></thead><tbody><tr><td><b>Bear / digestion</b><br><span class='muted'>A digestion cycle, custom-silicon share gains and margin compression.</span></td><td>$57.22</td><td class='negative'>-74.4%</td><td>7.8%</td><td>44.7%</td><td>11.9%</td><td>2.0%</td><td>25.0%</td><td>47.7%</td></tr><tr><td><b>Base / fade</b><br><span class='muted'>Near-term demand holds; growth and cash margins fade as the base scales.</span></td><td>$165.40</td><td class='negative'>-26.1%</td><td>26.8%</td><td>51.6%</td><td>10.7%</td><td>3.0%</td><td>30.0%</td><td>66.2%</td></tr><tr><td><b>Bull / platform</b><br><span class='muted'>Rubin pricing, networking attach and platform share remain exceptional.</span></td><td>$377.68</td><td class='positive'>+68.7%</td><td>42.3%</td><td>55.1%</td><td>10.0%</td><td>3.5%</td><td>35.0%</td><td>76.2%</td></tr></tbody></table></div>
+<h3>Base forecast mechanics</h3><div class="scroll"><table><thead><tr><th>Fiscal year</th><th>Revenue</th><th>Growth</th><th>EBITDA margin</th><th>D&A</th><th>EBIT margin</th><th>Capex</th><th>DCF FCFF</th></tr></thead><tbody><tr><td>FY2027</td><td>$380.9bn</td><td>78.3%</td><td>64.5%</td><td>$4.0bn</td><td>63.4%</td><td>$11.4bn</td><td>$127.8bn</td></tr><tr><td>FY2028</td><td>$551.9bn</td><td>44.9%</td><td>62.5%</td><td>$5.4bn</td><td>61.5%</td><td>$17.7bn</td><td>$252.6bn</td></tr><tr><td>FY2029</td><td>$699.0bn</td><td>26.7%</td><td>60.0%</td><td>$7.7bn</td><td>58.9%</td><td>$23.8bn</td><td>$312.9bn</td></tr><tr><td>FY2030</td><td>$805.5bn</td><td>15.2%</td><td>57.5%</td><td>$10.7bn</td><td>56.2%</td><td>$28.2bn</td><td>$348.6bn</td></tr><tr><td>FY2031</td><td>$862.6bn</td><td>7.1%</td><td>55.0%</td><td>$14.1bn</td><td>53.4%</td><td>$30.2bn</td><td>$362.3bn</td></tr><tr><td>FY2032</td><td>$889.5bn</td><td>3.1%</td><td>53.5%</td><td>$17.1bn</td><td>51.6%</td><td>$31.1bn</td><td>$366.3bn</td></tr></tbody></table></div>
+<div class="callout"><b>Terminal control:</b> terminal FCFF equals NOPAT × (1 − g / terminal ROIC). Base terminal reinvestment is 10.0%, and terminal value is 66.2% of enterprise value.</div>
+
+<h2>Equity bridge</h2><p>The base bridge credits $50.3bn of cash and marketable debt securities at par, 85% of $30.2bn marketable equity, 50% of $42.3bn non-marketable equity and 50% of $1.0bn equity-method stakes, then deducts $8.5bn debt. The credited bridge is <b>$89.2bn</b>. Operating leases stay disclosed but are not deducted because the cash flows already include operating lease expense.</p>
+
+<h2>Variant, catalysts and falsifiers</h2><div class="grid2"><div class="card"><div class="label">Why no long</div><ul><li>No verified earnings variant versus a canonical broker panel.</li><li>Base value is below spot at a visible CAPM discount rate.</li><li>Strategic-investment demand attribution is not quantified.</li><li>The next print can reset both numerator and duration assumptions.</li></ul></div><div class="card"><div class="label">Why no short</div><ul><li>The downside is a valuation opinion without an observed revision catalyst.</li><li>The bull state remains $377.68; upside risk is not capped.</li><li>Borrow, crowding, options and hedge economics are missing.</li><li>A lower but defensible discount rate closes much of the gap.</li></ul></div></div>
+<p><b>What proves a long:</b> Q2 and guidance establish upside to a frozen consensus, demand-quality work separates durable end demand from financed pull-forward, and underwritten upside clears 20% after hedging and event costs.</p><p><b>What proves a short:</b> reported demand or forward guidance breaks the base path, revisions follow, a live implementation ledger caps squeeze and factor risk, and expected downside remains at least 20% after costs.</p>
+<p><b>Pre-mortem:</b> we force a short because the DCF is low, then Rubin and networking deliver, consensus rises, duration compresses the discount rate and the stock gaps through an uncapped bull case. The prevention is the current decision: no position before evidence and implementation agree.</p>
+
+<h2>Required before risking capital</h2><div class="scroll"><table><thead><tr><th>Gate</th><th>Required evidence</th><th>Status</th></tr></thead><tbody><tr><td>Variant</td><td>Freeze broker-level consensus, cohort and revision history around the next print.</td><td><span class='open'>OPEN</span></td></tr><tr><td>Catalyst</td><td>Reconcile Q2 actuals and forward guidance; reverify the event date on official IR.</td><td><span class='open'>OPEN</span></td></tr><tr><td>Demand quality</td><td>Quantify customer-financing exposure within investments and commitments.</td><td><span class='open'>OPEN</span></td></tr><tr><td>Channel</td><td>Obtain lead-time, backlog, cancellation and pull-forward evidence.</td><td><span class='open'>OPEN</span></td></tr><tr><td>Market</td><td>Refresh price, liquidity, options, short interest, borrow and crowding.</td><td><span class='open'>OPEN</span></td></tr><tr><td>Portfolio</td><td>Complete current exposure, risk budget, factor, hedge and drawdown ledger.</td><td><span class='open'>OPEN</span></td></tr><tr><td>Hurdle</td><td>Require an observable variant and at least 20% net underwritten return.</td><td><span class='open'>OPEN</span></td></tr></tbody></table></div>
+
+<h2>Model checks</h2><div class="scroll compact"><table><thead><tr><th>Control</th><th>Result</th></tr></thead><tbody><tr><td>Scenario ordering</td><td><span class='fixed'>PASS</span></td></tr><tr><td>WACC build rounds to base input</td><td><span class='fixed'>PASS</span></td></tr><tr><td>WACC exceeds terminal growth by 400bp</td><td><span class='fixed'>PASS</span></td></tr><tr><td>Terminal ROIC exceeds growth</td><td><span class='fixed'>PASS</span></td></tr><tr><td>FY2027 D&A clears Q1 actual plus disclosed remaining amortization</td><td><span class='fixed'>PASS</span></td></tr><tr><td>Q1 equity-security gains retained</td><td><span class='fixed'>PASS</span></td></tr><tr><td>April liquid balance ties to release</td><td><span class='fixed'>PASS</span></td></tr><tr><td>All capital gates open implies zero size</td><td><span class='fixed'>PASS</span></td></tr><tr><td>No probability-weighted decision</td><td><span class='fixed'>PASS</span></td></tr></tbody></table></div>
+
+<h2>Sources and limits</h2><div class="scroll"><table><thead><tr><th>ID</th><th>Type</th><th>Source</th><th>Date</th><th>Use</th></tr></thead><tbody><tr><td>S1</td><td>Filed fact</td><td><a href='https://www.sec.gov/Archives/edgar/data/1045810/000104581026000052/nvda-20260426.htm'>Nvidia Q1 FY2027 Form 10-Q</a></td><td>2026-05-20</td><td>Financials, current disclosure, investments, commitments, concentration and D&A.</td></tr><tr><td>S2</td><td>Company release</td><td><a href='https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-first-quarter-fiscal-2027'>Nvidia Q1 FY2027 results</a></td><td>2026-05-20</td><td>Q1 revenue, current reporting framework, Data Center detail and Q2 guide.</td></tr><tr><td>S3</td><td>Filed fact</td><td><a href='https://www.sec.gov/Archives/edgar/data/1045810/000104581026000021/nvda-20260125.htm'>Nvidia FY2026 Form 10-K</a></td><td>2026-02-25</td><td>FY2026 revenue and historical financial context.</td></tr><tr><td>S4</td><td>Market fact</td><td><a href='https://home.treasury.gov/resource-center/data-chart-center/interest-rates/TextView?type=daily_treasury_yield_curve&field_tdr_date_value=2026'>U.S. Treasury daily par yield curve</a></td><td>2026-08-07</td><td>4.65% ten-year risk-free rate on August 7.</td></tr><tr><td>S5</td><td>Market snapshot</td><td><a href='https://robinhood.com/stocks/NVDA'>Read-only Robinhood regular-hours snapshot</a></td><td>2026-08-07</td><td>$223.90 last trade; frozen reference, not an executable quote.</td></tr><tr><td>S6</td><td>Aggregator snapshot</td><td><a href='https://financialmodelingprep.com/'>Frozen FMP annual consensus extract</a></td><td>2026-08-07</td><td>Revenue range and analyst count; provider metadata and revisions remain an open gate.</td></tr><tr><td>S7</td><td>Analyst assumption</td><td>PM scenario and valuation assumptions</td><td>2026-08-07</td><td>Revenue paths, margins, beta, ERP, terminal ROIC, haircuts and action hurdles.</td></tr></tbody></table></div>
+<p class="muted">Limits: no broker-level revision tape, channel checks, expert calls, alternative data, live options, current borrow/crowding or portfolio book context. The August price is a frozen regular-hours reference. Q2 has ended but was not filed at this cut. Scenario assumptions are analyst judgments, not company guidance. This memo is research, not investment advice or a solicitation.</p>
+<footer>Prepared from public information · NVIDIA Corporation (NVDA) · 2026-08-07 · Companion workbook: <a href="model.xlsx">model.xlsx</a></footer>
+</main></body></html>

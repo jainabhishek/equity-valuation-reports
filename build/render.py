@@ -687,17 +687,10 @@ def page(title, body):
 
 
 def main():
-    res = json.loads((DATA / "results.json").read_text())
-    by = json.loads((DATA / "base_year.json").read_text())
     import alphabet_pm
+    import nvidia_pm
     print("wrote", alphabet_pm.build_memo())
-    for ticker, slug in (("NVDA", "nvidia"),):
-        body = render(ticker, res, by)
-        title = f'{cases.SPEC[ticker]["name"]} ({ticker}) — investment memo'
-        p = OUT / slug / "memo.html"
-        p.parent.mkdir(exist_ok=True)
-        p.write_text(page(title, body))
-        print("wrote", p)
+    nvidia_pm.main()
 
 
 if __name__ == "__main__":
