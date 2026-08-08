@@ -49,9 +49,9 @@ const fmt = {
 
 const workbook = Workbook.create();
 const names = [
-  "Cover", "Review", "Sources", "Drivers", "WACC", "Revenue", "Depreciation",
-  "Equity Bridge", "Valuation", "Scenarios", "Reverse DCF", "Sensitivities",
-  "Decision", "Checks", "Notes",
+  "Cover", "Decision", "Sources", "Drivers", "Revenue", "WACC", "Depreciation",
+  "Equity Bridge", "Scenarios", "Valuation", "Reverse DCF", "Sensitivities",
+  "Checks", "Notes",
 ];
 const sheets = Object.fromEntries(names.map((name) => [name, workbook.worksheets.add(name)]));
 for (const sheet of Object.values(sheets)) {
@@ -106,6 +106,10 @@ function setWidths(sheet, widths) {
   for (const [col, width] of Object.entries(widths)) sheet.getRange(`${col}:${col}`).format.columnWidth = width;
 }
 
+function pctText(value) {
+  return `${(value * 100).toFixed(1)}%`;
+}
+
 function formulaValueAt(waccCell, growthCell) {
   const fcffRow = 42;
   const periodRow = 43;
@@ -120,64 +124,46 @@ function formulaValueAt(waccCell, growthCell) {
 // ---------------------------------------------------------------------------
 {
   const s = sheets.Cover;
-  title(s, "NVIDIA | PM review model", `Public-information risk frame | Market cut ${data.meta.as_of} | Share-ready, not capital-ready`, "J");
+  title(s, "NVIDIA | PM underwriting model", `PM discussion version | Market cut ${data.meta.as_of} | Q2 August 26 at 2:00 p.m. PT`, "J");
   s.getRange("A4:J4").merge();
   s.getRange("A4:J4").values = [["WATCHLIST / NO POSITION"]];
   s.getRange("A4:J4").format.fill = COLORS.teal;
   s.getRange("A4:J4").format.font = { bold: true, color: COLORS.white, size: 20 };
   s.getRange("A4:J4").format.rowHeight = 34;
-  s.getRange("A6:B10").values = [
+  s.getRange("A6:B11").values = [
     ["Spot", null],
     ["Bear value", null],
     ["Base value", null],
     ["Bull value", null],
     ["Position size", null],
+    ["Next catalyst", "Aug. 26, 2:00 p.m. PT"],
   ];
   s.getRange("B6:B10").formulas = [["=Decision!B5"], ["=Decision!B6"], ["=Decision!B7"], ["=Decision!B8"], ["=Decision!B13"]];
   s.getRange("B6:B9").format.numberFormat = fmt.currency;
   s.getRange("B10").format.numberFormat = "0.0%";
-  box(s, "A6:B10");
+  box(s, "A6:B11");
   s.getRange("D6:J6").merge(); s.getRange("D6:J6").values = [["PM call"]];
   s.getRange("D6:J6").format.fill = COLORS.soft; s.getRange("D6:J6").format.font = { bold: true, color: COLORS.navy };
   s.getRange("D7:J10").merge();
-  s.getRange("D7:J10").values = [["Do not force a trade. The business is exceptional, but no verified near-term variant exists. The base DCF is below spot, the bull state is uncapped, and every capital gate remains open."]];
+  s.getRange("D7:J10").values = [[`Wait for Q2 evidence. At $${data.market.spot.toFixed(2)}, the base path requires either an ${pctText(data.reverse.implied_wacc)} WACC or a ${pctText(data.reverse.implied_revenue_scale - 1)} revenue uplift. Broker revisions, channel work, positioning and portfolio evidence are missing.`]];
   s.getRange("D7:J10").format.wrapText = true; s.getRange("D7:J10").format.font = { size: 12, color: COLORS.ink };
   s.getRange("D7:J10").format.fill = COLORS.paleTeal; box(s, "D6:J10");
   section(s, "A13:J13", "Workbook map");
   s.getRange("A14:J21").values = [
-    ["Review", "Eight highest-priority defects and their resolutions", "Sources", "Source ledger with URL and use", "Drivers", "Filed facts and analyst inputs", "WACC", "Explicit CAPM build", "Revenue", "Q1/Q2/FY27 bridge"],
-    ["Depreciation", "Opening D&A plus forecast vintages", "Equity Bridge", "Haircuts by asset type", "Valuation", "Three formula-driven DCFs", "Scenarios", "Unweighted state summary", "Reverse DCF", "Spot-implied assumptions"],
-    ["Sensitivities", "WACC × terminal growth", "Decision", "Action rules and capital gates", "Checks", "Formula controls", "Notes", "Conventions and limitations", "", ""],
+    ["Decision", "Action rules and evidence gates", "Sources", "Source ledger with URL and use", "Drivers", "Filed facts and analyst inputs", "Revenue", "Q1/Q2/FY27 bridge", "WACC", "Explicit CAPM build"],
+    ["Depreciation", "Opening D&A plus forecast vintages", "Equity Bridge", "Haircuts by asset type", "Scenarios", "Unweighted state summary", "Valuation", "Three formula-driven DCFs", "Reverse DCF", "Spot-implied assumptions"],
+    ["Sensitivities", "WACC × terminal growth", "Checks", "Formula controls", "Notes", "Conventions and limitations", "", "", "", ""],
     ["", "", "", "", "", "", "", "", "", ""],
     ["Status", "All calculation checks must pass", "", "", "", "", "", "", "", ""],
     ["Check failures", null, "", "", "", "", "", "", "", ""],
     ["Capital gates open", null, "", "", "", "", "", "", "", ""],
-    ["Workbook purpose", "Audit the risk frame; do not use it as an executable order ticket.", "", "", "", "", "", "", "", ""],
+    ["Workbook purpose", "Audit the underwriting and zero-risk decision; this is not an order ticket.", "", "", "", "", "", "", "", ""],
   ];
   s.getRange("B19").formulas = [["=Checks!B15"]];
   s.getRange("B20").formulas = [["=Decision!B12"]];
   s.getRange("B19:B20").format.numberFormat = fmt.integer;
   s.getRange("A14:J21").format.wrapText = true; box(s, "A14:J21");
   setWidths(s, { A: 17, B: 25, C: 17, D: 25, E: 17, F: 25, G: 17, H: 25, I: 17, J: 25 });
-}
-
-// ---------------------------------------------------------------------------
-// Review
-// ---------------------------------------------------------------------------
-{
-  const s = sheets.Review;
-  title(s, "Review remediation log", "Every highest-priority finding is fixed in the memo and model; unresolved evidence sits in Decision as an open capital gate.", "D");
-  s.getRange("A4:D4").values = [["Priority finding", "Status", "Resolution", "PM impact"]]; header(s, "A4:D4");
-  const impacts = [
-    "Prevents contradictory meeting materials.", "Corrects operating quality and earnings attribution.",
-    "Raises FY2027 D&A to a defensible formula-driven run-rate.", "Removes false precision from retired segment categories.",
-    "Makes duration and discount-rate risk explicit.", "Prevents excess terminal cash conversion.",
-    "Stops cash-equivalent treatment of risky strategic assets.", "Prevents unsupported expected value and sizing.",
-  ];
-  s.getRange("A5:D12").values = data.review_findings.map((row, i) => [...row, impacts[i]]);
-  s.getRange("B5:B12").format.fill = COLORS.paleTeal; s.getRange("B5:B12").format.font = { bold: true, color: COLORS.teal };
-  s.getRange("A5:D12").format.wrapText = true; box(s, "A5:D12");
-  setWidths(s, { A: 38, B: 12, C: 54, D: 48 });
 }
 
 // ---------------------------------------------------------------------------
@@ -522,7 +508,7 @@ function formulaValueAt(waccCell, growthCell) {
 // ---------------------------------------------------------------------------
 {
   const s = sheets.Decision;
-  title(s, "Decision and capital gates", "A polished model is not permission to trade. Every gate below must be cleared at the decision time.", "D");
+  title(s, "Decision and evidence gates", "Public evidence supports the current zero-risk call. Initiation requires the missing evidence below.", "D");
   s.getRange("A4:B4").values = [["Decision item", "Value"]]; header(s, "A4:B4");
   s.getRange("A5:A13").values = [["Spot"], ["Bear value"], ["Base value"], ["Bull value"], ["Base upside"], ["Required net return"], ["Long entry reference"], ["Open capital gates"], ["Position size"]];
   s.getRange("B5:B13").formulas = [["=Drivers!B5"], ["=Scenarios!H26"], ["=Scenarios!H27"], ["=Scenarios!H28"], ["=B7/B5-1"], ["=Drivers!B30"], ["=B7/(1+B10)"], ["=COUNTIF(C16:C22,\"OPEN\")"], ["=0"]];
@@ -536,7 +522,7 @@ function formulaValueAt(waccCell, growthCell) {
     ["Long", "Q2/guide establish upside to frozen consensus; demand-quality work clears; net return ≥20%", "THEN", "Re-underwrite value, hedge and event loss before sizing"],
     ["Short", "Reported demand or guide breaks base; revisions follow; uncapped upside is controlled; net downside ≥20%", "THEN", "Re-underwrite borrow, options, crowding and factor hedge"],
     ["Current", "No verified variant; base DCF below spot; bull state uncapped; all gates open", "ACTION", "WATCHLIST / NO POSITION"],
-    ["Event date", "August 26 appears in prior market calendar, but official IR rate-limited this rebuild", "ACTION", "Reverify on official IR before relying on date"],
+    ["Event", "Q2 FY2027 results on August 26, 2026 at 2:00 p.m. Pacific", "CONFIRMED", "Freeze estimates before the event; reconcile actuals after"],
   ];
   s.getRange("A26:D29").format.wrapText = true; box(s, "A26:D29"); setWidths(s, { A: 23, B: 76, C: 14, D: 48 });
 }
@@ -546,7 +532,7 @@ function formulaValueAt(waccCell, growthCell) {
 // ---------------------------------------------------------------------------
 {
   const s = sheets.Checks;
-  title(s, "Model checks", "These controls cover the exact seams that failed in the prior version. Formula-error scans are also run outside Excel before circulation.", "C");
+  title(s, "Model checks", "Independent controls over valuation, sources and the zero-risk decision. Formula errors are scanned before circulation.", "C");
   s.getRange("A4:C4").values = [["Control", "Result", "Formula / threshold"]]; header(s, "A4:C4");
   s.getRange("A5:C15").values = [
     ["Scenario ordering", null, "Bear < Base < Bull"], ["WACC build rounds to base input", null, "Difference < 3bp"],

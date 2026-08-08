@@ -1,8 +1,8 @@
 """Nvidia PM-ready calculation layer and self-contained HTML memo.
 
-The package is deliberately share-ready but not capital-ready.  Public-source
-facts and calculation integrity can be audited here; broker consensus, channel
-evidence and portfolio implementation remain explicit open gates.
+Public filings and an auditable valuation are sufficient to support the current
+zero-risk decision. Broker revisions, channel evidence, positioning and
+portfolio implementation remain missing inputs for initiating a position.
 """
 from __future__ import annotations
 
@@ -17,7 +17,7 @@ DATA = Path(__file__).resolve().parent / "data"
 
 SPOT = 223.90  # Aug. 7 regular-hours last trade; refresh before risking capital.
 SHARES_BN = 24.391  # Q1 FY2027 diluted weighted-average shares.
-FY2026_REVENUE = 213.656
+FY2026_REVENUE = 215.938
 Q1_REVENUE = 81.615
 Q2_GUIDE = 91.0
 Q2_GUIDE_TOLERANCE = 0.02
@@ -32,7 +32,7 @@ BALANCE_SHEET = {
     "liquid_cash_and_debt_securities": 50.335,
     "marketable_equity": 30.237,
     "nonmarketable_equity": 42.336,
-    "equity_method": 1.028,
+    "equity_method": 1.000,
     "debt": 8.470,
     "operating_leases_disclosed_not_deducted": 4.344,
 }
@@ -156,22 +156,19 @@ SOURCES = [
         "url": "",
         "use": "Revenue paths, margins, beta, ERP, terminal ROIC, haircuts and action hurdles.",
     },
-]
-
-REVIEW_FINDINGS = [
-    ("Internal contradictions and Alphabet copy", "Fixed", "One decision, one valuation set; company reference corrected."),
-    ("Q1 equity-security gains silently set to zero", "Fixed", "$15.936bn is shown and separated from operating earnings."),
-    ("FY2027 D&A below a defensible run-rate", "Fixed", "Opening D&A plus forecast capex vintages; Q1/amortization floor checked."),
-    ("Retired product-market disclosure used in forecast", "Fixed", "Consolidated scenarios anchored on Q1 actual and Q2 guidance."),
-    ("Hardcoded WACC described as CAPM", "Fixed", "Treasury, beta, ERP, debt cost and capital weights are visible."),
-    ("Unnormalized terminal FCFF", "Fixed", "Terminal reinvestment equals growth divided by terminal ROIC."),
-    ("Full credit to strategic and illiquid stakes", "Fixed", "Public, private and equity-method stakes carry explicit haircuts."),
-    ("Unsupported scenario probabilities drove sizing", "Fixed", "Scenarios are unweighted states; position size remains zero."),
+    {
+        "id": "S8",
+        "type": "Company event",
+        "date": "2026-08-26",
+        "title": "Nvidia Q2 FY2027 financial-results webcast",
+        "url": "https://investor.nvidia.com/events-and-presentations/events-and-presentations/event-details/2026/NVIDIA-2nd-Quarter-FY27-Financial-Results/default.aspx",
+        "use": "Confirmed Q2 results event on August 26 at 2:00 p.m. Pacific.",
+    },
 ]
 
 CAPITAL_GATES = [
     ("Variant", "Freeze broker-level consensus, cohort and revision history around the next print.", "OPEN"),
-    ("Catalyst", "Reconcile Q2 actuals and forward guidance; reverify the event date on official IR.", "OPEN"),
+    ("Catalyst", "Freeze Q2 actuals, guidance and the estimate tape around the confirmed August 26 event.", "OPEN"),
     ("Demand quality", "Quantify customer-financing exposure within investments and commitments.", "OPEN"),
     ("Channel", "Obtain lead-time, backlog, cancellation and pull-forward evidence.", "OPEN"),
     ("Market", "Refresh price, liquidity, options, short interest, borrow and crowding.", "OPEN"),
@@ -358,7 +355,7 @@ def build_data(*, write: bool = True) -> dict:
             "company": "NVIDIA Corporation",
             "as_of": AS_OF,
             "stance": "WATCHLIST / NO POSITION",
-            "share_status": "Share-ready; not capital-ready",
+            "share_status": "Sufficient to stay flat; insufficient to initiate",
             "horizon": "12 months",
             "edge": "None established",
             "position_size": POSITION_SIZE,
@@ -429,7 +426,6 @@ def build_data(*, write: bool = True) -> dict:
             "street_fy2028_analysts": 40,
         },
         "sources": SOURCES,
-        "review_findings": REVIEW_FINDINGS,
         "capital_gates": CAPITAL_GATES,
         "checks": [{"name": name, "pass": passed} for name, passed in checks],
     }
@@ -456,12 +452,8 @@ def render_memo(data: dict) -> str:
     near = data["near_term"]
     reverse = data["reverse"]
     decision = data["decision"]
-    rows_findings = "".join(
-        f"<tr><td>{finding}</td><td><span class='fixed'>{status}</span></td><td>{resolution}</td></tr>"
-        for finding, status, resolution in data["review_findings"]
-    )
     rows_gates = "".join(
-        f"<tr><td>{gate}</td><td>{requirement}</td><td><span class='open'>{status}</span></td></tr>"
+        f"<tr><td>{gate}</td><td>{requirement}</td><td><span class='open'>{'MISSING' if status == 'OPEN' else status}</span></td></tr>"
         for gate, requirement, status in data["capital_gates"]
     )
     rows_sources = "".join(
@@ -487,10 +479,6 @@ def render_memo(data: dict) -> str:
         f"<td>${row['capex']:,.1f}bn</td><td>${row['dcf_fcff']:,.1f}bn</td></tr>"
         for row in base["rows"]
     )
-    check_rows = "".join(
-        f"<tr><td>{x['name']}</td><td><span class='fixed'>{'PASS' if x['pass'] else 'FAIL'}</span></td></tr>"
-        for x in data["checks"]
-    )
     html = f"""<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="description" content="Nvidia PM review memo, public-information research as of {AS_OF}.">
@@ -501,52 +489,49 @@ def render_memo(data: dict) -> str:
 .page{{max-width:1160px;margin:0 auto;padding:38px 28px 84px}}a{{color:var(--navy);text-underline-offset:2px}}h1{{font:700 clamp(2rem,5vw,4.1rem)/.98 Georgia,serif;letter-spacing:-.045em;margin:.22em 0 .18em}}h2{{font-size:1.05rem;letter-spacing:.08em;text-transform:uppercase;margin:44px 0 14px}}h3{{font-size:1rem;margin:22px 0 7px}}p{{margin:.55em 0}}.eyebrow,.label{{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700}}.muted{{color:var(--muted)}}
 .hero{{background:var(--navy);color:#fff;border-radius:16px;padding:34px 36px;box-shadow:0 12px 40px rgba(22,58,95,.13)}}.hero .muted,.hero .eyebrow{{color:#c9d5df}}.tags{{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0}}.tag{{border:1px solid rgba(255,255,255,.32);border-radius:999px;padding:5px 10px;font-size:.76rem;font-weight:700;letter-spacing:.04em}}.hero-grid{{display:grid;grid-template-columns:1.35fr repeat(3,.75fr);gap:18px;margin-top:26px}}.metric{{border-top:1px solid rgba(255,255,255,.28);padding-top:12px}}.metric .value{{font-size:1.75rem;font-weight:750;letter-spacing:-.035em}}.metric .note{{font-size:.78rem;color:#c9d5df}}
 .grid2{{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}}.grid3{{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}}.card{{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:19px 20px}}.callout{{border-left:4px solid var(--teal);background:#edf6f5;padding:16px 18px;margin:18px 0;border-radius:0 10px 10px 0}}.risk{{border-left-color:var(--red);background:#f7eded}}.fixed{{color:var(--teal);font-weight:800}}.open,.negative{{color:var(--red);font-weight:800}}.positive{{color:var(--teal);font-weight:800}}
-.scroll{{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:#fff}}table{{border-collapse:collapse;width:100%;font-size:.82rem;min-width:720px}}th,td{{padding:10px 11px;border-bottom:1px solid var(--line);text-align:right;vertical-align:top}}th{{font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);background:var(--soft)}}th:first-child,td:first-child{{text-align:left}}tr:last-child td{{border-bottom:0}}ul,ol{{padding-left:21px}}li{{margin:.42em 0}}.number{{font-variant-numeric:tabular-nums}}.compact table{{min-width:520px}}footer{{margin-top:50px;border-top:1px solid var(--line);padding-top:18px;color:var(--muted);font-size:.78rem}}
+.scroll{{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:#fff}}table{{border-collapse:collapse;width:100%;font-size:.82rem;min-width:720px}}th,td{{padding:10px 11px;border-bottom:1px solid var(--line);text-align:right;vertical-align:top}}th{{font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);background:var(--soft)}}th:first-child,td:first-child{{text-align:left}}.text-table th,.text-table td{{text-align:left}}tr:last-child td{{border-bottom:0}}ul,ol{{padding-left:21px}}li{{margin:.42em 0}}.number{{font-variant-numeric:tabular-nums}}footer{{margin-top:50px;border-top:1px solid var(--line);padding-top:18px;color:var(--muted);font-size:.78rem}}
 @media(max-width:820px){{.page{{padding:18px 14px 56px}}.hero{{padding:24px 20px;border-radius:12px}}.hero-grid,.grid2,.grid3{{grid-template-columns:1fr}}h2{{margin-top:34px}}.metric .value{{font-size:1.5rem}}}}
 @media print{{body{{background:#fff}}.page{{max-width:none;padding:20px}}.hero{{box-shadow:none}}}}
 </style></head><body><main class="page">
-<section class="hero"><div class="eyebrow">Public-information equity research · PM review cut · {AS_OF}</div>
+<section class="hero"><div class="eyebrow">NVIDIA (NVDA) · Long/short watchlist · Market close {AS_OF}</div>
 <h1>Nvidia <span style="font-weight:400">NVDA</span></h1>
-<p class="muted">A risk frame for the next earnings decision, rebuilt around current disclosure and auditable valuation mechanics.</p>
-<div class="tags"><span class="tag">WATCHLIST / NO POSITION</span><span class="tag">Share-ready; not capital-ready</span><span class="tag">Edge: none established</span><span class="tag">Position: 0.0%</span></div>
-<div class="hero-grid"><div class="metric"><div class="label">PM call</div><div class="value">Do not force a trade</div><div class="note">The business is exceptional. The model has no verified near-term variant and every implementation gate is open.</div></div>
+<p class="muted">Decision memo for the August 26 Q2 print. Filed evidence supports staying flat; it does not yet support initiating a long or short.</p>
+<div class="tags"><span class="tag">WATCHLIST</span><span class="tag">NO POSITION</span><span class="tag">Q2: AUG 26 · 2:00 PM PT</span><span class="tag">SPOT: {_money(SPOT)}</span></div>
+<div class="hero-grid"><div class="metric"><div class="label">Decision</div><div class="value">Wait for Q2 evidence</div><div class="note">No verified earnings variant or implementation case at the current price.</div></div>
 <div class="metric"><div class="label">Spot</div><div class="value">{_money(SPOT)}</div><div class="note">Aug. 7 regular-hours snapshot</div></div>
 <div class="metric"><div class="label">Base DCF</div><div class="value">{_money(base['value_per_share'])}</div><div class="note">{_pct(base['upside'], signed=True)} vs spot</div></div>
 <div class="metric"><div class="label">State range</div><div class="value">{_money(bear['value_per_share'])}–{_money(bull['value_per_share'])}</div><div class="note">Unweighted; not a probability distribution</div></div></div></section>
 
-<h2>PM decision</h2><div class="grid2"><div class="card"><div class="label">What is mispriced?</div><p><b>Nothing we can establish from public information today.</b> The base revenue path is 3.2% below the frozen FY2027 consensus average and remains inside its range. The apparent valuation gap is a duration and discount-rate argument, not a differentiated earnings call.</p></div>
-<div class="card"><div class="label">What would change the call?</div><p>A verified estimate revision, observable demand-quality evidence and a cleared implementation ledger. Until then, a low DCF is not a short catalyst and an exceptional franchise is not a long entry.</p></div></div>
-<div class="callout"><b>Action:</b> keep size at zero through the next print. Re-underwrite after actual revenue, gross margin, forward guidance and consensus revisions are frozen. For reference, the current base DCF supports a 20% margin-of-safety entry near <b>{_money(decision['long_entry_reference'])}</b>; that is a model output, not a standing limit order.</div>
+<h2>Decision hinge</h2><div class="grid2"><div class="card"><div class="label">What spot requires</div><p>At {_money(SPOT)}, the base operating path clears through either an <b>{_pct(reverse['implied_wacc'])} WACC</b> versus the explicit {_pct(base['wacc'])} build, or a <b>{_pct(reverse['implied_revenue_scale'] - 1, signed=True)} uniform revenue uplift</b>. We have no evidence-grade basis to select either.</p></div>
+<div class="card"><div class="label">Evidence posture</div><p>Filings, company guidance and the auditable DCF are sufficient to decline initiation. Missing broker revisions, channel work, positioning and portfolio evidence prevent a long or short recommendation.</p></div></div>
+<div class="callout"><b>Action:</b> hold size at zero through Q2. Re-underwrite after revenue, gross margin, forward guidance and estimate revisions are frozen. The base DCF implies a 20% return hurdle near <b>{_money(decision['long_entry_reference'])}</b>; this is a reference point, not an order.</div>
 
-<h2>Highest-priority findings</h2><p class="muted">All eight defects from the review have been remediated in this memo and the linked workbook.</p><div class="scroll"><table><thead><tr><th>Finding</th><th>Status</th><th>Resolution</th></tr></thead><tbody>{rows_findings}</tbody></table></div>
+<h2>What the tape must be underwriting</h2><div class="grid3"><div class="card"><div class="label">Explicit WACC</div><p style="font-size:1.55rem;font-weight:800">{_pct(base['wacc'])}</p><p class="muted">4.65% Treasury + 1.35 beta × 4.50% ERP; debt weight is immaterial.</p></div><div class="card"><div class="label">Spot-implied WACC</div><p style="font-size:1.55rem;font-weight:800">{_pct(reverse['implied_wacc'])}</p><p class="muted">Base operations, terminal ROIC and stake haircuts held constant.</p></div><div class="card"><div class="label">Operating uplift</div><p style="font-size:1.55rem;font-weight:800">{_pct(reverse['implied_revenue_scale'] - 1, signed=True)}</p><p class="muted">Uniform revenue scale required at 10.7% WACC.</p></div></div>
+<p>Spot needs a discount rate about <b>{(base['wacc']-reverse['implied_wacc'])*10000:.0f}bp</b> below the explicit build or revenue scaled to <b>${reverse['implied_fy2032_revenue']:,.0f}bn</b> by FY2032. These separate diagnostics identify the assumptions carrying the valuation.</p>
 
-<h2>What the tape must be underwriting</h2><div class="grid3"><div class="card"><div class="label">Base CAPM</div><p style="font-size:1.55rem;font-weight:800">{_pct(base['wacc'])}</p><p class="muted">4.65% Treasury + 1.35 beta × 4.50% ERP; debt weight is immaterial.</p></div><div class="card"><div class="label">Spot-implied WACC</div><p style="font-size:1.55rem;font-weight:800">{_pct(reverse['implied_wacc'])}</p><p class="muted">Holding the base operating path, terminal ROIC and stake haircuts constant.</p></div><div class="card"><div class="label">Or: operating uplift</div><p style="font-size:1.55rem;font-weight:800">{_pct(reverse['implied_revenue_scale'] - 1, signed=True)}</p><p class="muted">Uniform revenue scale required at 10.7% WACC; an intentionally blunt reverse-DCF diagnostic.</p></div></div>
-<p>At spot, the model requires either a discount rate about <b>{(base['wacc']-reverse['implied_wacc'])*10000:.0f}bp</b> below the explicit CAPM build or a revenue path scaled to <b>${reverse['implied_fy2032_revenue']:,.0f}bn</b> by FY2032. Those are not equivalent forecasts; they identify the two assumptions doing the work.</p>
-
-<h2>Near-term setup</h2><div class="grid2"><div class="card"><div class="label">Reported and guided</div><ul><li>Q1 FY2027 revenue: <b>${facts['q1_revenue']:.1f}bn</b>, +85% year over year.</li><li>Data Center: <b>${facts['q1_data_center']:.1f}bn</b>; compute $60.4bn and networking $14.8bn under the prior sub-markets.</li><li>Q2 revenue guide: <b>${facts['q2_guide']:.1f}bn ±2%</b>, with no China Data Center compute revenue assumed.</li><li>Q1 gross margin: <b>{_pct(facts['q1_gross_margin'])}</b>.</li></ul></div>
+<h2>Catalyst and estimate path</h2><div class="grid2"><div class="card"><div class="label">Reported and guided</div><ul><li>Q1 FY2027 revenue: <b>${facts['q1_revenue']:.1f}bn</b>, +85% year over year.</li><li>Data Center: <b>${facts['q1_data_center']:.1f}bn</b>; compute $60.4bn and networking $14.8bn under the prior sub-markets.</li><li>Q2 revenue guide: <b>${facts['q2_guide']:.1f}bn ±2%</b>, with no China Data Center compute revenue assumed.</li><li>Q1 gross margin: <b>{_pct(facts['q1_gross_margin'])}</b>.</li></ul></div>
 <div class="card"><div class="label">What base needs</div><ul><li>FY2027 revenue: <b>${near['base_fy2027_revenue']:.1f}bn</b>.</li><li>After Q1 and Q2 midpoint: <b>${near['h2_required']:.1f}bn</b> in H2, or ${near['h2_quarterly_required']:.1f}bn per quarter.</li><li>That run-rate is <b>{_pct(near['required_vs_q2_guide'], signed=True)}</b> versus Q2 guidance.</li><li>Frozen FY2027 consensus: <b>${near['street_fy2027_avg']:.1f}bn</b>, range ${near['street_fy2027_low']:.1f}–${near['street_fy2027_high']:.1f}bn, 40 estimates.</li></ul></div></div>
-<div class="callout risk"><b>Catalyst control:</b> August 26 appears in the prior market calendar, but Nvidia IR returned a rate-limit response during this rebuild. Treat the date as expected, not confirmed, and reverify it before the event.</div>
+<div class="callout"><b>Confirmed catalyst:</b> Nvidia will report Q2 FY2027 results on <b>August 26, 2026 at 2:00 p.m. Pacific</b>. The decision variable is the delta between actuals and a frozen pre-print estimate tape, then the direction of post-print revisions.</div>
 
-<h2>Quality of earnings and demand</h2><div class="grid2"><div class="card"><div class="label">Non-operating gain</div><p>Q1 cash-flow reconciliation reports <b>${facts['q1_equity_security_gains']:.3f}bn</b> of equity-security gains. That is <b>{_pct(facts['q1_equity_gains_pct_pretax'])}</b> of pretax income. The prior memo showed zero because a rejected tag was converted to 0.0; this version keeps the amount visible and does not treat it as operating earnings.</p></div>
+<h2>Quality of earnings and demand</h2><div class="grid2"><div class="card"><div class="label">Non-operating gain</div><p>Q1 cash-flow reconciliation reports <b>${facts['q1_equity_security_gains']:.3f}bn</b> of equity-security gains, equal to <b>{_pct(facts['q1_equity_gains_pct_pretax'])}</b> of pretax income. The model excludes the gain from operating earning power.</p></div>
 <div class="card"><div class="label">Demand-quality evidence</div><p>Nvidia invested <b>${facts['q1_private_investments']:.1f}bn</b> in private companies and infrastructure funds in Q1. The filing says <i>some</i> investees include AI model makers that may indirectly use Nvidia products. It does not support calling the entire ${BALANCE_SHEET['marketable_equity'] + BALANCE_SHEET['nonmarketable_equity']:.1f}bn equity portfolio customer financing.</p></div></div>
 <div class="grid3" style="margin-top:14px"><div class="card"><div class="label">Concentration</div><p>Three direct customers were 21%, 17% and 16% of revenue; A/R concentration was 30%, 18% and 16%.</p></div><div class="card"><div class="label">Commitments</div><p>$119bn manufacturing and capacity, $30bn cloud service and $27bn contingent investment commitments.</p></div><div class="card"><div class="label">Inventory</div><p>$25.8bn at April 26. Read it with forward guidance, lead times and cancellation behavior, not alone.</p></div></div>
 
-<h2>Valuation states</h2><p class="muted">Values are present values as of the August decision cut. FY2027 DCF cash flow subtracts reported Q1 CFO less capex from the full-year model; the April 26 balance sheet therefore is not double-counted. Probabilities are deliberately omitted.</p><div class="scroll"><table><thead><tr><th>State</th><th>Value/share</th><th>Vs spot</th><th>Revenue CAGR</th><th>FY32 EBIT margin</th><th>WACC</th><th>g</th><th>Terminal ROIC</th><th>TV / EV</th></tr></thead><tbody>{scenario_rows}</tbody></table></div>
+<h2>Valuation and skew</h2><p class="muted">Values are present values as of the August decision cut. FY2027 DCF cash flow subtracts reported Q1 CFO less capex from the full-year model, avoiding double counting with the April 26 balance sheet. States are unweighted because there is no evidence-grade probability set.</p><div class="scroll"><table><thead><tr><th>State</th><th>Value/share</th><th>Vs spot</th><th>Revenue CAGR</th><th>FY32 EBIT margin</th><th>WACC</th><th>g</th><th>Terminal ROIC</th><th>TV / EV</th></tr></thead><tbody>{scenario_rows}</tbody></table></div>
 <h3>Base forecast mechanics</h3><div class="scroll"><table><thead><tr><th>Fiscal year</th><th>Revenue</th><th>Growth</th><th>EBITDA margin</th><th>D&A</th><th>EBIT margin</th><th>Capex</th><th>DCF FCFF</th></tr></thead><tbody>{forecast_rows}</tbody></table></div>
 <div class="callout"><b>Terminal control:</b> terminal FCFF equals NOPAT × (1 − g / terminal ROIC). Base terminal reinvestment is {_pct(base['terminal_reinvestment_rate'])}, and terminal value is {_pct(base['tv_pct_ev'])} of enterprise value.</div>
 
 <h2>Equity bridge</h2><p>The base bridge credits $50.3bn of cash and marketable debt securities at par, 85% of $30.2bn marketable equity, 50% of $42.3bn non-marketable equity and 50% of $1.0bn equity-method stakes, then deducts $8.5bn debt. The credited bridge is <b>${base['bridge']['total']:.1f}bn</b>. Operating leases stay disclosed but are not deducted because the cash flows already include operating lease expense.</p>
 
-<h2>Variant, catalysts and falsifiers</h2><div class="grid2"><div class="card"><div class="label">Why no long</div><ul><li>No verified earnings variant versus a canonical broker panel.</li><li>Base value is below spot at a visible CAPM discount rate.</li><li>Strategic-investment demand attribution is not quantified.</li><li>The next print can reset both numerator and duration assumptions.</li></ul></div><div class="card"><div class="label">Why no short</div><ul><li>The downside is a valuation opinion without an observed revision catalyst.</li><li>The bull state remains {_money(bull['value_per_share'])}; upside risk is not capped.</li><li>Borrow, crowding, options and hedge economics are missing.</li><li>A lower but defensible discount rate closes much of the gap.</li></ul></div></div>
-<p><b>What proves a long:</b> Q2 and guidance establish upside to a frozen consensus, demand-quality work separates durable end demand from financed pull-forward, and underwritten upside clears 20% after hedging and event costs.</p><p><b>What proves a short:</b> reported demand or forward guidance breaks the base path, revisions follow, a live implementation ledger caps squeeze and factor risk, and expected downside remains at least 20% after costs.</p>
-<p><b>Pre-mortem:</b> we force a short because the DCF is low, then Rubin and networking deliver, consensus rises, duration compresses the discount rate and the stock gaps through an uncapped bull case. The prevention is the current decision: no position before evidence and implementation agree.</p>
+<h2>Downside and squeeze mechanics</h2><div class="grid2"><div class="card"><div class="label">Long failure path</div><p>Q2 or the guide misses the required path; the estimate tape rolls down; cash-flow duration shortens; and the discount rate widens. The bear state is <b>{_money(bear['value_per_share'])}</b>, with customer concentration, commitments and inventory amplifying a digestion cycle.</p></div><div class="card"><div class="label">Short failure path</div><p>A beat-and-raise confirms durable Rubin and networking demand; estimates move higher; and the duration premium compresses. The bull state is <b>{_money(bull['value_per_share'])}</b>, while pre-print squeeze risk remains uncapped without borrow, options and crowding data.</p></div></div>
 
-<h2>Required before risking capital</h2><div class="scroll"><table><thead><tr><th>Gate</th><th>Required evidence</th><th>Status</th></tr></thead><tbody>{rows_gates}</tbody></table></div>
+<h2>Action rules and falsifiers</h2><div class="grid2"><div class="card"><div class="label">Initiate long only if</div><p>Q2 and guidance establish upside to a frozen broker panel, demand-quality work separates durable end demand from financed pull-forward, and net underwritten return clears 20% after hedge and event costs.</p></div><div class="card"><div class="label">Initiate short only if</div><p>Reported demand or guidance breaks the base path, revisions follow, the implementation ledger caps squeeze and factor risk, and net downside clears 20% after costs.</p></div></div>
+<p><b>Disconfirm the current wait:</b> a clean earnings variant plus cleared demand and implementation gates. <b>Disconfirm a future short:</b> sustained estimate upgrades, durable lead times and a defensible lower discount rate. <b>Disconfirm a future long:</b> guide-downs, cancellations, working-capital deterioration or evidence that investment-linked demand is pulling revenue forward.</p>
 
-<h2>Model checks</h2><div class="scroll compact"><table><thead><tr><th>Control</th><th>Result</th></tr></thead><tbody>{check_rows}</tbody></table></div>
+<h2>Evidence required before initiating a position</h2><div class="scroll"><table class="text-table"><thead><tr><th>Gate</th><th>Required evidence</th><th>Status</th></tr></thead><tbody>{rows_gates}</tbody></table></div>
 
-<h2>Sources and limits</h2><div class="scroll"><table><thead><tr><th>ID</th><th>Type</th><th>Source</th><th>Date</th><th>Use</th></tr></thead><tbody>{rows_sources}</tbody></table></div>
-<p class="muted">Limits: no broker-level revision tape, channel checks, expert calls, alternative data, live options, current borrow/crowding or portfolio book context. The August price is a frozen regular-hours reference. Q2 has ended but was not filed at this cut. Scenario assumptions are analyst judgments, not company guidance. This memo is research, not investment advice or a solicitation.</p>
+<h2>Sources and limits</h2><div class="scroll"><table class="text-table"><thead><tr><th>ID</th><th>Type</th><th>Source</th><th>Date</th><th>Use</th></tr></thead><tbody>{rows_sources}</tbody></table></div>
+<p class="muted">Method: the Python model and formula-linked workbook are independently recalculated, tied at headline and forecast-line level, and scanned for formula errors. Limits: no broker-level revision tape, channel checks, expert calls, alternative data, live options, current borrow/crowding or portfolio book context. The August price is a frozen regular-hours reference. Q2 has ended but was not filed at this cut. Scenario assumptions are analyst judgments. This memo is research, not investment advice or a solicitation.</p>
 <footer>Prepared from public information · NVIDIA Corporation (NVDA) · {AS_OF} · Companion workbook: <a href="model.xlsx">model.xlsx</a></footer>
 </main></body></html>"""
     return html
