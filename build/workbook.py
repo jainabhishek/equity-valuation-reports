@@ -459,15 +459,9 @@ def build(ticker, slug):
     sc.cell(r, 2, meta["rating"]).font = Font(bold=True, size=12)
     r += 1
     for label, val, fmt, nt in [
-        ("Risk / reward", sz["risk_reward"], '0.00', f"{direction.lower()} framing"),
-        ("Payoff ratio b", sz["b"], '0.00', "reward / risk"),
-        ("p(win)", sz["p_win"], PCT, "probability mass favouring the position"),
-        ("Kelly f", sz["kelly_f"], PCT, ""),
-        ("Quarter-Kelly", sz["size_raw"], PCT, "0.25 x Kelly"),
-        ("Liquidity cap", sz["size_liquidity"], PCT, "20% of ADV over 5 days"),
-        ("Risk-budget cap", sz["size_risk_budget"], PCT, "1.5% of NAV at risk"),
-        ("Concentration cap", sz["size_concentration"], PCT, "single-name hard limit"),
-        ("Position size", sz["position_size"], PCT, f"binding: {sz['binding_constraint']}"),
+        ("Scenario expected value", sz["expected_value"], USD, "illustrative probability-weighted arithmetic"),
+        ("Position size", sz["position_size"], PCT, "no capital recommendation"),
+        ("Binding constraint", sz["binding_constraint"], 'General', "implementation inputs missing"),
     ]:
         sc.cell(r, 1, label).font = LBL_FONT if label == "Position size" else Font(size=10)
         c = sc.cell(r, 2, val)
@@ -507,7 +501,8 @@ def build(ticker, slug):
         "the model.",
         "",
         "This is analytical research on public information. Not investment advice, not a recommendation "
-        "to any person, and not a solicitation. Position sizing is illustrative against a notional $1bn book.",
+        "to any person, and not a solicitation. No percentage sizing is provided without implementation "
+        "and portfolio inputs.",
     ]:
         nt.cell(r, 1, line).alignment = Alignment(wrap_text=True, vertical="top")
         r += 1
@@ -519,5 +514,10 @@ def build(ticker, slug):
 
 
 if __name__ == "__main__":
-    for t, s in (("GOOGL", "alphabet"), ("NVDA", "nvidia")):
-        print("wrote", build(t, s))
+    # Alphabet's PM-ready package has a dated stub, point-in-time share bridge,
+    # quarterly placed-in-service D&A and implementation gates.  Keep the
+    # generic builder for Nvidia until it receives the same company-specific
+    # remediation.
+    import alphabet_pm
+    print("wrote", alphabet_pm.build_workbook())
+    print("wrote", build("NVDA", "nvidia"))

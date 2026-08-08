@@ -1,0 +1,686 @@
+{
+  "as_of": "2026-08-07",
+  "financial_cutoff": "2026-06-30",
+  "inputs": {
+    "spot": 354.24,
+    "spot_as_of": "2026-08-07 15:59:59 ET",
+    "spot_source": "Robinhood last regular-hours trade",
+    "adv_shares_30d": 31119520.5407,
+    "h1_revenue": 229692000000.0,
+    "h1_ebit": 80466000000.0,
+    "h1_ppe_depreciation": 13586000000.0,
+    "h1_intangible_amortization": 545000000.0,
+    "h1_da": 14131000000.0,
+    "q2_ppe_depreciation": 7104000000.0,
+    "q2_intangible_amortization": 367000000.0,
+    "q2_da": 7471000000.0,
+    "h1_capex": 80598000000.0,
+    "h1_cfo": 84859000000.0,
+    "fy26_revenue": 498422507321.0,
+    "growth": [
+      null,
+      0.1583,
+      0.1359,
+      0.1204,
+      0.1083,
+      0.0953
+    ],
+    "ebitda_margin": [
+      0.385,
+      0.392,
+      0.398,
+      0.402,
+      0.405,
+      0.407
+    ],
+    "capex": [
+      200000000000.0,
+      230000000000.0,
+      225000000000.0,
+      205000000000.0,
+      185000000000.0,
+      170000000000.0
+    ],
+    "tax_rate": [
+      0.185,
+      0.185,
+      0.185,
+      0.185,
+      0.185,
+      0.185
+    ],
+    "nwc_pct_revenue": [
+      0.015,
+      0.015,
+      0.015,
+      0.015,
+      0.015,
+      0.015
+    ],
+    "terminal_growth": 0.03,
+    "terminal_roic": 0.18,
+    "risk_free": 0.0465,
+    "beta": 0.95,
+    "erp": 0.045,
+    "pretax_debt_cost": 0.048,
+    "debt": 100164000000.0,
+    "leases": 18037000000.0,
+    "liquid_cash_and_securities": 162474000000.0,
+    "restricted_marketable_equity": 94126000000.0,
+    "restricted_marketable_haircut": 0.25,
+    "nonmarketable_equity": 124259000000.0,
+    "nonmarketable_haircut": 0.5,
+    "common_shares": 12230000000.0,
+    "q2_basic_weighted_shares": 12151000000.0,
+    "q2_diluted_weighted_shares": 12309000000.0,
+    "ordinary_dilution": 142000000.0,
+    "series_a_pref_shares": 9625000.0,
+    "series_b_pref_shares": 9625000.0,
+    "series_a_min_conversion": 2.252,
+    "series_b_min_conversion": 2.274,
+    "asset_buckets": [
+      {
+        "name": "Servers / machines",
+        "mix": 0.6,
+        "life_years": 6.0,
+        "lag_quarters": 1
+      },
+      {
+        "name": "Network equipment",
+        "mix": 0.2,
+        "life_years": 6.0,
+        "lag_quarters": 2
+      },
+      {
+        "name": "Buildings / improvements",
+        "mix": 0.2,
+        "life_years": 25.0,
+        "lag_quarters": 4
+      }
+    ],
+    "street_fy27_eps": 15.00595,
+    "street_fy27_eps_low": 13.92609,
+    "street_fy27_eps_high": 16.67667,
+    "street_fy27_n": 42,
+    "street_fy27_ebitda": 225057923702.0,
+    "street_fy27_ebit": 197033766501.0,
+    "consensus_freeze": "FMP feed retrieved 2026-08-07; independent $14.20-$14.68 range unresolved"
+  },
+  "depreciation": {
+    "labels": [
+      "Q3 2026",
+      "Q4 2026",
+      "Q1 2027",
+      "Q2 2027",
+      "Q3 2027",
+      "Q4 2027",
+      "Q1 2028",
+      "Q2 2028",
+      "Q3 2028",
+      "Q4 2028",
+      "Q1 2029",
+      "Q2 2029",
+      "Q3 2029",
+      "Q4 2029",
+      "Q1 2030",
+      "Q2 2030",
+      "Q3 2030",
+      "Q4 2030",
+      "Q1 2031",
+      "Q2 2031",
+      "Q3 2031",
+      "Q4 2031"
+    ],
+    "capex": [
+      59701000000.0,
+      59701000000.0,
+      57500000000.0,
+      57500000000.0,
+      57500000000.0,
+      57500000000.0,
+      56250000000.0,
+      56250000000.0,
+      56250000000.0,
+      56250000000.0,
+      51250000000.0,
+      51250000000.0,
+      51250000000.0,
+      51250000000.0,
+      46250000000.0,
+      46250000000.0,
+      46250000000.0,
+      46250000000.0,
+      42500000000.0,
+      42500000000.0,
+      42500000000.0,
+      42500000000.0
+    ],
+    "legacy": [
+      7471000000.0,
+      7471000000.0,
+      7471000000.0,
+      7471000000.0,
+      7471000000.0,
+      7471000000.0,
+      7471000000.0,
+      7471000000.0,
+      7471000000.0,
+      7471000000.0,
+      7471000000.0,
+      7471000000.0,
+      7471000000.0,
+      7471000000.0,
+      7471000000.0,
+      7471000000.0,
+      7471000000.0,
+      7471000000.0,
+      7471000000.0,
+      7471000000.0,
+      7471000000.0,
+      7471000000.0
+    ],
+    "contributions": {
+      "Servers / machines": [
+        0.0,
+        1492525000.0,
+        2985050000.0,
+        4422550000.0,
+        5860050000.0,
+        7297550000.0,
+        8735050000.0,
+        10141300000.0,
+        11547550000.0,
+        12953800000.0,
+        14360050000.0,
+        15641300000.0,
+        16922550000.0,
+        18203800000.0,
+        19485050000.0,
+        20641300000.0,
+        21797550000.0,
+        22953800000.0,
+        24110050000.0,
+        25172550000.0,
+        26235050000.0,
+        27297550000.0
+      ],
+      "Network equipment": [
+        0.0,
+        0.0,
+        497508333.3333333,
+        995016666.6666666,
+        1474183333.3333333,
+        1953350000.0,
+        2432516666.6666665,
+        2911683333.333333,
+        3380433333.333333,
+        3849183333.333333,
+        4317933333.333333,
+        4786683333.333333,
+        5213766666.666666,
+        5640849999.999999,
+        6067933333.333332,
+        6495016666.666665,
+        6880433333.333332,
+        7265849999.999999,
+        7651266666.666666,
+        8036683333.333333,
+        8390850000.0,
+        8745016666.666666
+      ],
+      "Buildings / improvements": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        119402000.0,
+        238804000.0,
+        353804000.0,
+        468804000.0,
+        583804000.0,
+        698804000.0,
+        811304000.0,
+        923804000.0,
+        1036304000.0,
+        1148804000.0,
+        1251304000.0,
+        1353804000.0,
+        1456304000.0,
+        1558804000.0,
+        1651304000.0,
+        1743804000.0,
+        1836304000.0,
+        1928804000.0
+      ]
+    },
+    "total": [
+      7471000000.0,
+      8963525000.0,
+      10953558333.333334,
+      12888566666.666668,
+      14924635333.333332,
+      16960704000.0,
+      18992370666.666664,
+      20992787333.333332,
+      22982787333.333332,
+      24972787333.333332,
+      26960287333.333332,
+      28822787333.333332,
+      30643620666.666664,
+      32464454000.0,
+      34275287333.333332,
+      35961120666.666664,
+      37605287333.33333,
+      39249454000.0,
+      40883620666.666664,
+      42424037333.333336,
+      43933204000.0,
+      45442370666.666664
+    ],
+    "annual": {
+      "2026": 30565525000.0,
+      "2027": 55727464333.33333,
+      "2028": 87940732666.66666,
+      "2029": 118891149333.33333,
+      "2030": 147091149333.3333,
+      "2031": 172683232666.66666
+    },
+    "annual_legacy": {
+      "2026": 29073000000.0,
+      "2027": 29884000000.0,
+      "2028": 29884000000.0,
+      "2029": 29884000000.0,
+      "2030": 29884000000.0,
+      "2031": 29884000000.0
+    },
+    "annual_forecast": {
+      "2026": 1492525000.0,
+      "2027": 25843464333.333336,
+      "2028": 58056732666.66666,
+      "2029": 89007149333.33333,
+      "2030": 117207149333.33333,
+      "2031": 142799232666.66666
+    }
+  },
+  "share_bridge": {
+    "common": 12230000000.0,
+    "ordinary_dilution": 142000000.0,
+    "preferred_if_converted": 43562750.0,
+    "total": 12415562750.0,
+    "preferred_equity_deduction": 0.0,
+    "treatment": "if-converted: dilution included; preferred carrying value not deducted"
+  },
+  "wacc": {
+    "market_cap": 4398088948560.0,
+    "cost_equity": 0.08925,
+    "after_tax_debt_cost": 0.039119999999999995,
+    "equity_weight": 0.9777326884136063,
+    "debt_weight": 0.022267311586393723,
+    "wacc": 0.08813373967017409
+  },
+  "dcf": {
+    "rows": [
+      {
+        "year": 2026,
+        "label": "2026 stub",
+        "revenue": 213231815591.66302,
+        "ebitda": 77201995307.13809,
+        "da": 13348677173.913044,
+        "ebit": 63853318133.22505,
+        "nopat": 52040454278.578415,
+        "capex": 94742891304.34784,
+        "delta_nwc": 3198477233.874945,
+        "fcff": -32552237085.73133,
+        "exponent": 0.1986,
+        "pv": -32010741904.305122
+      },
+      {
+        "year": 2027,
+        "label": "2027",
+        "revenue": 577322790229.9143,
+        "ebitda": 226310533770.1264,
+        "da": 55727464333.33333,
+        "ebit": 170583069436.7931,
+        "nopat": 139025201590.98636,
+        "capex": 230000000000.0,
+        "delta_nwc": 1183504243.6337144,
+        "fcff": -36430838319.31401,
+        "exponent": 0.8986,
+        "pv": -33768088023.684483
+      },
+      {
+        "year": 2028,
+        "label": "2028",
+        "revenue": 655780957422.1597,
+        "ebitda": 261000821054.01956,
+        "da": 87940732666.66666,
+        "ebit": 173060088387.3529,
+        "nopat": 141043972035.6926,
+        "capex": 225000000000.0,
+        "delta_nwc": 1176872507.8836803,
+        "fcff": 2807832194.4755726,
+        "exponent": 1.8986,
+        "pv": 2391807255.0775003
+      },
+      {
+        "year": 2029,
+        "label": "2029",
+        "revenue": 734736984695.7877,
+        "ebitda": 295364267847.70667,
+        "da": 118891149333.33333,
+        "ebit": 176473118514.37335,
+        "nopat": 143825591589.21426,
+        "capex": 205000000000.0,
+        "delta_nwc": 1184340409.1044207,
+        "fcff": 56532400513.443184,
+        "exponent": 2.8986,
+        "pv": 44255798398.182816
+      },
+      {
+        "year": 2030,
+        "label": "2030",
+        "revenue": 814309000138.3416,
+        "ebitda": 329795145056.0283,
+        "da": 147091149333.3333,
+        "ebit": 182703995722.695,
+        "nopat": 148903756513.99643,
+        "capex": 185000000000.0,
+        "delta_nwc": 1193580231.6383073,
+        "fcff": 109801325615.6914,
+        "exponent": 3.8986,
+        "pv": 78994719191.02206
+      },
+      {
+        "year": 2031,
+        "label": "2031",
+        "revenue": 891912647851.5255,
+        "ebitda": 363008447675.57086,
+        "da": 172683232666.66666,
+        "ebit": 190325215008.9042,
+        "nopat": 155115050232.25693,
+        "capex": 170000000000.0,
+        "delta_nwc": 1164054715.6977594,
+        "fcff": 156634228183.22583,
+        "exponent": 4.8986,
+        "pv": 103560674668.49333
+      }
+    ],
+    "terminal": {
+      "next_nopat": 159768501739.22464,
+      "reinvestment_rate": 0.16666666666666666,
+      "normalized_reinvestment": 26628083623.204105,
+      "fcff": 133140418116.02054,
+      "value": 2290243477736.0303,
+      "exponent": 5.4,
+      "pv": 1451434230232.7458
+    },
+    "estimated_interim_fcff": -8487341975.578224,
+    "enterprise_value": 1614858399817.532,
+    "restricted_marketable_value": 70594500000.0,
+    "nonmarketable_value": 62129500000.0,
+    "equity_value": 1783368057841.9539,
+    "value_per_share": 143.63972811799883,
+    "tv_pct_ev": 0.8987996906705554,
+    "stub_fraction": 0.7934782608695652
+  },
+  "scenarios": {
+    "rows": [
+      {
+        "key": "bear",
+        "label": "Stock bear / short works",
+        "probability": 0.25,
+        "da_factor": 1.1,
+        "ebitda_offset": 0.4,
+        "multiple": 20.0,
+        "basis": "D&A reaches or exceeds path; EBITDA offsets <50%; multiple compresses.",
+        "street_da": 28024157201.0,
+        "case_da": 61300210766.666664,
+        "gross_da_surprise": 33276053565.666664,
+        "unoffset_da": 19965632139.399998,
+        "eps_delta": -1.3106123758756723,
+        "eps": 13.695337624124328,
+        "target": 273.9067524824866,
+        "return": -0.22677633106795791
+      },
+      {
+        "key": "base",
+        "label": "Base / wait",
+        "probability": 0.5,
+        "da_factor": 1.0,
+        "ebitda_offset": 0.75,
+        "multiple": 23.0,
+        "basis": "D&A rises, but most of the charge is absorbed; catalyst is insufficient.",
+        "street_da": 28024157201.0,
+        "case_da": 55727464333.33333,
+        "gross_da_surprise": 27703307132.33333,
+        "unoffset_da": 6925826783.083332,
+        "eps_delta": -0.4546349562941008,
+        "eps": 14.5513150437059,
+        "target": 334.6802460052357,
+        "return": -0.05521610770879726
+      },
+      {
+        "key": "bull",
+        "label": "Stock bull / short loses",
+        "probability": 0.25,
+        "da_factor": 0.85,
+        "ebitda_offset": 1.25,
+        "multiple": 26.0,
+        "basis": "Commissioning is slower and EBITDA more than offsets the D&A surprise.",
+        "street_da": 28024157201.0,
+        "case_da": 47368344683.33333,
+        "gross_da_surprise": 19344187482.33333,
+        "unoffset_da": -4836046870.583332,
+        "eps_delta": 0.3174546558129566,
+        "eps": 15.323404655812958,
+        "target": 398.4085210511369,
+        "return": 0.12468530107028264
+      }
+    ],
+    "expected_value": 335.41894138602373,
+    "expected_return": -0.053130811353817364
+  },
+  "implementation_gates": [
+    [
+      "Catalyst / revision",
+      "NOT CLEARED",
+      "No observed FY2027 EPS cuts from reported D&A."
+    ],
+    [
+      "Valuation",
+      "NOT CLEARED",
+      "Scenario target needs both an EPS cut and a lower multiple."
+    ],
+    [
+      "Borrow / carry",
+      "MISSING",
+      "Locate, availability, fee/rebate, utilization, recall and dividend carry."
+    ],
+    [
+      "Crowding / squeeze",
+      "MISSING",
+      "Short interest, days-to-cover, ownership and buyback execution."
+    ],
+    [
+      "Options",
+      "MISSING",
+      "Expiry, strikes, bid/ask, IV/skew, Greeks, OI, theta and max loss."
+    ],
+    [
+      "Hedge",
+      "MISSING",
+      "Alpha definition, factor map, hedge candidate/ratio and basis-risk failure case."
+    ],
+    [
+      "ADV / exit",
+      "PRELIMINARY",
+      "30-day GOOGL ADV observed; portfolio size and stressed exit plan absent."
+    ]
+  ],
+  "action_rules": [
+    [
+      "Initiate starter only if",
+      "Actual D&A reaches/exceeds the frozen path; EBITDA offsets <50% of the surprise; FY2027 consensus EPS falls at least 5% within 10 trading days; net downside remains at least 20%; every implementation gate clears."
+    ],
+    [
+      "Add",
+      "A second consecutive print confirms the bridge, cumulative FY2027 EPS cuts reach at least 10%, and downside remains at least 2x defined stress loss."
+    ],
+    [
+      "Stand down / cover",
+      "Two prints show D&A below model, EBITDA fully offsets the charge, FY2027 EPS is flat/up through Q1 2027, useful lives or commissioning materially defer D&A, or the catalyst window expires."
+    ],
+    [
+      "Implementation trim / cover",
+      "Carry consumes more than 25% of expected gross alpha, borrow/recall worsens, squeeze risk changes materially, or the target gap closes."
+    ],
+    [
+      "Hedge / resize",
+      "The exposure becomes primarily mega-cap technology beta, rates/duration, or the AI factor instead of D&A revision alpha."
+    ]
+  ],
+  "sources": [
+    [
+      "S1",
+      "Filed fact",
+      "H1 revenue, EBIT, PPE depreciation, intangible amortization, capex, CFO; balance sheet; capital structure",
+      "2026-06-30",
+      "Alphabet Q2 2026 Form 10-Q",
+      "0001652044-26-000071",
+      "https://www.sec.gov/Archives/edgar/data/1652044/000165204426000071/goog-20260630.htm"
+    ],
+    [
+      "S2",
+      "Filed fact / guidance",
+      "Q2 results; ATM unsold at June 30",
+      "2026-07-22",
+      "Alphabet Q2 2026 earnings release",
+      "0001652044-26-000066",
+      "https://www.sec.gov/Archives/edgar/data/1652044/000165204426000066/googexhibit991q22026.htm"
+    ],
+    [
+      "S2A",
+      "Management guidance",
+      "FY2026 capex $195-205bn; 2027 expected to increase significantly; Q2 infrastructure capex mix",
+      "2026-07-22",
+      "Alphabet Q2 2026 earnings call",
+      "management remarks",
+      "https://alphabet2025ir.q4web.com/investor/events/event-details/2026/2026-Q2-Earnings-Call-2026-GgTAq7Is0z/default.aspx"
+    ],
+    [
+      "S2B",
+      "Filed accounting policy",
+      "Servers/network generally 6 years; buildings 7-40 years",
+      "2025-12-31",
+      "Alphabet FY2025 Form 10-K",
+      "0001652044-26-000018",
+      "https://www.sec.gov/Archives/edgar/data/1652044/000165204426000018/goog-20251231.htm"
+    ],
+    [
+      "S3",
+      "Market",
+      "GOOGL price, 30-day share volume, shares outstanding",
+      "2026-08-07",
+      "Robinhood equity quote/fundamentals",
+      "read-only MCP snapshot",
+      "https://robinhood.com/stocks/GOOGL"
+    ],
+    [
+      "S4",
+      "Market",
+      "10-year Treasury par yield 4.65%",
+      "2026-08-07",
+      "U.S. Treasury daily yield curve",
+      "10-year par yield",
+      "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/TextView?type=daily_treasury_yield_curve&field_tdr_date_value=2026"
+    ],
+    [
+      "S5",
+      "Consensus conflict",
+      "FY2027 EPS $15.01 / 42 estimates; range $13.93-$16.68",
+      "2026-08-07",
+      "FMP analyst financial estimates",
+      "repository snapshot",
+      "https://financialmodelingprep.com/developer/docs"
+    ],
+    [
+      "A1",
+      "Analyst assumption",
+      "Beta 0.95; ERP 4.50%; terminal ROIC 18%",
+      "2026-08-08",
+      "Independent model assumptions",
+      "not a sourced fact",
+      ""
+    ],
+    [
+      "A2",
+      "Analyst assumption",
+      "Capex asset mix, useful lives, and placement lags",
+      "2026-08-08",
+      "Independent model assumptions",
+      "not disclosed by Alphabet",
+      ""
+    ],
+    [
+      "A3",
+      "Analyst assumption",
+      "Scenario probabilities, EBITDA offsets, and exit multiples",
+      "2026-08-08",
+      "Illustrative risk frame",
+      "not an actionable trade",
+      ""
+    ]
+  ],
+  "checks": [
+    {
+      "name": "No pre-valuation FCFF in DCF",
+      "status": "PASS",
+      "detail": "DCF begins 2026-08-08"
+    },
+    {
+      "name": "WACC less g >= 150bp",
+      "status": "PASS",
+      "detail": "5.81%"
+    },
+    {
+      "name": "Terminal ROIC exceeds g",
+      "status": "PASS",
+      "detail": "18.0% vs 3.0%"
+    },
+    {
+      "name": "Terminal reinvestment is 0-100%",
+      "status": "PASS",
+      "detail": "16.7%"
+    },
+    {
+      "name": "Scenario probabilities sum to 100%",
+      "status": "PASS",
+      "detail": "100.0%"
+    },
+    {
+      "name": "Preferred not double counted",
+      "status": "PASS",
+      "detail": "if-converted: dilution included; preferred carrying value not deducted"
+    },
+    {
+      "name": "FY2026 capex within guidance",
+      "status": "PASS",
+      "detail": "$200bn"
+    },
+    {
+      "name": "FY2027 capex increases significantly",
+      "status": "PASS",
+      "detail": "15.0%"
+    },
+    {
+      "name": "D&A separated by vintage",
+      "status": "PASS",
+      "detail": "legacy + forecast shown"
+    },
+    {
+      "name": "Current position is zero",
+      "status": "PASS",
+      "detail": "WAIT FOR PROOF / 0.0%"
+    }
+  ]
+}

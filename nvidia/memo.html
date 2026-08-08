@@ -67,7 +67,7 @@ padding:1px 5px;border-radius:3px}
 <div class="grid g4" style="margin-top:20px">
 <div class="card kpi"><div class="lab">Spot</div><div class="val">$223.90</div><div class="note">as of 2026-08-07</div></div>
 <div class="card kpi"><div class="lab">Expected value</div><div class="val">$224.91</div><div class="note"><span class="pos">+0.5%</span> vs spot</div></div>
-<div class="card kpi"><div class="lab">Risk / reward</div><div class="val">0.01 : 1</div><div class="note">long framing</div></div>
+<div class="card kpi"><div class="lab">Position size</div><div class="val">0.0%</div><div class="note">implementation gate open</div></div>
 <div class="card kpi"><div class="lab">Breakeven p(bull)</div><div class="val">25%</div><div class="note">vs 25% assumed</div></div>
 </div>
 <h2>Thesis</h2><ol class="thesis">
@@ -146,17 +146,12 @@ padding:1px 5px;border-radius:3px}
 <div class="card"><b>Base &middot; 50%</b><p class="sub" style="margin-top:6px">Our revenue path sits within the analyst range in every covered year, so this is genuinely the central expectation rather than a variant. The disagreement with the Street is on terminal margin, not near-term demand.</p></div>
 <div class="card"><b>Bull &middot; 25%</b><p class="sub" style="margin-top:6px">Rubin holds pricing, networking attach keeps climbing, and accelerated computing takes a larger share of a still-growing infrastructure budget. The width of this case against the bear case is the reason we carry no position.</p></div>
 </div>
-<h2>Position sizing</h2>
-<p>Computed through a constraint cascade, not chosen. Basis: illustrative $1bn book.</p>
+<h2>Capital implementation</h2>
+<p>There is no percentage recommendation. Basis: no capital recommendation; implementation inputs missing.</p>
 <div class="scroll"><table><thead><tr><th>Term</th><th>Value</th><th>Note</th></tr></thead><tbody>
-<tr><td>Payoff ratio b</td><td class="num">0.01</td><td class="sub">reward &divide; risk</td></tr>
-<tr><td>p(win)</td><td class="num">75%</td><td class="sub">probability mass favouring the position</td></tr>
-<tr><td>Kelly f</td><td class="num">-3796.6%</td><td class="sub">full Kelly fraction</td></tr>
-<tr><td>Quarter-Kelly</td><td class="num">0.00%</td><td class="sub">0.25 &times; Kelly</td></tr>
-<tr><td>Liquidity cap</td><td class="num">2729.00%</td><td class="sub">20% of ADV over 5 days</td></tr>
-<tr><td>Risk-budget cap</td><td class="num">2.15%</td><td class="sub">1.5% of NAV at risk to the adverse case</td></tr>
-<tr><td>Concentration cap</td><td class="num">5.00%</td><td class="sub">single-name hard limit</td></tr>
-<tr><td><b>Position size</b></td><td class="num"><b>0.00% of NAV</b></td><td class="sub">binding constraint: <b>quarter-Kelly</b></td></tr>
+<tr><td>Scenario expected value</td><td class="num">$224.91</td><td class="sub">illustrative probability-weighted arithmetic</td></tr>
+<tr><td>Current capital</td><td class="num">0.00%</td><td class="sub">no position</td></tr>
+<tr><td>Binding constraint</td><td class="num">implementation evidence missing</td><td class="sub">borrow, carry, crowding, hedge and portfolio inputs absent</td></tr>
 </tbody></table></div>
 <h2>Kill criteria</h2>
 <div class="scroll"><table><thead><tr><th>#</th><th>If this happens</th><th>Observable</th><th>Threshold</th><th>By</th><th>Action</th></tr></thead><tbody>
@@ -171,7 +166,7 @@ padding:1px 5px;border-radius:3px}
 <tr><td class="num">2027-02-25 <span class="sub">(tentative)</span></td><td><b>Q4 FY2027 results and Form 10-K</b></td><td class="sub">Customer concentration and the full equity-stake disclosure</td><td class="num">k1</td></tr>
 </tbody></table></div>
 <h2>What would make us wrong</h2>
-<p>The case for owning it anyway: at 37.8x economic earnings for a business growing revenue 85% at 64% operating margins the multiple is not obviously wrong, and our terminal-margin fade to 53.5% may be too aggressive for a company with this much architectural lock-in. If terminal margin holds at 60% the base case clears spot comfortably.</p>
+<p>The case for owning it anyway: on an EV/NOPAT basis for a business growing revenue 85% at 64% operating margins the multiple is not obviously wrong, and our terminal-margin fade to 53.5% may be too aggressive for a company with this much architectural lock-in. If terminal margin holds at 60% the base case clears spot comfortably.</p>
 <p>The case for shorting it: $72.6bn of equity stakes in customers who use the proceeds to buy accelerators means some share of reported demand is self-funded, and that share is rising fast. We cannot size it from public disclosure, which is precisely why we will not take the other side either.</p>
 <h3>Pre-mortem</h3><p>Twelve months out we have missed a double. What happened: Rubin shipped into a market still short of compute, networking attach kept climbing, and the terminal-margin debate never arrived because revenue grew fast enough to make it irrelevant on any horizon that mattered. We stood aside because our range was wide -- and a wide range is not the same thing as an unfavourable one.</p>
 <div class="rule"></div><h2>Appendix A &mdash; quality of earnings</h2>
@@ -183,11 +178,10 @@ padding:1px 5px;border-radius:3px}
 <tr><td>Reported net income</td><td class="num">159.6</td><td class="sub">includes the marks above</td></tr>
 <tr><td>NOPAT (EBIT after tax)</td><td class="num">136.7</td><td class="sub">at 15.7% effective rate</td></tr>
 </tbody></table></div>
-<div class="grid g4" style="margin-top:10px">
+<div class="grid g3" style="margin-top:10px">
 <div class="card kpi"><div class="lab">Reported diluted EPS</div><div class="val">$6.54</div><div class="note">as filed</div></div>
-<div class="card kpi"><div class="lab">Economic EPS</div><div class="val">$5.61</div><div class="note">NOPAT basis</div></div>
 <div class="card kpi"><div class="lab">Reported P/E</div><div class="val">34.2x</div><div class="note">what screens show</div></div>
-<div class="card kpi"><div class="lab">Economic P/E</div><div class="val">39.9x</div><div class="note">what you actually pay</div></div>
+<div class="card kpi"><div class="lab">EV / NOPAT</div><div class="val">39.1x</div><div class="note">enterprise value / enterprise earnings</div></div>
 </div>
 <h2>Appendix B &mdash; segment build</h2>
 <p>Every revenue line is the product of named quantities, not a growth rate. Each driver can be disagreed with individually and checked against disclosure.</p>
@@ -232,4 +226,4 @@ padding:1px 5px;border-radius:3px}
 <li>The consensus feed holds D&amp;A at a constant share of revenue in every year, which may be an artefact of the aggregator rather than what individual analysts model. The comparison is to the feed we can observe, and is labelled as such.</li>
 <li>Segment sum reconciles to consolidated revenue within 1.0%.</li>
 </ul>
-<footer>Prepared 2026-08-07. Base year TTM to 2026-04-26; market data as of the 2026-08-07 session. Analytical research on public information; not investment advice, not a recommendation to any person, and not a solicitation. Position sizing is illustrative against a notional $1bn book. The author may hold positions in the securities discussed.</footer></div></body></html>
+<footer>Prepared 2026-08-07. Base year TTM to 2026-04-26; market data as of the 2026-08-07 session. Analytical research on public information; not investment advice, not a recommendation to any person, and not a solicitation. No percentage sizing is provided without implementation and portfolio inputs. The author may hold positions in the securities discussed.</footer></div></body></html>

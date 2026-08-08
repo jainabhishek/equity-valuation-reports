@@ -1,17 +1,17 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="data:,">
 <title>Equity Valuation Reports — buy-side investment memos</title>
-<meta name="description" content="Buy-side investment memos with segment-driver models and a vintage depreciation schedule. Alphabet (GOOGL) and Nvidia (NVDA), as of August 7, 2026.">
+<meta name="description" content="Public-information investment memos and live models. Alphabet is wait for proof with no position, prepared August 8, 2026.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Equity Valuation Reports — buy-side investment memos">
-<meta property="og:description" content="Buy-side investment memos with segment-driver models and a vintage depreciation schedule. Alphabet (GOOGL) and Nvidia (NVDA), as of August 7, 2026.">
+<meta property="og:description" content="Public-information investment memos and live models. Alphabet is wait for proof with no position, prepared August 8, 2026.">
 <meta property="og:url" content="https://jainabhishek.github.io/equity-valuation-reports/">
 <meta property="og:image" content="https://jainabhishek.github.io/equity-valuation-reports/assets/social-preview.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Equity Valuation Reports — buy-side investment memos">
-<meta name="twitter:description" content="Buy-side investment memos with segment-driver models and a vintage depreciation schedule. Alphabet (GOOGL) and Nvidia (NVDA), as of August 7, 2026.">
+<meta name="twitter:description" content="Public-information investment memos and live models. Alphabet is wait for proof with no position, prepared August 8, 2026.">
 <meta name="twitter:image" content="https://jainabhishek.github.io/equity-valuation-reports/assets/social-preview.png">
 <style>
 :root{--navy:#0b1739;--ink:#172033;--muted:#667085;--blue:#2864dc;--teal:#0a8f86;--red:#c9495e;--pale:#f3f6fa;--line:#d8e0ea;--white:#fff}
@@ -57,23 +57,23 @@ footer{border-top:1px solid var(--line);padding:22px 64px 34px;color:var(--muted
 <header>
 <div class="eyebrow">Buy-side investment memos</div>
 <h1>Equity Valuation Reports</h1>
-<p>Segment-driver models where no forecast line is a bare growth rate: revenue is the product of named quantities, and EBIT is derived by subtracting a vintage depreciation schedule rather than assumed as a margin. Each memo carries a variant versus consensus, a Shapley price-to-value bridge, expected value, position sizing and dated kill criteria. As of August 7, 2026.</p>
-<div class="stamp"><span class="chip">2 companies</span><span class="chip">Segment-driver + FCFF DCF</span><span class="chip">Variant vs consensus</span><span class="chip">Live Excel model</span><span class="chip">Guidance-anchored capex</span><span class="chip">Segment-anchored revenue</span></div>
+<p>Public-information investment memos backed by live Excel models. Alphabet now separates calculation integrity from trade actionability: dated stub valuation, quarterly placed-in-service depreciation, point-in-time diluted shares, normalized terminal reinvestment and a zero-risk implementation gate. As of August 8, 2026.</p>
+<div class="stamp"><span class="chip">2 companies</span><span class="chip">Formula-driven Excel</span><span class="chip">Source ledger</span><span class="chip">Quarterly D&amp;A monitor</span><span class="chip">Point-in-time shares</span><span class="chip">Capital-gated decisions</span></div>
 </header>
 
 <main>
 <div class="grid">
 
 <div class="rcard">
-<a class="thumb" href="alphabet/memo.html"><img src="assets/alphabet-preview.png" alt="Alphabet memo: SHORT, expected value $245.37, -30.7% vs spot"></a>
+<a class="thumb" href="alphabet/memo.html"><img src="assets/alphabet-preview.png" alt="Alphabet memo: wait for proof, no position, scenario value $335.42"></a>
 <div class="body">
 <div class="tickerrow"><span class="tag ticker">GOOGL</span><span class="tag" style="background:var(--pale);color:var(--muted)">Digital advertising · Cloud · AI</span></div>
 <h2>Alphabet</h2>
-<p class="stance"><strong>SHORT</strong> &middot; our depreciation schedule puts 2027 EPS at $12.20; forty-two analysts publish $15.01.</p>
+<p class="stance"><strong>WAIT FOR PROOF / NO POSITION</strong> &middot; D&amp;A must cause an unoffset FY2027 EPS cut and every implementation gate must clear.</p>
 <div class="stat-row">
 <div><span>Spot</span><strong>$354.24</strong></div>
-<div><span>Expected value</span><strong>$245.37</strong></div>
-<div><span>Vs. spot</span><strong class="negative">-30.7%</strong></div>
+<div><span>Scenario value</span><strong>$335.42</strong></div>
+<div><span>Vs. spot</span><strong class="negative">-5.3%</strong></div>
 </div>
 <div class="actions">
 <a class="btn primary" href="alphabet/memo.html">Open memo</a>
@@ -105,11 +105,11 @@ footer{border-top:1px solid var(--line);padding:22px 64px 34px;color:var(--muted
 <div class="about">
 <div>
 <h3>What's in each memo</h3>
-<p>Every company folder pairs a self-contained HTML memo with a live Excel model. The model is a second implementation rather than a printout: a formula engine recalculates it and ties all 20 checks to the Python engine, including free cash flow in every forecast year.</p>
+<p>Every company folder pairs a self-contained HTML memo with a live Excel model. Alphabet's workbook is a second implementation rather than a printout: a formula engine recalculates its dated FCFF periods, share bridge, WACC, terminal mechanics, scenario targets and decision outputs.</p>
 <ul>
-<li><strong>memo.html</strong> — primary read: rating, variant vs consensus, Shapley price-to-value bridge, scenarios and expected value, sizing, kill criteria, dated catalysts, falsification, evidence appendix</li>
-<li><strong>model.xlsx</strong> — live model: every driver a blue input cell, one WACC definition, vintage depreciation schedule. Verified cell-for-cell against the Python engine.</li>
-<li><strong>build/</strong> — the pipeline: SEC XBRL client, quarterly-series reconstruction, driver cases, depreciation schedule, DCF and Shapley attribution, decision layer, renderers and the verification script</li>
+<li><strong>memo.html</strong> — decision, causal thesis, implementation gate, scenario skew, quarterly catalyst bridge, conditional action rules, sources and limitations</li>
+<li><strong>model.xlsx</strong> — live model: formula-linked D&amp;A vintages, CAPM, shares, dated DCF, scenarios, sensitivity, decision and blocking checks.</li>
+<li><strong>build/</strong> — reproducible model and rendering pipeline with independent workbook recalculation.</li>
 </ul>
 <p>Source: <a href="https://github.com/jainabhishek/equity-valuation-reports">github.com/jainabhishek/equity-valuation-reports</a></p>
 <h3 style="margin-top:22px">Earlier editions</h3>
@@ -121,11 +121,11 @@ footer{border-top:1px solid var(--line);padding:22px 64px 34px;color:var(--muted
 </ul>
 </div>
 <div class="disclaimer">
-<strong>Not investment advice.</strong> Analytical research on public information, for informational and educational purposes only — not a recommendation to any person and not a solicitation. Position sizing is illustrative against a notional $1bn book. Forecasts and assumptions are the author's independent estimates and may be wrong; the Alphabet valuation sits below the lowest of 39 published Street targets. Do your own diligence before making any investment decision.
+<strong>Not investment advice.</strong> Analytical research on public information, for informational and educational purposes only — not a recommendation to any person and not a solicitation. Forecasts and assumptions may be wrong. Alphabet carries a zero current position because the catalyst and implementation evidence is incomplete. Do your own diligence before making any investment decision.
 </div>
 </div>
 </main>
 
-<footer><span>As of August 7, 2026 · market data at the August 7 session</span><span>MIT-licensed code · Memos for informational use only</span></footer>
+<footer><span>Prepared August 8, 2026 · market data at the August 7 session</span><span>MIT-licensed code · Memos for informational use only</span></footer>
 </div>
 </body></html>
