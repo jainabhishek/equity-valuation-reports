@@ -376,7 +376,7 @@ def eps_variant(ticker, base_dv, est, fy0, diluted_shares, tax_rate):
             f"{ticker}: EPS_CORROBORATION is keyed to fiscal year {corr['fiscal_year']}, which the "
             f"consensus feed does not carry an estimate for. The corroboration record is stale."
         )
-    if not (corr["reported_low"] <= headline["street_eps"] <= corr["reported_high"] * 1.05):
+    if not (corr["reported_low"] <= headline["street_eps"] <= corr["reported_high"]):
         raise RuntimeError(
             f"{ticker}: feed {corr['fiscal_year']}E EPS of {headline['street_eps']:.2f} is outside "
             f"the {corr['reported_low']:.2f}-{corr['reported_high']:.2f} range independently "

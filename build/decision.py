@@ -1,45 +1,25 @@
-"""Decision layer: probabilities, expected value, risk/reward, sizing, kill criteria.
+"""Decision layer: probabilities, expected value, and conditional action rules.
 
 Probabilities are integers in basis points summing to 10000 -- never floats --
-and each carries an anchor naming what it is grounded in. Sizing is computed
-through a constraint cascade and the binding constraint is published, so a
-reader can see which limit actually set the number.
+and each carries an anchor naming what it is grounded in.  This public research
+artifact does not recommend position sizes: borrow, carry, factor, squeeze and
+portfolio constraints are not available here.
 """
 from __future__ import annotations
 
-# Illustrative book. This is a public research artefact, not a fund.
-NAV = 1_000_000_000.0
-RISK_BUDGET = 0.015      # max 1.5% of NAV at risk to the adverse case
-CONCENTRATION_CAP = 0.05
-KELLY_FRACTION = 0.25
-ADV_LIMIT = 0.20         # may not exceed 20% of ADV over 5 days
-
-# 30-session average dollar volume, $/day, computed from daily bars over the
-# sessions 2026-06-25..2026-08-06 rather than quoted from a screen. GOOGL is the
-# GOOGL line alone; Alphabet also trades as GOOG, so the true tradable liquidity
-# is roughly double this and the liquidity constraint below is conservative.
-ADV_USD = {"GOOGL": 11.96e9, "NVDA": 27.29e9}
-
 PROBS = {
     "GOOGL": {
-        "bear": {"bp": 2500, "anchor": "consensus_dispersion", "justification": (
-            "The depreciation catch-up arrives with no offsetting EBITDA margin expansion and "
-            "Search ad coverage erodes faster than modelled. Held below the base case because "
-            "Alphabet has beaten EPS in all eight reported quarters and Cloud is currently "
-            "supply-constrained rather than demand-constrained.")},
-        "base": {"bp": 4500, "anchor": "judgment", "justification": (
-            "Modal because the arithmetic is close to mechanical, and management has now guided "
-            "to the input that drives it: $1,093bn of cumulative capex over six years produces a "
-            "depreciation charge under any useful life Alphabet currently discloses, and the "
-            "earnings the Street publishes do not carry it. The uncertainty is timing and "
-            "offsetting margin, not direction.")},
-        "bull": {"bp": 3000, "anchor": "consensus_dispersion", "justification": (
-            "Carries real weight because it embeds the market's own implied ~6.1% discount rate "
-            "and the possibility that AI capex proves front-loaded rather than permanent. "
-            "Thirty-nine analysts and a $427 median target sit closer to this case than to ours. "
-            "Alphabet is also funding the build with equity and long-dated debt rather than "
-            "starving the business, which is what a company that believes the assets earn "
-            "their cost of capital does.")},
+        "bear": {"bp": 2500, "anchor": "conditional_eps_revision", "justification": (
+            "FY2027 D&A rises faster than EBITDA and reported EPS lands near $13.70. A 20x "
+            "multiple produces a $273.91 adverse operating outcome for the shares.")},
+        "base": {"bp": 5000, "anchor": "wait_for_proof", "justification": (
+            "The next filing does not yet establish a clean negative revision cycle. FY2027 EPS "
+            "holds near $14.55 and a 23x multiple produces $334.68, below spot but insufficient "
+            "to short without borrow, crowding, option and hedge evidence.")},
+        "bull": {"bp": 2500, "anchor": "ebitda_offset", "justification": (
+            "Revenue and EBITDA margin absorb the depreciation step-up, FY2027 EPS reaches "
+            "$15.32 and a 26x multiple produces $398.41. This is the uncapped-side risk that "
+            "precludes mechanical short sizing.")},
     },
     "NVDA": {
         "bear": {"bp": 2500, "anchor": "historical_base_rate", "justification": (
@@ -59,107 +39,70 @@ PROBS = {
 
 RATING = {
     "GOOGL": {
-        "rating": "SHORT",
-        "conviction": 2,
+        "rating": "WAIT FOR PROOF",
+        "conviction": 0,
         "horizon_months": 18,
-        "edge_type": "analytical",
+        "edge_type": "conditional analytical",
         "edge_statement": (
-            "No proprietary information. The edge is that a depreciation schedule built from "
-            "disclosed capex vintages implies materially lower earnings than the Street publishes, "
-            "and that gap is checkable from public filings every ninety days. Management has guided "
-            "2026 capex to $195-205bn and said the charge is coming -- 'higher depreciation expense "
-            "and related data center operations costs such as energy' -- which takes the capex leg "
-            "out of dispute. Stated against published EPS rather than against a vendor's margin "
-            "column: 2027 at $12.20 versus the $15.01 forty-two analysts carry."),
+            "The only actionable variant is a FY2027 EPS revision caused by placed-in-service D&A "
+            "rising faster than EBITDA. The available vendor snapshot is a conflicting reference, "
+            "not canonical consensus; valuation and implementation evidence remain open."),
         "thesis": [
             {"kind": "What we think", "text":
-             "The operating business is compounding above 20%. The reported earnings it produces "
-             "are not the earnings the capex programme will leave behind."},
+             "The D&A step-up is real, but it matters to the stock only if revenue and EBITDA fail "
+             "to offset it and FY2027 EPS estimates revise lower."},
             {"kind": "Why it is not priced", "text":
-             "Guided 2026 capex is 40.1% of revenue and our vintage schedule carries D&A to 15.5% "
-             "by 2030. Put that schedule through the Street's own revenue and EBITDA and 2027 EPS "
-             "is $12.20 against the $15.01 they publish."},
+             "A vendor snapshot shows FY2027 EPS at $15.01, above rather than bracketed by the "
+             "model's $13.70-$15.32 range. The source conflict must be resolved before the gap is "
+             "treated as a tradeable consensus revision."},
             {"kind": "What makes it work", "text":
-             "D&A is disclosed quarterly and capex is now guided, so both halves are observable. "
-             "Every print showing D&A climb toward capex closes the gap. Next print 28 October "
-             "2026."},
+             "A future filing must show D&A/revenue tracking above the model while EBITDA margin "
+             "does not compensate, followed by broad FY2027 EPS revisions and a cleared short "
+             "implementation ledger."},
         ],
         "kill_criteria": [
-            {"id": "k1", "statement": "Alphabet extends disclosed server useful life beyond six years",
-             "observable": "Property & equipment useful-life disclosure, FY2026 Form 10-K",
-             "threshold": "> 6 years", "check_date": "2027-02-28", "action": "exit full",
-             "note": "Extending life defers the entire catch-up and breaks the thesis outright."},
-            {"id": "k2", "statement": "FY2027 capex guidance below $210bn",
-             "observable": "Capex guidance, Q4 FY2026 earnings call",
-             "threshold": "< $210bn", "check_date": "2027-02-05", "action": "cut half",
-             "note": ("A sharp step down means the build-out was front-loaded and FCF inflects early. "
-                      "The threshold is the top of the guided 2026 range: management said capex will "
-                      "increase significantly in 2027, so guiding below 2026 would contradict them. "
-                      "The previous edition carried $110bn here, a level 2026 actuals had already "
-                      "passed twice over -- a kill criterion that cannot fire is not one.")},
-            {"id": "k3", "statement": "D&A passes 9% of revenue while EBIT margin holds above 30%",
-             "observable": "Depreciation / revenue and operating margin, quarterly",
-             "threshold": "both true in one quarter", "check_date": "2027-07-31", "action": "cut half",
-             "note": "Would mean EBITDA margin is expanding fast enough to absorb the charge."},
-            {"id": "k4", "statement": "Cloud revenue growth below 25% for two consecutive quarters",
-             "observable": "Google Cloud segment revenue growth, 10-Q",
-             "threshold": "< 25% YoY x2", "check_date": "2027-04-30", "action": "review",
-             "note": "Our supply-constrained framing would be wrong: demand, not capacity, binds."},
-            {"id": "k5", "statement": "ATM programme draws more than $10bn in a quarter",
-             "observable": "Shares issued under the ATM Program, quarterly 10-Q equity note",
-             "threshold": "> $10bn in one quarter", "check_date": "2026-10-28", "action": "review",
-             "note": ("$40bn is authorised and nothing was drawn at 30 June. Heavy drawing would say "
-                      "the capex programme is outrunning what operations and debt can fund. It cuts "
-                      "against the short only weakly -- stock sold at $354 against $187 of intrinsic "
-                      "value is accretive on our own numbers -- but it is the cleanest read on "
-                      "funding stress and it is disclosed quarterly.")},
+            {"id": "k1", "statement": "EBITDA offsets the D&A step-up",
+             "observable": "Revenue, EBITDA and D&A in the next reported filing",
+             "threshold": "FY2027 EPS run-rate at or above $15.32", "check_date": "next filing",
+             "action": "do not short",
+             "note": "The causal thesis fails if operating leverage absorbs the accounting charge."},
+            {"id": "k2", "statement": "Capex remains high but EPS estimates do not revise lower",
+             "observable": "Company guidance plus canonical broker consensus revisions",
+             "threshold": "No broad negative FY2027 EPS revision after the filing",
+             "check_date": "post-filing revision window", "action": "remain at zero",
+             "note": "Capex and D&A are inputs, not a catalyst unless estimates and price respond."},
+            {"id": "k3", "statement": "Implementation risk is not measurable",
+             "observable": "Borrow, carry, crowding, options and hedge ledger",
+             "threshold": "Any required field missing", "check_date": "before entry",
+             "action": "remain at zero",
+             "note": "A short cannot be sized from public valuation arithmetic alone."},
         ],
         "catalysts": [
-            {"date": "2026-10-28", "confirmed": True, "event": "Q3 FY2026 results",
-             "learn": "D&A/revenue trajectory, capex guide, Cloud growth and backlog", "tests": "k3, k4"},
-            {"date": "2027-02-05", "confirmed": False, "event": "Q4 FY2026 results and Form 10-K",
-             "learn": "FY2027 capex guidance and the useful-life disclosure", "tests": "k1, k2"},
-            {"date": "2027-04-30", "confirmed": False, "event": "Q1 FY2027 results",
-             "learn": "First clean read on whether the depreciation step-up is arriving", "tests": "k3"},
+            {"date": "late October 2026 window", "confirmed": False,
+             "event": "Q3 FY2026 results; exact date not announced",
+             "learn": "D&A/revenue, EBITDA offset and capex trajectory", "tests": "k1"},
+            {"date": "after the next filing", "confirmed": False,
+             "event": "Consensus revision window",
+             "learn": "Whether canonical FY2027 EPS estimates move below the current vendor snapshot",
+             "tests": "k2"},
+            {"date": "before any entry", "confirmed": False,
+             "event": "Implementation review",
+             "learn": "Borrow, carry, crowding, options and hedge economics", "tests": "k3"},
         ],
         "falsification": [
-            "The strongest case against our own short: Alphabet has beaten EPS in eight consecutive "
-            "quarters, Cloud is accelerating rather than decelerating, and the AI capex may be buying "
-            "an option on a materially larger business rather than a commodity compute fleet. Our "
-            "answer is that none of that is inconsistent with the depreciation arithmetic -- it "
-            "changes the numerator, not the charge.",
-            "Our valuation sits 55% below the Street's median target and below the lowest of 39 "
-            "published targets. The base rate on being the only one holding a view is not favourable "
-            "and the position is sized accordingly.",
-            "The largest single reason we are below the Street is not depreciation, and this memo "
-            "should say so plainly. Terminal value is 89% of enterprise value and we discount at "
-            "8.75%; published third-party estimates of Alphabet's WACC cluster near 7.5%, which on "
-            "our own model is worth $243 rather than $191 -- more than the entire depreciation "
-            "argument. The discount rate is a CAPM build we will defend, but a reader who prefers "
-            "7.5% and accepts every other number we carry is most of the way to the Street's range "
-            "without disagreeing with the thesis at all. The sensitivity table is published for "
-            "exactly that reason.",
-            "Earlier editions rested the variant on the consensus feed carrying D&A at 4.6% of "
-            "revenue. That comparison was weaker than it looked: the feed's EBIT margin is 32.48% "
-            "and its implied D&A 4.62% in every single forecast year, which is a vendor holding a "
-            "ratio constant, not forty analysts agreeing. The variant is now stated against "
-            "published EPS, which is a real forecast with a real cohort behind it. The thesis "
-            "survives the restatement -- 2027 at $12.20 against $15.01 -- but it is a smaller and "
-            "better-specified claim than the one the feed appeared to license.",
-            "The capex guidance corroborates the spending leg of our thesis and is also the best "
-            "argument against it. A company raising $84.75bn of equity and $45bn of notes inside "
-            "three months to fund a build-out is not behaving like one that expects the assets to "
-            "depreciate into a hole; it is behaving like one that expects them to earn. If Cloud "
-            "compounds anywhere near the 82% it just printed, the denominator grows faster than "
-            "the charge and the catch-up never reaches the margin.",
+            "The strongest case against a short is operating leverage: AI infrastructure may expand "
+            "revenue and EBITDA quickly enough that rising D&A never produces a negative EPS revision.",
+            "The available FY2027 consensus snapshot is not broker-level and conflicts with the "
+            "model range. Treating it as a verified Street target would create false precision.",
+            "The DCF cross-check is dominated by terminal value and discount-rate assumptions, so it "
+            "is a risk frame rather than the selected causal stock thesis.",
+            "The upside case is not capped. Without current borrow, crowding, options and hedge data, "
+            "a probabilistic short recommendation is not implementable.",
         ],
         "pre_mortem": (
-            "Eighteen months out the position is down 30%. What happened: Alphabet extended server "
-            "useful lives to eight years in the FY2026 10-K, cutting the annual depreciation charge by "
-            "roughly a third at a stroke and pushing the catch-up beyond our horizon. At the same time "
-            "Gemini monetisation lifted Search ad coverage instead of compressing it, and the complex "
-            "re-rated on a lower discount rate as rates fell. We were right about the arithmetic and "
-            "wrong about the accounting policy -- the one input management controls directly."),
+            "We shorted before proof and lost money because revenue and EBITDA scaled faster than D&A, "
+            "consensus EPS revised up, the stock rerated, and crowded borrow made the loss worse. The "
+            "preventive action is the current one: wait, require the causal evidence, and keep size at zero."),
     },
     "NVDA": {
         "rating": "NO POSITION",
@@ -209,7 +152,7 @@ RATING = {
              "learn": "Customer concentration and the full equity-stake disclosure", "tests": "k1"},
         ],
         "falsification": [
-            "The case for owning it anyway: at 37.8x economic earnings for a business growing revenue "
+            "The case for owning it anyway: on an EV/NOPAT basis for a business growing revenue "
             "85% at 64% operating margins the multiple is not obviously wrong, and our terminal-margin "
             "fade to 53.5% may be too aggressive for a company with this much architectural lock-in. "
             "If terminal margin holds at 60% the base case clears spot comfortably.",
@@ -249,30 +192,21 @@ def breakeven_bull(scen, probs, spot):
 
 
 def size(ticker, scen, probs, spot, direction):
-    """Constraint cascade. Every term is published so the binding limit is visible."""
+    """Compatibility view with no capital recommendation.
+
+    Scenario arithmetic is retained for legacy report surfaces, but size is
+    zero until a real implementation ledger and portfolio constraints are
+    supplied.
+    """
     ev = expected_value(scen, probs)
     if direction == "SHORT":
         reward, risk = spot - ev, max(scen["bull"] - spot, 1e-9)
-        p_win = (probs["bear"]["bp"] + probs["base"]["bp"]) / 10000
     else:
         reward, risk = ev - spot, max(spot - scen["bear"], 1e-9)
-        p_win = (probs["base"]["bp"] + probs["bull"]["bp"]) / 10000
-    downside_per_unit = risk / spot
-
     b = reward / risk if risk else 0.0
-    kelly = (p_win * b - (1 - p_win)) / b if b > 0 else 0.0
-    raw = max(KELLY_FRACTION * kelly, 0.0)
-    liq = ADV_LIMIT * 5 * ADV_USD[ticker] / NAV
-    vol = RISK_BUDGET / downside_per_unit if downside_per_unit else raw
-    options = [("quarter-Kelly", raw), ("liquidity", liq), ("risk budget", vol),
-               ("concentration cap", CONCENTRATION_CAP)]
-    capped = min(v for _, v in options)
-    binding = min(options, key=lambda kv: kv[1])[0]
     return {
-        "expected_value": ev, "reward": reward, "risk": risk, "b": b, "p_win": p_win,
-        "kelly_f": kelly, "size_raw": raw, "size_liquidity": liq, "size_risk_budget": vol,
-        "size_concentration": CONCENTRATION_CAP,
-        "position_size": round(capped * 400) / 400,
-        "binding_constraint": binding, "risk_reward": b,
-        "nav_basis": "illustrative $1bn book",
+        "expected_value": ev, "reward": reward, "risk": risk, "b": b,
+        "position_size": 0.0,
+        "binding_constraint": "implementation evidence missing", "risk_reward": b,
+        "nav_basis": "no capital recommendation; implementation inputs missing",
     }
