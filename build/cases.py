@@ -63,6 +63,75 @@ REVENUE_GUIDANCE = {
     },
 }
 
+# Reported segment revenue for the elapsed quarters of forecast year 1, $m.
+#
+# The capex anchor has had a floor against reported actuals since the previous
+# edition; revenue had one only at the consolidated level, and only where
+# management guides. Neither caught the defect this records: forecast 2026 Cloud
+# revenue of $91.0bn against $44.8bn already reported implied $23.1bn in each
+# remaining quarter, BELOW the $24.8bn Q2 had just printed -- a sequential
+# decline, in the one segment growing 82% year over year. Consolidated revenue
+# looked fine because other segments were forecast above their own exit rates,
+# so the error was a mix error and nothing consolidated could see it.
+#
+# Segment revenue is not retrievable from XBRL (companyfacts flattens
+# dimensioned facts), so these are keyed from the quarterly earnings releases
+# filed on Form 8-K. Hedging is carried for reconciliation only: it is not a
+# modelled segment. The quarterly sums tie to the consolidated fiscal-YTD
+# revenue already in base_year.json ($229,692m) exactly.
+SEGMENT_ACTUALS = {
+    "GOOGL": {
+        "fiscal_year": 2026,
+        "quarters": [
+            {"period_end": "2026-03-31", "accn": "0001652044-26-000043", "form": "8-K EX-99.1",
+             "segments": {"search": 60_399, "youtube_ads": 9_883, "network": 6_971,
+                          "subs_devices": 12_384, "cloud": 20_028, "other_bets": 411},
+             "hedging": -180, "total_reported": 109_896},
+            {"period_end": "2026-06-30", "accn": "0001652044-26-000066", "form": "8-K EX-99.1",
+             "segments": {"search": 63_271, "youtube_ads": 11_055, "network": 7_303,
+                          "subs_devices": 12_911, "cloud": 24_768, "other_bets": 382},
+             "hedging": 106, "total_reported": 119_796},
+        ],
+    },
+}
+
+# How far below the exit quarter a remaining-quarter run rate may sit before the
+# build refuses it. Not zero: a segment can decline sequentially for real
+# reasons, and a hard floor at the exit rate would make every ordinary quarter
+# of noise a build failure. Wide enough to pass a flat-to-soft quarter, narrow
+# enough that the Cloud defect above (-6.7%) fails.
+SEGMENT_DECLINE_TOLERANCE = 0.02
+
+# Segments allowed to breach that tolerance, with the reason. Empty: nothing
+# currently needs one. An absent entry means "not exempt", so a future forecast
+# that implies a real sequential decline fails the build until somebody writes
+# down why -- which is the point.
+SEGMENT_DECLINE_EXEMPT: dict[str, dict[str, str]] = {}
+
+# Where the consensus feed's EPS line can be trusted enough to state a variant
+# against it, and what corroborates it.
+#
+# The feed's EBIT and EBITDA are vendor derivations: margin is constant to four
+# significant figures in every forecast year for both filers, so a variant
+# against that column is a variant against an interpolation. EPS is different --
+# it moves independently and carries the largest analyst cohort -- but only where
+# the feed's EPS is itself sound.
+#
+# Nvidia carries no entry, deliberately. Its own known-defects list records that
+# feed net income exceeds EBIT in five forecast years and that FY2030 EPS sits
+# below FY2029 on an 11-analyst cohort. EPS that is not internally coherent
+# cannot anchor a variant, so Nvidia's stays on revenue and EBIT, where the
+# cohorts are large. An absent entry means "not corroborated", never "ignored".
+EPS_CORROBORATION = {
+    "GOOGL": {
+        "fiscal_year": 2027,
+        "reported_low": 14.20,
+        "reported_high": 14.68,
+        "source": ("independent reporting of Street 2027 consensus EPS, August 2026, against the "
+                   "feed's own figure on the largest analyst cohort in the series"),
+    },
+}
+
 # Historical capex by fiscal year, $bn, from SEC XBRL (see depreciation.py).
 HIST_CAPEX = {
     "GOOGL": {2021: 24.6, 2022: 31.5, 2023: 32.3, 2024: 52.5, 2025: 91.4},
@@ -147,7 +216,19 @@ GOOGL_DRIVERS = {
             },
             # Cloud is supply-constrained, not demand-constrained: growth is set
             # by deliverable capacity, which is a function of the capex program.
-            "cloud": {"capacity": [0.55, 0.34, 0.28, 0.23, 0.19, 0.15]},
+            #
+            # Year 1 is anchored on reported quarters, not on the growth rate we
+            # would otherwise have picked. 55% -- the previous edition's figure --
+            # gave $91.0bn for 2026 against $44.8bn reported in H1, which implied
+            # the remaining quarters coming in below the $24.8bn Q2 just printed.
+            # 66% gives $97.5bn: $26.3bn in each remaining quarter, 6.3% above the
+            # exit quarter. Still conservative against 82% year-over-year growth,
+            # a backlog that added $54bn in the quarter to reach $514bn, and
+            # management's statement that more than half of it converts inside
+            # 24 months -- but it no longer forecasts a decline that has not
+            # happened. Out-year capacity growth is unchanged: those are judgments
+            # about the fade, and nothing reported contradicts them yet.
+            "cloud": {"capacity": [0.66, 0.34, 0.28, 0.23, 0.19, 0.15]},
             "other_bets": {"growth": [0.10, 0.15, 0.20, 0.20, 0.20, 0.20]},
         },
         # EBITDA margin: cash margin before depreciation. Rises modestly on

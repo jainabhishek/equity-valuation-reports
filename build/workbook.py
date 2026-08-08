@@ -84,6 +84,38 @@ def year_one_capex_note(res):
             f"${a['year_one_capex'] / 1e9:,.1f}bn.")
 
 
+def year_one_segment_note(res):
+    """One line on the segment-level floor against reported quarters."""
+    sa = res.get("segment_anchor", {}).get("base")
+    if not sa:
+        return ("No quarterly segment actuals are recorded for this filer, so year-1 segment "
+                "revenue is checked only at the consolidated level.")
+    w = sa["worst"]
+    return (f"Each segment's year-1 forecast is checked against its own reported quarters: the stub "
+            f"implied for the {sa['remaining_quarters']} remaining quarter(s) may not sit more than "
+            f"{sa['tolerance']:.0%} below the exit quarter. The tightest is {w['segment']} at "
+            f"{w['vs_exit_quarter']:+.1%}. This exists because a consolidated total can be right "
+            f"while the mix inside it is wrong: the prior edition forecast Cloud below its own exit "
+            f"rate and nothing consolidated could see it.")
+
+
+def wacc_note(res):
+    """One line on what the discount rate is worth, with the alternatives."""
+    ws = res.get("wacc_sensitivity")
+    if not ws:
+        return "No discount-rate sensitivity recorded."
+    at = {round(g["wacc"], 4): g["value_per_share"] for g in ws["grid"]}
+    base = ws["base_wacc"]
+    alt = at.get(0.0757)
+    return (f"WACC is an input cell on Drivers and every discounted line references it, so changing "
+            f"it here re-values the model. It is worth knowing what that is worth: terminal value is "
+            f"{ws['tv_pct_ev']:.0%} of enterprise value, the base case discounts at {base:.2%} giving "
+            f"${at[round(base, 4)]:,.2f}, published third-party WACC estimates cluster near 7.57% "
+            f"giving ${alt:,.2f}, and the reverse DCF implies the market is discounting at "
+            f"{ws['market_implied_wacc']:.2%}. The discount rate moves this valuation more than the "
+            f"depreciation schedule does.")
+
+
 def build(ticker, slug):
     res = json.loads((DATA / "results.json").read_text())[ticker]
     by = json.loads((DATA / "base_year.json").read_text())[ticker]
@@ -462,6 +494,10 @@ def build(ticker, slug):
         "companyfacts flattens dimensioned facts; the segment sum is reconciled to consolidated revenue.",
         "",
         f"YEAR-1 CAPEX ANCHOR. {year_one_capex_note(res)}",
+        "",
+        f"YEAR-1 SEGMENT ANCHOR. {year_one_segment_note(res)}",
+        "",
+        f"DISCOUNT RATE. {wacc_note(res)}",
         "",
         "MODEL DESIGN. We forecast EBITDA margin and derive EBIT by subtracting a depreciation schedule "
         "built from capex vintages. Forecasting EBIT margin directly hides the depreciation assumption.",

@@ -29,9 +29,10 @@ PROBS = {
             "supply-constrained rather than demand-constrained.")},
         "base": {"bp": 4500, "anchor": "judgment", "justification": (
             "Modal because the arithmetic is close to mechanical, and management has now guided "
-            "to the input that drives it: $1,083bn of cumulative capex over six years cannot be "
-            "carried at 4.6% of revenue in D&A under any useful life Alphabet currently "
-            "discloses. The uncertainty is timing and offsetting margin, not direction.")},
+            "to the input that drives it: $1,093bn of cumulative capex over six years produces a "
+            "depreciation charge under any useful life Alphabet currently discloses, and the "
+            "earnings the Street publishes do not carry it. The uncertainty is timing and "
+            "offsetting margin, not direction.")},
         "bull": {"bp": 3000, "anchor": "consensus_dispersion", "justification": (
             "Carries real weight because it embeds the market's own implied ~6.1% discount rate "
             "and the possibility that AI capex proves front-loaded rather than permanent. "
@@ -64,19 +65,20 @@ RATING = {
         "edge_type": "analytical",
         "edge_statement": (
             "No proprietary information. The edge is that a depreciation schedule built from "
-            "disclosed capex vintages contradicts the EBIT margin the consensus feed carries, "
-            "and that contradiction is checkable from public filings every ninety days. Management "
-            "has since guided 2026 capex to $195-205bn and said the charge is coming -- 'higher "
-            "depreciation expense and related data center operations costs such as energy' -- "
-            "which takes the capex leg out of dispute and leaves the depreciation leg, where the "
-            "consensus feed has not moved."),
+            "disclosed capex vintages implies materially lower earnings than the Street publishes, "
+            "and that gap is checkable from public filings every ninety days. Management has guided "
+            "2026 capex to $195-205bn and said the charge is coming -- 'higher depreciation expense "
+            "and related data center operations costs such as energy' -- which takes the capex leg "
+            "out of dispute. Stated against published EPS rather than against a vendor's margin "
+            "column: 2027 at $12.20 versus the $15.01 forty-two analysts carry."),
         "thesis": [
             {"kind": "What we think", "text":
              "The operating business is compounding above 20%. The reported earnings it produces "
              "are not the earnings the capex programme will leave behind."},
             {"kind": "Why it is not priced", "text":
-             "Consensus holds D&A at 4.6% of revenue through 2030 while guided 2026 capex is "
-             "40.7% of revenue. Our vintage schedule reaches 15.5% by 2031."},
+             "Guided 2026 capex is 40.1% of revenue and our vintage schedule carries D&A to 15.5% "
+             "by 2030. Put that schedule through the Street's own revenue and EBITDA and 2027 EPS "
+             "is $12.20 against the $15.01 they publish."},
             {"kind": "What makes it work", "text":
              "D&A is disclosed quarterly and capex is now guided, so both halves are observable. "
              "Every print showing D&A climb toward capex closes the gap. Next print 28 October "
@@ -127,9 +129,23 @@ RATING = {
             "answer is that none of that is inconsistent with the depreciation arithmetic -- it "
             "changes the numerator, not the charge.",
             "Our valuation sits 55% below the Street's median target and below the lowest of 39 "
-            "published targets. Either we are missing something 39 analysts can see, or the consensus "
-            "feed carries a margin assumption nobody has re-derived. We think the latter, but the base "
-            "rate on that judgement is not favourable and the position is sized accordingly.",
+            "published targets. The base rate on being the only one holding a view is not favourable "
+            "and the position is sized accordingly.",
+            "The largest single reason we are below the Street is not depreciation, and this memo "
+            "should say so plainly. Terminal value is 89% of enterprise value and we discount at "
+            "8.75%; published third-party estimates of Alphabet's WACC cluster near 7.5%, which on "
+            "our own model is worth $243 rather than $191 -- more than the entire depreciation "
+            "argument. The discount rate is a CAPM build we will defend, but a reader who prefers "
+            "7.5% and accepts every other number we carry is most of the way to the Street's range "
+            "without disagreeing with the thesis at all. The sensitivity table is published for "
+            "exactly that reason.",
+            "Earlier editions rested the variant on the consensus feed carrying D&A at 4.6% of "
+            "revenue. That comparison was weaker than it looked: the feed's EBIT margin is 32.48% "
+            "and its implied D&A 4.62% in every single forecast year, which is a vendor holding a "
+            "ratio constant, not forty analysts agreeing. The variant is now stated against "
+            "published EPS, which is a real forecast with a real cohort behind it. The thesis "
+            "survives the restatement -- 2027 at $12.20 against $15.01 -- but it is a smaller and "
+            "better-specified claim than the one the feed appeared to license.",
             "The capex guidance corroborates the spending leg of our thesis and is also the best "
             "argument against it. A company raising $84.75bn of equity and $45bn of notes inside "
             "three months to fund a build-out is not behaving like one that expects the assets to "

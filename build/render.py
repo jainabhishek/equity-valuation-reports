@@ -180,6 +180,49 @@ def render(ticker, res, base_year):
           f'<td class="num">{pct(row["street_margin"])}</td></tr>')
     A('</tbody></table></div>')
 
+    epsv = r.get("eps_variant")
+    if epsv and epsv["rows"]:
+        A('<h3>Stated in EPS, because EPS is what analysts actually publish</h3>')
+        if epsv["feed_margin_is_constant"]:
+            m = epsv["rows"][0]
+            A(f'<div class="warnbox"><b>The Street EBIT margin column above is not an analyst '
+              f'forecast.</b> It is <b>{pct(m["street_ebit_margin"], 2)}</b> in every single '
+              f'forecast year, and the D&amp;A it implies is <b>{pct(m["street_da_pct"], 2)}</b> in '
+              f'every single forecast year, to four significant figures. EBIT growth equals revenue '
+              f'growth to a decimal place in all of them. No panel of forty analysts produces that: '
+              f'it is a vendor holding a margin constant against a revenue consensus. Saying we '
+              f'disagree with it is not saying we disagree with anybody, and earlier editions of '
+              f'this memo leaned on that comparison harder than it can bear.</div>')
+        corr, hd = epsv["corroboration"], epsv["headline"]
+        A(f'<p>The EPS line in the same feed is different in kind. It moves independently from year '
+          f'to year, it carries the largest analyst cohort of any field &mdash; '
+          f'<b>{max(x["n_eps"] or 0 for x in epsv["rows"])}</b> estimates at the peak &mdash; and '
+          f'the <b>${hd["street_eps"]:,.2f}</b> it carries for {corr["fiscal_year"]} is bracketed by '
+          f'independently reported Street consensus of '
+          f'<b>${corr["reported_low"]:,.2f}&ndash;${corr["reported_high"]:,.2f}</b>. That is a real '
+          f'forecast by real people. So this is the variant, in their units: take the Street\'s own '
+          f'revenue and EBITDA, substitute our depreciation schedule for theirs, and read off the '
+          f'EPS. The build refuses to state it this way if that corroboration ever stops holding.</p>')
+        A('<div class="scroll"><table><thead><tr><th>Fiscal year</th><th>Street EPS</th>'
+          '<th>Analysts</th><th>Street EBIT mgn</th><th>Restated on our D&amp;A</th>'
+          '<th>EPS restated</th><th>&Delta;</th></tr></thead><tbody>')
+        for row in epsv["rows"]:
+            A(f'<tr><td>{row["fy"]}</td><td class="num">${row["street_eps"]:,.2f}</td>'
+              f'<td class="num">{row["n_eps"]}</td>'
+              f'<td class="num">{pct(row["street_ebit_margin"], 2)}</td>'
+              f'<td class="num">{pct(row["restated_ebit_margin"], 2)}</td>'
+              f'<td class="num"><b>${row["restated_eps"]:,.2f}</b></td>'
+              f'<td class="num {cls(row["eps_delta_pct"])}">'
+              f'{pct(row["eps_delta_pct"], 1, True)}</td></tr>')
+        A('</tbody></table></div>')
+        A(f'<p class="sub">If we are right about depreciation and the Street is right about '
+          f'everything else, {hd["fy"]} EPS is <b>${hd["restated_eps"]:,.2f}</b> against a '
+          f'published <b>${hd["street_eps"]:,.2f}</b>. That is the whole disagreement in one '
+          f'number, and unlike a D&amp;A ratio nobody publishes, it is checked against a printed '
+          f'figure four times a year. Note that {epsv["rows"][0]["fy"]} Street EPS is inflated by '
+          f'non-operating equity-securities gains and is not comparable to the years after it '
+          f'&mdash; see the quality-of-earnings appendix. Corroboration: {esc(corr["source"])}.</p>')
+
     # ---- depreciation exhibit (the analytical core for GOOGL)
     A('<h2>Why the margins differ: the depreciation schedule</h2>')
     A(f'<p>We forecast EBITDA margin &mdash; a cash margin driven by mix, pricing and opex &mdash; '
@@ -264,6 +307,46 @@ def render(ticker, res, base_year):
         A(f'<p class="sub">Source: {esc(ranch["source"])}. This does not set the forecast &mdash; one '
           f'guided quarter is not a year &mdash; but a year-1 figure below reported plus guided is '
           f'arithmetic that has already been falsified, and the build refuses it.</p>')
+
+    sanch = r.get("segment_anchor", {}).get("base")
+    if sanch:
+        A('<h3>Every segment against its own reported quarters</h3>')
+        A(f'<p>A consolidated total can be right for the wrong reasons. Each segment is therefore '
+          f'checked against what it has actually printed: year-1 revenue less the '
+          f'{sanch["reported_quarters"]} reported quarters, divided by the '
+          f'{sanch["remaining_quarters"]} remaining, against the exit quarter. A stub more than '
+          f'{pct(sanch["tolerance"], 0)} below the exit quarter fails the build unless somebody '
+          f'records why.</p>')
+        A('<div class="scroll"><table><thead><tr><th>Segment</th>'
+          f'<th>Reported through Q{sanch["reported_quarters"]} $bn</th><th>Exit quarter $bn</th>'
+          f'<th>Year {fy0} $bn</th><th>Implied per remaining quarter $bn</th>'
+          '<th>vs exit quarter</th></tr></thead><tbody>')
+        for row in sanch["rows"]:
+            v = row["vs_exit_quarter"]
+            vcls = "warn" if v is not None and v < 0 else "pos"
+            A(f'<tr><td>{esc(cases.SPEC[ticker]["segment_labels"][row["segment"]])}</td>'
+              f'<td class="num">{bn(row["reported"], 1)}</td>'
+              f'<td class="num">{bn(row["exit_quarter"], 2)}</td>'
+              f'<td class="num">{bn(row["year_one"], 1)}</td>'
+              f'<td class="num">{bn(row["implied_per_quarter"], 2)}</td>'
+              f'<td class="num {vcls}">{pct(v, 1, True)}</td></tr>')
+        A('</tbody></table></div>')
+        src = ", ".join(f'{s["form"]} {s["accn"]} ({s["period_end"]})' for s in sanch["sources"])
+        A(f'<div class="callout"><b>What this replaced.</b> The previous edition forecast '
+          f'{fy0} Cloud revenue of <b>$91.0bn</b> against <b>$44.8bn</b> already reported, which '
+          f'implied <b>$23.1bn</b> in each remaining quarter &mdash; below the <b>$24.8bn</b> the '
+          f'June quarter had just printed. A sequential decline, forecast into the one segment '
+          f'growing 82% year over year, with a backlog that had just added $54bn in three months to '
+          f'reach $514bn. Consolidated revenue looked entirely reasonable throughout, because other '
+          f'segments were forecast above their own exit rates and absorbed it: the error lived in '
+          f'the mix, where nothing consolidated could see it. Cloud now carries '
+          f'<b>${bn(dict((x["segment"], x["year_one"]) for x in sanch["rows"])["cloud"], 1)}bn</b>, '
+          f'and every segment is checked separately.</div>')
+        A(f'<p class="sub">Segment revenue is not in XBRL &mdash; <code>companyfacts</code> flattens '
+          f'dimensioned facts &mdash; so the reported quarters are keyed from the earnings releases: '
+          f'{esc(src)}. Their sum ties to the consolidated fiscal-year-to-date revenue taken '
+          f'independently from XBRL, and the build fails if it does not.</p>')
+
     if ticker == "GOOGL":
         A(f'<div class="warnbox"><b>The arithmetic the thesis rests on.</b> Over {fy0}&ndash;'
           f'{fy0 + 5} this capex path spends <b>${bn(cum_capex, 0)}bn</b>. Our vintage schedule '
@@ -324,6 +407,34 @@ def render(ticker, res, base_year):
         A(f'<div class="card kpi"><div class="lab">{lab}</div><div class="val">{val}</div>'
           f'<div class="note">{note}</div></div>')
     A('</div>')
+
+    # ---- discount-rate sensitivity
+    ws = r.get("wacc_sensitivity")
+    if ws:
+        A('<h3>What the discount rate is worth</h3>')
+        A(f'<p>Terminal value is <b>{pct(ws["tv_pct_ev"])}</b> of enterprise value, so the discount '
+          f'rate is not one assumption among many &mdash; it is most of the answer. Our '
+          f'<b>{pct(ws["base_wacc"], 2)}</b> is a CAPM build. Widely published third-party estimates '
+          f'of Alphabet\'s WACC cluster near <b>7.5%</b>. The reverse DCF above says the market is '
+          f'discounting at <b>{pct(ws["market_implied_wacc"], 2)}</b>. Those are large differences '
+          f'and the reader should see what each is worth rather than take ours on trust.</p>')
+        A('<div class="scroll"><table><thead><tr><th>WACC</th><th>Value/share</th>'
+          '<th>vs our base</th><th>vs spot</th><th>TV % of EV</th><th></th></tr></thead><tbody>')
+        for g in ws["grid"]:
+            mark = ' style="background:#f7faff"' if g["is_base"] else ""
+            A(f'<tr{mark}><td class="num">{pct(g["wacc"], 2)}</td>'
+              f'<td class="num"><b>${g["value_per_share"]:,.2f}</b></td>'
+              f'<td class="num">{pct(g["vs_base"], 1, True)}</td>'
+              f'<td class="num {cls(g["vs_spot"])}">{pct(g["vs_spot"], 1, True)}</td>'
+              f'<td class="num">{pct(g["tv_pct_ev"])}</td>'
+              f'<td class="sub">{esc(g["note"] or "")}</td></tr>')
+        A('</tbody></table></div>')
+        A(f'<p class="sub">This is disclosure, not a change of view: '
+          f'{pct(ws["base_wacc"], 2)} remains the base case, and the depreciation work is '
+          f'independent of it. But a reader who prefers 7.5% is not disagreeing with the thesis '
+          f'&mdash; they are disagreeing with one input, and on our own numbers that input is worth '
+          f'more than the entire depreciation argument. Saying so is the honest way to publish a '
+          f'valuation this far below the market.</p>')
 
     # ---- scenarios
     A('<h2>Scenarios and expected value</h2>')
