@@ -4,7 +4,7 @@
     "company": "NVIDIA Corporation",
     "as_of": "2026-08-07",
     "stance": "WATCHLIST / NO POSITION",
-    "share_status": "Share-ready; not capital-ready",
+    "share_status": "Sufficient to stay flat; insufficient to initiate",
     "horizon": "12 months",
     "edge": "None established",
     "position_size": 0.0
@@ -15,7 +15,7 @@
     "market_cap_bn": 5461.144899999999
   },
   "facts": {
-    "fy2026_revenue": 213.656,
+    "fy2026_revenue": 215.938,
     "q1_revenue": 81.615,
     "q1_yoy_growth": 0.85,
     "q1_gross_margin": 0.749,
@@ -62,7 +62,7 @@
     "liquid_cash_and_debt_securities": 50.335,
     "marketable_equity": 30.237,
     "nonmarketable_equity": 42.336,
-    "equity_method": 1.028,
+    "equity_method": 1.0,
     "debt": 8.47,
     "operating_leases_disclosed_not_deducted": 4.344
   },
@@ -75,7 +75,7 @@
         {
           "year": 2027,
           "revenue": 334.254,
-          "growth": 0.5644493952896246,
+          "growth": 0.5479165315970327,
           "ebitda_margin": 0.59,
           "ebitda": 197.20986,
           "da": 4.0479223,
@@ -86,13 +86,13 @@
           "capex_pct": 0.035,
           "capex": 11.698890000000002,
           "nwc_pct": 0.115,
-          "delta_nwc": 13.868770000000001,
-          "annual_fcff": 140.73628996799997,
+          "delta_nwc": 13.606340000000003,
+          "annual_fcff": 140.998719968,
           "q1_fcf_proxy_subtracted": 48.587,
-          "dcf_fcff": 92.14928996799996,
+          "dcf_fcff": 92.41171996799999,
           "period": 0.24,
           "discount_factor": 0.9732719711701213,
-          "pv_fcff": 89.68632108908241
+          "pv_fcff": 89.94173685247661
         },
         {
           "year": 2028,
@@ -213,9 +213,9 @@
       "terminal_period": 5.47,
       "terminal_value": 1164.1046517446473,
       "pv_terminal": 627.8128623344669,
-      "pv_explicit": 688.112931936296,
-      "enterprise_value": 1315.925794270763,
-      "tv_pct_ev": 0.47708834728205735,
+      "pv_explicit": 688.3683476996903,
+      "enterprise_value": 1316.1812100341572,
+      "tv_pct_ev": 0.4769957643736413,
       "bridge": {
         "liquid": 50.335,
         "marketable_reported": 30.237,
@@ -224,17 +224,17 @@
         "nonmarketable_reported": 42.336,
         "nonmarketable_credit": 0.35,
         "nonmarketable_credited": 14.817599999999999,
-        "equity_method_reported": 1.028,
+        "equity_method_reported": 1.0,
         "equity_method_credit": 0.35,
-        "equity_method_credited": 0.3598,
+        "equity_method_credited": 0.35,
         "debt": 8.47,
-        "total": 79.72015
+        "total": 79.71034999999999
       },
-      "equity_value": 1395.645944270763,
+      "equity_value": 1395.8915600341572,
       "shares_bn": 24.391,
-      "value_per_share": 57.21970990409426,
-      "upside": -0.7444407775609904,
-      "revenue_cagr": 0.07769303725030663
+      "value_per_share": 57.22977983822547,
+      "upside": -0.7443958024197166,
+      "revenue_cagr": 0.07578647540090033
     },
     "base": {
       "key": "base",
@@ -244,7 +244,7 @@
         {
           "year": 2027,
           "revenue": 380.878,
-          "growth": 0.7826693376268392,
+          "growth": 0.7638303587140753,
           "ebitda_margin": 0.645,
           "ebitda": 245.66631,
           "da": 4.0288438,
@@ -255,13 +255,13 @@
           "capex_pct": 0.03,
           "capex": 11.42634,
           "nwc_pct": 0.115,
-          "delta_nwc": 19.230529999999998,
-          "annual_fcff": 176.347445408,
+          "delta_nwc": 18.9681,
+          "annual_fcff": 176.609875408,
           "q1_fcf_proxy_subtracted": 48.587,
-          "dcf_fcff": 127.760445408,
+          "dcf_fcff": 128.022875408,
           "period": 0.24,
           "discount_factor": 0.9758983213952425,
-          "pv_fcff": 124.68120421437571
+          "pv_fcff": 124.93730921085947
         },
         {
           "year": 2028,
@@ -382,9 +382,9 @@
       "terminal_period": 5.47,
       "terminal_value": 4556.811417079822,
       "pv_terminal": 2613.2055358812263,
-      "pv_explicit": 1331.7503149945705,
-      "enterprise_value": 3944.955850875797,
-      "tv_pct_ev": 0.6624169280122827,
+      "pv_explicit": 1332.0064199910544,
+      "enterprise_value": 3945.2119558722807,
+      "tv_pct_ev": 0.6623739269550729,
       "bridge": {
         "liquid": 50.335,
         "marketable_reported": 30.237,
@@ -393,17 +393,17 @@
         "nonmarketable_reported": 42.336,
         "nonmarketable_credit": 0.5,
         "nonmarketable_credited": 21.168,
-        "equity_method_reported": 1.028,
+        "equity_method_reported": 1.0,
         "equity_method_credit": 0.5,
-        "equity_method_credited": 0.514,
+        "equity_method_credited": 0.5,
         "debt": 8.47,
-        "total": 89.24845
+        "total": 89.23445000000001
       },
-      "equity_value": 4034.204300875797,
+      "equity_value": 4034.4464058722806,
       "shares_bn": 24.391,
-      "value_per_share": 165.39724902118803,
-      "upside": -0.26128964260300125,
-      "revenue_cagr": 0.26833839649838476
+      "value_per_share": 165.40717501833794,
+      "upside": -0.26124531032452913,
+      "revenue_cagr": 0.2660945612732164
     },
     "bull": {
       "key": "bull",
@@ -413,7 +413,7 @@
         {
           "year": 2027,
           "revenue": 417.307,
-          "growth": 0.9531723892612425,
+          "growth": 0.9325315599848107,
           "ebitda_margin": 0.675,
           "ebitda": 281.682225,
           "da": 4.0177102300000005,
@@ -424,13 +424,13 @@
           "capex_pct": 0.027,
           "capex": 11.267289,
           "nwc_pct": 0.115,
-          "delta_nwc": 23.419865000000005,
-          "annual_fcff": 202.5687486368,
+          "delta_nwc": 23.157435000000007,
+          "annual_fcff": 202.83117863680002,
           "q1_fcf_proxy_subtracted": 48.587,
-          "dcf_fcff": 153.98174863679998,
+          "dcf_fcff": 154.24417863680003,
           "period": 0.24,
           "discount_factor": 0.9774918473707807,
-          "pv_fcff": 150.5159039363688
+          "pv_fcff": 150.77242712187436
         },
         {
           "year": 2028,
@@ -551,9 +551,9 @@
       "terminal_period": 5.47,
       "terminal_value": 11666.753545330985,
       "pv_terminal": 6944.038105574196,
-      "pv_explicit": 2163.281154041855,
-      "enterprise_value": 9107.319259616052,
-      "tv_pct_ev": 0.7624678467532876,
+      "pv_explicit": 2163.5376772273607,
+      "enterprise_value": 9107.575782801558,
+      "tv_pct_ev": 0.7624463711503874,
       "bridge": {
         "liquid": 50.335,
         "marketable_reported": 30.237,
@@ -562,31 +562,31 @@
         "nonmarketable_reported": 42.336,
         "nonmarketable_credit": 0.75,
         "nonmarketable_credited": 31.752,
-        "equity_method_reported": 1.028,
+        "equity_method_reported": 1.0,
         "equity_method_credit": 0.75,
-        "equity_method_credited": 0.771,
+        "equity_method_credited": 0.75,
         "debt": 8.47,
-        "total": 104.625
+        "total": 104.604
       },
-      "equity_value": 9211.944259616052,
+      "equity_value": 9212.179782801557,
       "shares_bn": 24.391,
-      "value_per_share": 377.6780066260527,
-      "upside": 0.6868155722467739,
-      "revenue_cagr": 0.42324378653657746
+      "value_per_share": 377.68766277731777,
+      "upside": 0.6868586993180785,
+      "revenue_cagr": 0.4207259060158508
     }
   },
   "reverse": {
-    "implied_wacc": 0.0862189446232719,
+    "implied_wacc": 0.08622152915061815,
     "base_wacc": 0.107,
-    "implied_revenue_scale": 1.3597046602502427,
-    "implied_fy2027_revenue": 517.881591586792,
-    "implied_fy2032_revenue": 1209.4015474015205,
-    "implied_revenue_cagr": 0.33498351979242424
+    "implied_revenue_scale": 1.3596436301726365,
+    "implied_fy2027_revenue": 517.8583465728934,
+    "implied_fy2032_revenue": 1209.347263649723,
+    "implied_revenue_cagr": 0.3326118124815862
   },
   "decision": {
-    "base_value": 165.39724902118803,
-    "base_upside": -0.26128964260300125,
-    "long_entry_reference": 137.83104085099004,
+    "base_value": 165.40717501833794,
+    "base_upside": -0.26124531032452913,
+    "long_entry_reference": 137.83931251528162,
     "required_return": 0.2,
     "position_size": 0.0,
     "reason": "No verified variant, base DCF below spot, and every implementation gate is open."
@@ -659,49 +659,15 @@
       "title": "PM scenario and valuation assumptions",
       "url": "",
       "use": "Revenue paths, margins, beta, ERP, terminal ROIC, haircuts and action hurdles."
+    },
+    {
+      "id": "S8",
+      "type": "Company event",
+      "date": "2026-08-26",
+      "title": "Nvidia Q2 FY2027 financial-results webcast",
+      "url": "https://investor.nvidia.com/events-and-presentations/events-and-presentations/event-details/2026/NVIDIA-2nd-Quarter-FY27-Financial-Results/default.aspx",
+      "use": "Confirmed Q2 results event on August 26 at 2:00 p.m. Pacific."
     }
-  ],
-  "review_findings": [
-    [
-      "Internal contradictions and Alphabet copy",
-      "Fixed",
-      "One decision, one valuation set; company reference corrected."
-    ],
-    [
-      "Q1 equity-security gains silently set to zero",
-      "Fixed",
-      "$15.936bn is shown and separated from operating earnings."
-    ],
-    [
-      "FY2027 D&A below a defensible run-rate",
-      "Fixed",
-      "Opening D&A plus forecast capex vintages; Q1/amortization floor checked."
-    ],
-    [
-      "Retired product-market disclosure used in forecast",
-      "Fixed",
-      "Consolidated scenarios anchored on Q1 actual and Q2 guidance."
-    ],
-    [
-      "Hardcoded WACC described as CAPM",
-      "Fixed",
-      "Treasury, beta, ERP, debt cost and capital weights are visible."
-    ],
-    [
-      "Unnormalized terminal FCFF",
-      "Fixed",
-      "Terminal reinvestment equals growth divided by terminal ROIC."
-    ],
-    [
-      "Full credit to strategic and illiquid stakes",
-      "Fixed",
-      "Public, private and equity-method stakes carry explicit haircuts."
-    ],
-    [
-      "Unsupported scenario probabilities drove sizing",
-      "Fixed",
-      "Scenarios are unweighted states; position size remains zero."
-    ]
   ],
   "capital_gates": [
     [
@@ -711,7 +677,7 @@
     ],
     [
       "Catalyst",
-      "Reconcile Q2 actuals and forward guidance; reverify the event date on official IR.",
+      "Freeze Q2 actuals, guidance and the estimate tape around the confirmed August 26 event.",
       "OPEN"
     ],
     [
