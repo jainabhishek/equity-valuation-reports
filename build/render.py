@@ -139,7 +139,7 @@ def render(ticker, res, base_year):
     for lab, val, note in [
         ("Spot", f"${spot:,.2f}", f"as of {AS_OF}"),
         ("Expected value", f"${ev:,.2f}", f'<span class="{cls(ev / spot - 1)}">{pct(ev / spot - 1, 1, True)}</span> vs spot'),
-        ("Risk / reward", f"{sz['risk_reward']:.2f} : 1", f"{direction.lower()} framing"),
+        ("Position size", pct(sz["position_size"], 1), "implementation gate open"),
         ("Breakeven p(bull)", pct(be, 0), f"vs {probs['bull']['bp'] / 100:.0f}% assumed"),
     ]:
         A(f'<div class="card kpi"><div class="lab">{lab}</div><div class="val">{val}</div>'
@@ -194,15 +194,21 @@ def render(ticker, res, base_year):
               f'disagree with it is not saying we disagree with anybody, and earlier editions of '
               f'this memo leaned on that comparison harder than it can bear.</div>')
         corr, hd = epsv["corroboration"], epsv["headline"]
-        A(f'<p>The EPS line in the same feed is different in kind. It moves independently from year '
-          f'to year, it carries the largest analyst cohort of any field &mdash; '
-          f'<b>{max(x["n_eps"] or 0 for x in epsv["rows"])}</b> estimates at the peak &mdash; and '
-          f'the <b>${hd["street_eps"]:,.2f}</b> it carries for {corr["fiscal_year"]} is bracketed by '
-          f'independently reported Street consensus of '
-          f'<b>${corr["reported_low"]:,.2f}&ndash;${corr["reported_high"]:,.2f}</b>. That is a real '
-          f'forecast by real people. So this is the variant, in their units: take the Street\'s own '
-          f'revenue and EBITDA, substitute our depreciation schedule for theirs, and read off the '
-          f'EPS. The build refuses to state it this way if that corroboration ever stops holding.</p>')
+        in_range = corr["reported_low"] <= hd["street_eps"] <= corr["reported_high"]
+        if in_range:
+            A(f'<p>The EPS line in the same feed moves independently from year to year and carries '
+              f'the largest analyst cohort of any field &mdash; '
+              f'<b>{max(x["n_eps"] or 0 for x in epsv["rows"])}</b> estimates at the peak. The '
+              f'<b>${hd["street_eps"]:,.2f}</b> estimate for {corr["fiscal_year"]} is inside the '
+              f'independently reported <b>${corr["reported_low"]:,.2f}&ndash;'
+              f'${corr["reported_high"]:,.2f}</b> range. The calculation below remains a research '
+              f'scenario until the provider, timestamp, statistic and revision history are verified.</p>')
+        else:
+            A(f'<div class="warnbox"><b>Consensus control failure.</b> The feed carries '
+              f'<b>${hd["street_eps"]:,.2f}</b> for {corr["fiscal_year"]}, outside the independently '
+              f'reported <b>${corr["reported_low"]:,.2f}&ndash;${corr["reported_high"]:,.2f}</b> '
+              f'range. Do not present this as a verified Street forecast or risk capital against '
+              f'it until the sources reconcile.</div>')
         A('<div class="scroll"><table><thead><tr><th>Fiscal year</th><th>Street EPS</th>'
           '<th>Analysts</th><th>Street EBIT mgn</th><th>Restated on our D&amp;A</th>'
           '<th>EPS restated</th><th>&Delta;</th></tr></thead><tbody>')
@@ -468,22 +474,16 @@ def render(ticker, res, base_year):
           f'<p class="sub" style="margin-top:6px">{esc(probs[k]["justification"])}</p></div>')
     A('</div>')
 
-    # ---- sizing
-    A('<h2>Position sizing</h2>')
-    A(f'<p>Computed through a constraint cascade, not chosen. Basis: {sz["nav_basis"]}.</p>')
+    # ---- capital implementation
+    A('<h2>Capital implementation</h2>')
+    A(f'<p>There is no percentage recommendation. Basis: {sz["nav_basis"]}.</p>')
     A('<div class="scroll"><table><thead><tr><th>Term</th><th>Value</th><th>Note</th></tr></thead><tbody>')
     for lab, val, note in [
-        ("Payoff ratio b", f"{sz['b']:.2f}", "reward &divide; risk"),
-        ("p(win)", pct(sz["p_win"], 0), "probability mass favouring the position"),
-        ("Kelly f", pct(sz["kelly_f"], 1), "full Kelly fraction"),
-        ("Quarter-Kelly", pct(sz["size_raw"], 2), "0.25 &times; Kelly"),
-        ("Liquidity cap", pct(sz["size_liquidity"], 2), "20% of ADV over 5 days"),
-        ("Risk-budget cap", pct(sz["size_risk_budget"], 2), "1.5% of NAV at risk to the adverse case"),
-        ("Concentration cap", pct(sz["size_concentration"], 2), "single-name hard limit"),
+        ("Scenario expected value", f"${sz['expected_value']:,.2f}", "illustrative probability-weighted arithmetic"),
+        ("Current capital", pct(sz["position_size"], 2), "no position"),
+        ("Binding constraint", esc(sz["binding_constraint"]), "borrow, carry, crowding, hedge and portfolio inputs absent"),
     ]:
         A(f'<tr><td>{lab}</td><td class="num">{val}</td><td class="sub">{note}</td></tr>')
-    A(f'<tr><td><b>Position size</b></td><td class="num"><b>{pct(sz["position_size"], 2)} of NAV</b></td>'
-      f'<td class="sub">binding constraint: <b>{sz["binding_constraint"]}</b></td></tr>')
     A('</tbody></table></div>')
 
     # ---- kill criteria
@@ -530,12 +530,11 @@ def render(ticker, res, base_year):
     for a, b, c in qoe:
         A(f'<tr><td>{a}</td><td class="num">{b}</td><td class="sub">{c}</td></tr>')
     A('</tbody></table></div>')
-    A('<div class="grid g4" style="margin-top:10px">')
+    A('<div class="grid g3" style="margin-top:10px">')
     for lab, val, note in [
         ("Reported diluted EPS", f"${d['reported_eps']:,.2f}", "as filed"),
-        ("Economic EPS", f"${d['economic_eps']:,.2f}", "NOPAT basis"),
         ("Reported P/E", f"{d['reported_pe']:,.1f}x", "what screens show"),
-        ("Economic P/E", f"{d['economic_pe']:,.1f}x", "what you actually pay"),
+        ("EV / NOPAT", f"{d['ev_to_nopat']:,.1f}x", "enterprise value / enterprise earnings"),
     ]:
         A(f'<div class="card kpi"><div class="lab">{lab}</div><div class="val">{val}</div>'
           f'<div class="note">{note}</div></div>')
@@ -675,8 +674,8 @@ def render(ticker, res, base_year):
 
     A(f'<footer>Prepared {AS_OF}. Base year TTM to {by["as_of"]}; market data as of the '
       f'2026-08-07 session. Analytical research on public information; not investment advice, '
-      f'not a recommendation to any person, and not a solicitation. Position sizing is illustrative '
-      f'against a notional $1bn book. The author may hold positions in the securities discussed.'
+      f'not a recommendation to any person, and not a solicitation. No percentage sizing is provided '
+      f'without implementation and portfolio inputs. The author may hold positions in the securities discussed.'
       f'</footer></div>')
     return "\n".join(o)
 
@@ -690,7 +689,9 @@ def page(title, body):
 def main():
     res = json.loads((DATA / "results.json").read_text())
     by = json.loads((DATA / "base_year.json").read_text())
-    for ticker, slug in (("GOOGL", "alphabet"), ("NVDA", "nvidia")):
+    import alphabet_pm
+    print("wrote", alphabet_pm.build_memo())
+    for ticker, slug in (("NVDA", "nvidia"),):
         body = render(ticker, res, by)
         title = f'{cases.SPEC[ticker]["name"]} ({ticker}) — investment memo'
         p = OUT / slug / "memo.html"

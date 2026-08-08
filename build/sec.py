@@ -3,7 +3,9 @@ import json, os, time, urllib.request
 from datetime import date
 from pathlib import Path
 
-UA = "abhishek jain hello@abhishekja.in"
+# SEC asks automated clients to identify a contact.  Keep research traffic on
+# the approved business channel; never fall back to a personal mailbox.
+UA = "Abhishek Jain hello@luckbhi.com"
 CACHE = Path(__file__).parent / "data" / "sec"
 CACHE.mkdir(parents=True, exist_ok=True)
 

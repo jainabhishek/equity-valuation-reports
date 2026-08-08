@@ -101,9 +101,7 @@
       "nonoperating_share_of_pretax": 0.5067046703801596,
       "equity_sec_gains": 148982000000,
       "reported_eps": 19.83954829799334,
-      "economic_eps": 9.786756517167365,
       "reported_pe": 17.855245224299257,
-      "economic_pe": 36.19585297525412,
       "fcf_cfo_less_capex": 53273000000,
       "fcff": 13300185969.81311,
       "capex_pct_revenue": 0.2969540244063813,
@@ -111,7 +109,8 @@
       "sbc_pct_revenue": 0.06312869084278495,
       "net_debt": -124073000000.0,
       "equity_investments_per_share": 10.094971159314323,
-      "equity_investments_pct_revenue": 0.27869073064389155
+      "equity_investments_pct_revenue": 0.27869073064389155,
+      "ev_to_nopat": 34.28402261409307
     },
     "provenance": {
       "revenue": {
@@ -503,9 +502,7 @@
       "nonoperating_share_of_pretax": 0.14335710477557895,
       "equity_sec_gains": 0.0,
       "reported_eps": 6.543930138165717,
-      "economic_eps": 5.605811259704626,
       "reported_pe": 34.21491294568738,
-      "economic_pe": 39.940695401114425,
       "fcf_cfo_less_capex": 119076000000,
       "fcff": 133388342435.4555,
       "capex_pct_revenue": 0.025925969758295166,
@@ -513,7 +510,8 @@
       "sbc_pct_revenue": 0.026983206504372935,
       "net_debt": -39656000000.0,
       "equity_investments_per_share": 2.9754007625763603,
-      "equity_investments_pct_revenue": 0.2862941879593358
+      "equity_investments_pct_revenue": 0.2862941879593358,
+      "ev_to_nopat": 39.11989602914177
     },
     "provenance": {
       "revenue": {

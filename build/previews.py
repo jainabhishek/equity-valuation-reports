@@ -22,11 +22,18 @@ BLUE = "#a8c4ff"
 WHITE = "#ffffff"
 MUTED = "#c3d3f2"
 RED = "#ff8f9e"
-AMBER = "#ffd08a"
+PURPLE = "#c7b9ff"
 FONT = "Inter,Aptos,Helvetica Neue,Arial,sans-serif"
 
 
 def facts(ticker):
+    if ticker == "GOOGL":
+        pm = json.loads((DATA / "alphabet_pm.json").read_text())
+        scen = {r["key"]: r["target"] for r in pm["scenarios"]["rows"]}
+        ev = pm["scenarios"]["expected_value"]
+        return {"spot": pm["inputs"]["spot"], "scen": scen,
+                "rating": "WAIT FOR PROOF", "ev": ev,
+                "ev_pct": ev / pm["inputs"]["spot"] - 1, "rr": 0.0, "size": 0.0}
     res = json.loads((DATA / "results.json").read_text())[ticker]
     scen = {k: res["scenarios"][k]["value_per_share"] for k in ("bear", "base", "bull")}
     meta = decision.RATING[ticker]
@@ -52,14 +59,14 @@ def scenario_bar(x, y, w, f, scale_lo=None, scale_hi=None):
     # base case
     o.append(f'<circle cx="{px(f["scen"]["base"]):.1f}" cy="{y + 3.5}" r="6" fill="{WHITE}"/>')
     # expected value
-    o.append(f'<circle cx="{px(f["ev"]):.1f}" cy="{y + 3.5}" r="5" fill="{AMBER}"/>')
+    o.append(f'<circle cx="{px(f["ev"]):.1f}" cy="{y + 3.5}" r="5" fill="{PURPLE}"/>')
     # spot
     o.append(f'<rect x="{px(f["spot"]) - 1.5:.1f}" y="{y - 7}" width="3" height="21" rx="1.5" fill="{RED}"/>')
     return "".join(o)
 
 
 def card(x, y, w, h, ticker, name, f):
-    rating_fill = RED if f["rating"] == "SHORT" else AMBER
+    rating_fill = RED if f["rating"] == "SHORT" else PURPLE
     o = [f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="16" fill="#ffffff" opacity="0.07"/>',
          f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="16" fill="none" stroke="#ffffff" stroke-opacity="0.16"/>']
     o.append(f'<rect x="{x + 26}" y="{y + 26}" width="86" height="30" rx="15" fill="{WHITE}"/>')
@@ -78,7 +85,7 @@ def card(x, y, w, h, ticker, name, f):
 
     cols = [("Spot", f'${f["spot"]:,.2f}', MUTED),
             ("Expected value", f'${f["ev"]:,.2f}', WHITE),
-            ("vs spot", f'{f["ev_pct"] * 100:+.1f}%', RED if f["ev_pct"] < 0 else AMBER)]
+            ("vs spot", f'{f["ev_pct"] * 100:+.1f}%', RED if f["ev_pct"] < 0 else PURPLE)]
     cw = (w - 52) / 3
     for i, (lab, val, col) in enumerate(cols):
         cx = x + 26 + i * cw
@@ -125,22 +132,24 @@ def main():
     inner = card(80, 340, 500, 235, "GOOGL", "Alphabet", g) + card(620, 340, 500, 235, "NVDA", "Nvidia", n)
     svg = shell(1200, 630, inner, "BUY-SIDE INVESTMENT MEMOS",
                 "Equity Valuation Reports",
-                ["Segment-driver models with a vintage depreciation schedule.",
-                 "Variant vs consensus, expected value, sizing, kill criteria."],
-                ["Alphabet and Nvidia", "As of Aug 7, 2026", "Live Excel model"])
+                ["Public-information research backed by live Excel models.",
+                 "Point-in-time shares, implementation gates and source ledgers."],
+                ["Alphabet and Nvidia", "Prepared Aug 8, 2026", "Market data Aug 7"])
     cairosvg.svg2png(bytestring=svg.encode(), write_to=str(ASSETS / "social-preview.png"),
                      output_width=1200, output_height=630)
 
     # ---- per-company cards, 1000x520
     for ticker, name, f, slug in (("GOOGL", "Alphabet", g, "alphabet"), ("NVDA", "Nvidia", n, "nvidia")):
-        thesis = ("Our vintage depreciation schedule puts 2027 EPS at" if ticker == "GOOGL"
+        thesis = ("Wait for proof: D&amp;A must cause an unoffset EPS cut;" if ticker == "GOOGL"
                   else "Priced. Our range is $67&#8211;$437;")
-        thesis2 = ("$12.20. Forty-two analysts publish $15.01."
+        thesis2 = ("borrow, crowding, options and hedge gates remain open."
                    if ticker == "GOOGL" else "no defensible position size survives that spread.")
-        inner = card(80, 300, 840, 175, ticker, name, f)
+        inner = card(80, 250, 840, 225, ticker, name, f)
         svg = shell(1000, 520, inner, f"{ticker} &#183; INVESTMENT MEMO", name,
                     [thesis, thesis2],
-                    [f'R:R {f["rr"]:.2f}', f'Size {f["size"] * 100:.2f}% NAV', "6-yr FCFF DCF"])
+                    (["No position", "Implementation gate open", "Dated FCFF cross-check"]
+                     if ticker == "GOOGL" else
+                     [f'R:R {f["rr"]:.2f}', f'Size {f["size"] * 100:.2f}% NAV', "6-yr FCFF DCF"]))
         cairosvg.svg2png(bytestring=svg.encode(), write_to=str(ASSETS / f"{slug}-preview.png"),
                          output_width=1000, output_height=520)
 

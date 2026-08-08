@@ -291,9 +291,12 @@ def build(ticker):
             "nonoperating_share_of_pretax": ttm["nonoperating"] / ttm["pretax"],
             "equity_sec_gains": gains,
             "reported_eps": reported_ni / diluted,
-            "economic_eps": nopat / diluted,
             "reported_pe": SPOT[ticker] / (reported_ni / diluted),
-            "economic_pe": SPOT[ticker] / (nopat / diluted),
+            "ev_to_nopat": (
+                SPOT[ticker] * diluted + bs["debt"] + bs["leases"]
+                + bs.get("preferred", 0.0) - bs["cash_and_marketable"]
+                - bs["equity_investments"]
+            ) / nopat,
             "fcf_cfo_less_capex": ttm["cfo"] - ttm["capex"],
             "fcff": nopat + ttm["da"] - ttm["capex"],
             "capex_pct_revenue": ttm["capex"] / ttm["revenue"],
@@ -336,9 +339,8 @@ if __name__ == "__main__":
         print(fmt_row("  effective tax rate", d["effective_tax_rate"], "%"))
         print("-" * 56)
         print(fmt_row("Reported diluted EPS", d["reported_eps"], "x", 2))
-        print(fmt_row("Economic EPS (NOPAT-based)", d["economic_eps"], "x", 2))
         print(fmt_row("Reported P/E", d["reported_pe"], "x", 1))
-        print(fmt_row("Economic P/E", d["economic_pe"], "x", 1))
+        print(fmt_row("EV / NOPAT", d["ev_to_nopat"], "x", 1))
         print("-" * 56)
         print(fmt_row("CFO", s["cfo"]))
         print(fmt_row("Capex", s["capex"]))
